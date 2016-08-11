@@ -18,7 +18,6 @@ use JWeiland\RecommendAPage\Database\PiwikDatabaseInterface;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * AbstractController
@@ -51,7 +50,6 @@ class DisplayController extends ActionController
      */
    protected function getRowsWhereIdactionUrlRef($id = '', $limit = '3')
    {
-       DebuggerUtility::var_dump($id);
        // TODO: Solve with one query?
        $pagesUrl = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
            'piwik_log_action.name AS url',
