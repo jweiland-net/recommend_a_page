@@ -22,20 +22,20 @@ interface PiwikDatabaseInterface
     /**
      * @var string
      */
-    const USER = 'root';
+    const USER = '';
     
     /**
      * @var string
      */
-    const PASSWORD = 'geheim12';
+    const PASSWORD = '';
     
     /**
      * @var string
      */
-    const DATABASE = 'piwik';
+    const DATABASE = '';
     
     /**
      * @var string
      */
-    const HOST = 'localhost';
+    const HOST = '';
 }

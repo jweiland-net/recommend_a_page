@@ -36,7 +36,7 @@ class DisplayController extends ActionController
      */
    public function showAction()
    {
-       $result = $this->getRowsWhereIdactionUrlRef($this->getPageIdFromGlobals());
+       $result = $this->getRowsWhereIdactionUrlRef('1');
        $this->view->assign('recommendedPages', $result);
    }
    
