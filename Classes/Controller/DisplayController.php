@@ -18,6 +18,7 @@ use JWeiland\RecommendAPage\Database\PiwikDatabaseInterface;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * AbstractController
@@ -54,7 +55,7 @@ class DisplayController extends ActionController
        $pagesUrl = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
            'piwik_log_action.name AS url',
            'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_url',
-           'idaction_url_ref = ' . $id . ' AND NOT idaction_url = idaction_url_ref',
+           'idaction_url_ref = ' . $id,
            'piwik_log_link_visit_action.idaction_url DESC',
            '',
            $limit
@@ -63,7 +64,7 @@ class DisplayController extends ActionController
        $pagesName = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
            'piwik_log_action.name AS name',
            'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_name',
-           'idaction_url_ref = ' . $id . ' AND NOT idaction_url = idaction_url_ref',
+           'idaction_url_ref = ' . $id,
            'piwik_log_link_visit_action.idaction_url DESC',
            '',
            $limit
@@ -102,6 +103,23 @@ class DisplayController extends ActionController
      * @return string
      */
     protected function getPageIdFromGlobals() {
-        return $GLOBALS['TSFE']->id;
+        return $this->getPiwikIdFromUri($this->uriBuilder->getRequest()->getRequestUri());
+    }
+    
+    /**
+     * Returns the piwik id
+     *
+     * @param string $uri
+     *
+     * @return string
+     */
+    protected function getPiwikIdFromUri($uri = '') {
+        $uri = preg_replace('/^\w+:\/\//', '', $uri);
+        $result = $this->getPiwikDatabaseConnection()->exec_SELECTgetSingleRow(
+            'idaction',
+            'piwik_log_action',
+            'name = \'' . $uri . '\''
+        );
+        return $result['idaction'];
     }
 }
