@@ -1,4 +1,8 @@
 <f:layout name="Default"/>
 <f:section name="main">
-
+	<ul>
+		<f:for each="{recommendedPages}" as="page">
+			<li><a href="//{page.url}">{page.name}</a></li>
+		</f:for>
+	</ul>
 </f:section>
