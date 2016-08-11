@@ -36,7 +36,7 @@ class DisplayController extends ActionController
      */
    public function showAction()
    {
-       $result = $this->getRowsWhereIdactionUrlRef('1');
+       $result = $this->getRowsWhereIdactionUrlRef($this->getPageIdFromGlobals());
        $this->view->assign('recommendedPages', $result);
    }
    
@@ -50,10 +50,11 @@ class DisplayController extends ActionController
      */
    protected function getRowsWhereIdactionUrlRef($id = '', $limit = '3')
    {
+       // TODO: Solve with one query?
        $pagesUrl = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
            'piwik_log_action.name AS url',
            'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_url',
-           'idaction_url_ref = ' . $id,
+           'idaction_url_ref = ' . $id . ' AND NOT idaction_url = idaction_url_ref',
            'piwik_log_link_visit_action.idaction_url DESC',
            '',
            $limit
@@ -62,7 +63,7 @@ class DisplayController extends ActionController
        $pagesName = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
            'piwik_log_action.name AS name',
            'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_name',
-           'idaction_url_ref = ' . $id,
+           'idaction_url_ref = ' . $id . ' AND NOT idaction_url = idaction_url_ref',
            'piwik_log_link_visit_action.idaction_url DESC',
            '',
            $limit
