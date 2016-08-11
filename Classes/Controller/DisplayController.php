@@ -72,8 +72,10 @@ class DisplayController extends ActionController
        
        $result = array();
        
-       foreach ($pagesUrl as $key => $value) {
-           $result[$key] = array_merge($pagesUrl[$key], $pagesName[$key]);
+       if (!empty($pagesUrl)) {
+           foreach ($pagesUrl as $key => $value) {
+               $result[$key] = array_merge($pagesUrl[$key], $pagesName[$key]);
+           }
        }
        
        return $result;
