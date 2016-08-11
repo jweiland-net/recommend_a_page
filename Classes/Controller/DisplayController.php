@@ -55,7 +55,7 @@ class DisplayController extends ActionController
        $pagesUrl = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
            'piwik_log_action.name AS url',
            'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_url',
-           'idaction_url_ref = ' . $id,
+           'idaction_url_ref = ' . $id . 'AND NOT idaction_url_ref = idaction_url',
            'piwik_log_link_visit_action.idaction_url DESC',
            '',
            $limit
@@ -64,7 +64,7 @@ class DisplayController extends ActionController
        $pagesName = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
            'piwik_log_action.name AS name',
            'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_name',
-           'idaction_url_ref = ' . $id,
+           'idaction_url_ref = ' . $id . 'AND NOT idaction_url_ref = idaction_url',
            'piwik_log_link_visit_action.idaction_url DESC',
            '',
            $limit
