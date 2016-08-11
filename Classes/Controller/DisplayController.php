@@ -51,6 +51,7 @@ class DisplayController extends ActionController
      */
    protected function getRowsWhereIdactionUrlRef($id = '', $limit = '3')
    {
+       DebuggerUtility::var_dump($id);
        // TODO: Solve with one query?
        $pagesUrl = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
            'piwik_log_action.name AS url',
