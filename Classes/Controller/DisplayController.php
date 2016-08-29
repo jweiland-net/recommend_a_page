@@ -14,8 +14,10 @@ namespace JWeiland\RecommendAPage\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use DmitryDulepov\Realurl\Decoder\UrlDecoder;
 use JWeiland\RecommendAPage\Database\PiwikDatabaseInterface;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -36,7 +38,21 @@ class DisplayController extends ActionController
      */
    public function showAction()
    {
-       $recommendedPages = $this->getRowsWhereIdactionUrlRef($this->getPageIdFromGlobals());
+       // TODO: Later do this in a scheduler and load it from cache table here
+       
+       /** @var ExtensionManagementUtility $extensionManagementUtitilty */
+       $extensionManagementUtility = GeneralUtility::makeInstance(ExtensionManagementUtility::class);
+       
+       $recommendedPages = array();
+       
+       // Check if realurl is loaded
+       if ($extensionManagementUtility->isLoaded('realurl')) {
+           
+       } else {
+           $recommendedPages = $this->getRowsWhereIdactionUrlRef($this->getPageIdFromGlobals());
+       }
+       
+       
        $this->view->assign('recommendedPages', $recommendedPages);
    }
    
@@ -129,11 +145,9 @@ class DisplayController extends ActionController
     }
     
     /**
-     * Decodes uri using realurl api
-     *
-     * return string
+     * Decodes URL using realurl cache
      */
-    protected function decodeUri() {
-        return '';
+    protected function decodeUrl() {
+        
     }
 }
