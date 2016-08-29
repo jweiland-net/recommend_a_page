@@ -14,15 +14,11 @@ namespace JWeiland\RecommendAPage\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use DmitryDulepov\Realurl\Cache\DatabaseCache;
-use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
-use DmitryDulepov\Realurl\Utility;
 use JWeiland\RecommendAPage\Database\PiwikDatabaseInterface;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * AbstractController
@@ -30,6 +26,7 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 class DisplayController extends ActionController
 {
     // TODO: Move logical methods to external classes
+    // TODO: Needs rework use custom vars for piwik
     
     /**
      * @var DatabaseConnection
@@ -37,74 +34,103 @@ class DisplayController extends ActionController
     protected $piwikDatabaseConnection;
     
     /**
+     * @var int
+     */
+    protected $recommendPagesLimit = 0;
+    
+    /**
      * Displays recommend Pages
      *
      * @return void
      */
-   public function showAction()
-   {
-       // TODO: Later do this in a scheduler and load it from cache table here
-       
-       /** @var PackageManager $packageManager */
-       $packageManager = GeneralUtility::makeInstance(PackageManager::class);
-       
-       $recommendedPages = array();
-       
-       // Check if realurl is active
-       if ($packageManager->isPackageActive('realurl')) {
-           $speakingUrl = $this->getSpeakingUrl();
-           
-           /** @var DatabaseCache $realurlDatabaseCache */
-           $realurlDatabaseCache = GeneralUtility::makeInstance(DatabaseCache::class);
-           
-           DebuggerUtility::var_dump($speakingUrl);
-           DebuggerUtility::var_dump($realurlDatabaseCache->getPathFromCacheByPagePath(1, null, rtrim($speakingUrl, '/')));
-       } else {
-           $recommendedPages = $this->getRowsWhereIdActionUrlRef($this->getPageIdFromGlobals());
-       }
-       
-       $this->view->assign('recommendedPages', $recommendedPages);
-   }
-   
+    public function showAction()
+    {
+        // TODO: Later do this in a scheduler and load it from cache table here
+     
+        $this->recommendPagesLimit = 3;
+        
+        /** @var PackageManager $packageManager */
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        
+        // Check if realurl is active
+        if ($packageManager->isPackageActive('realurl')) {
+            // Select double because every page can be indexed as speakingUrl and index uid
+            $recommendedPages = $this->getRowsWhereIdActionUrlRef(
+                $this->getPageIdFromGlobals(), $this->recommendPagesLimit * 2
+            );
+            // TODO: Check for doubles (index.php?uid=speakingurl)
+        } else {
+            $recommendedPages = $this->getRowsWhereIdActionUrlRef(
+                $this->getPageIdFromGlobals(), $this->recommendPagesLimit
+            );
+        }
+        
+        $this->view->assign('recommendedPages', $recommendedPages);
+    }
+    
+    /**
+     * Returns speaking url
+     *
+     * @param string $url
+     * @return string
+     */
+    protected function convertToSpeakingUrl($url = '')
+    {
+        return substr($url, strlen(GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST')));
+    }
+    
+    /**
+     * removes domain so only path remains
+     *
+     * @param string $url
+     * @return string
+     */
+    protected function getPagePath($url = '')
+    {
+        
+        return $url;
+    }
+    
+    /**
+     * Returns current root id from $GLOBALS
+     *
+     * @return int
+     */
+    protected function getRootId()
+    {
+        return $GLOBALS['TSFE']->rootLine[0]['uid'];
+    }
+    
     /**
      * Returns all records with specified id
      *
      * @param string $id
-     * @param string $limit
-     *
+     * @param int $limit
      * @return array|NULL Array of rows, or NULL in case of SQL error
      */
-   protected function getRowsWhereIdActionUrlRef($id = '', $limit = '3')
-   {
-       // TODO: Solve with one query?
-       $pagesUrl = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
-           'piwik_log_action.name AS url',
-           'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_url',
-           'idaction_url_ref = ' . $id . ' AND NOT idaction_url = idaction_url_ref',
-           'piwik_log_link_visit_action.idaction_url DESC',
-           '',
-           $limit
-       );
-       
-       $pagesName = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
-           'piwik_log_action.name AS name',
-           'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_name',
-           'idaction_url_ref = ' . $id . ' AND NOT idaction_url = idaction_url_ref',
-           'piwik_log_link_visit_action.idaction_url DESC',
-           '',
-           $limit
-       );
-       
-       $result = array();
-       
-       if (!empty($pagesUrl)) {
-           foreach ($pagesUrl as $key => $value) {
-               $result[$key] = array_merge($pagesUrl[$key], $pagesName[$key]);
-           }
-       }
-       
-       return $result;
-   }
+    protected function getRowsWhereIdActionUrlRef($id = '', $limit = 6)
+    {
+        // TODO: Solve with one query?
+        $pagesUrl = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows('piwik_log_action.name AS url',
+            'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_url',
+            'idaction_url_ref = ' . $id . ' AND NOT idaction_url = idaction_url_ref',
+            'piwik_log_link_visit_action.idaction_url DESC', '', $limit);
+        
+        $pagesName = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows('piwik_log_action.name AS name',
+            'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_name',
+            'idaction_url_ref = ' . $id . ' AND NOT idaction_url = idaction_url_ref',
+            'piwik_log_link_visit_action.idaction_url DESC', '', $limit);
+        
+        $result = array();
+        
+        if (!empty($pagesUrl)) {
+            foreach ($pagesUrl as $key => $value) {
+                $result[$key] = array_merge($pagesUrl[$key], $pagesName[$key]);
+            }
+        }
+        
+        return $result;
+    }
     
     /**
      * Returns the Database connection to PIWIK DB
@@ -138,7 +164,6 @@ class DisplayController extends ActionController
      * Returns the piwik id
      *
      * @param string $uri
-     *
      * @return string
      */
     protected function getPiwikIdFromUri($uri = '')
@@ -146,33 +171,9 @@ class DisplayController extends ActionController
         // Removes http:// or https:// from uri
         $uri = preg_replace('/^\w+:\/\//', '', $uri);
         
-        $result = $this->getPiwikDatabaseConnection()->exec_SELECTgetSingleRow(
-            'idaction',
-            'piwik_log_action',
-            'name = \'' . $uri . '\''
-        );
+        $result = $this->getPiwikDatabaseConnection()->exec_SELECTgetSingleRow('idaction', 'piwik_log_action',
+            'name = \'' . $uri . '\'');
         
         return $result['idaction'];
-    }
-    
-    /**
-     * Returns speaking url
-     *
-     * @return string
-     */
-    protected function getSpeakingUrl() {
-        return GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT');
-    }
-    
-    /**
-     * removes domain so only path remains
-     *
-     * @param string $url
-     *
-     * @return string
-     */
-    protected function getPagePath($url = '') {
-        
-        return $url;
     }
 }
