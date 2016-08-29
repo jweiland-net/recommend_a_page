@@ -57,6 +57,7 @@ class DisplayController extends ActionController
            /** @var DatabaseCache $realurlDatabaseCache */
            $realurlDatabaseCache = GeneralUtility::makeInstance(DatabaseCache::class);
            
+           DebuggerUtility::var_dump($speakingUrl);
            DebuggerUtility::var_dump($realurlDatabaseCache->getPathFromCacheByPagePath(1, null, rtrim($speakingUrl, '/')));
        } else {
            $recommendedPages = $this->getRowsWhereIdActionUrlRef($this->getPageIdFromGlobals());
