@@ -127,4 +127,13 @@ class DisplayController extends ActionController
         );
         return $result['idaction'];
     }
+    
+    /**
+     * Decodes uri using realurl api
+     *
+     * return string
+     */
+    protected function decodeUri() {
+        return '';
+    }
 }
