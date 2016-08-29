@@ -15,6 +15,8 @@ namespace JWeiland\RecommendAPage\Controller;
  */
 
 use DmitryDulepov\Realurl\Cache\DatabaseCache;
+use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
+use DmitryDulepov\Realurl\Utility;
 use JWeiland\RecommendAPage\Database\PiwikDatabaseInterface;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Package\PackageManager;
@@ -55,7 +57,7 @@ class DisplayController extends ActionController
            /** @var DatabaseCache $realurlDatabaseCache */
            $realurlDatabaseCache = GeneralUtility::makeInstance(DatabaseCache::class);
            
-           DebuggerUtility::var_dump($realurlDatabaseCache->getPathFromCacheByPagePath('0', null, $speakingUrl));
+           DebuggerUtility::var_dump($realurlDatabaseCache->getPathFromCacheByPagePath(1, null, rtrim($speakingUrl, '/')));
        } else {
            $recommendedPages = $this->getRowsWhereIdActionUrlRef($this->getPageIdFromGlobals());
        }
