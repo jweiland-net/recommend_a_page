@@ -14,12 +14,18 @@ namespace JWeiland\RecommendAPage\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use DmitryDulepov\Realurl\Cache\CacheFactory;
+use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
 use DmitryDulepov\Realurl\Decoder\UrlDecoder;
+use DmitryDulepov\Realurl\Utility;
 use JWeiland\RecommendAPage\Database\PiwikDatabaseInterface;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Reflection\MethodReflection;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * AbstractController
@@ -40,18 +46,29 @@ class DisplayController extends ActionController
    {
        // TODO: Later do this in a scheduler and load it from cache table here
        
-       /** @var ExtensionManagementUtility $extensionManagementUtitilty */
-       $extensionManagementUtility = GeneralUtility::makeInstance(ExtensionManagementUtility::class);
+       /** @var PackageManager $packageManager */
+       $packageManager = GeneralUtility::makeInstance(PackageManager::class);
        
        $recommendedPages = array();
        
-       // Check if realurl is loaded
-       if ($extensionManagementUtility->isLoaded('realurl')) {
+       // Check if realurl is active
+       if ($packageManager->isPackageActive('realurl')) {
            
        } else {
-           $recommendedPages = $this->getRowsWhereIdactionUrlRef($this->getPageIdFromGlobals());
+           $recommendedPages = $this->getRowsWhereIdActionUrlRef($this->getPageIdFromGlobals());
        }
+    
+       $urlDecoder = new \ReflectionClass('\DmitryDulepov\Realurl\Decoder\UrlDecoder');
+       $siteScript = $urlDecoder->getProperty('siteScript');
+       $siteScript->setAccessible(true);
        
+       if ($GLOBALS['BE_USER']) {
+           $urlDecoder = GeneralUtility::makeInstance(
+               UrlDecoder::class, GeneralUtility::makeInstance(ConfigurationReader::class, ConfigurationReader::MODE_DECODE)
+           );
+    
+           DebuggerUtility::var_dump(GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT'));
+       }
        
        $this->view->assign('recommendedPages', $recommendedPages);
    }
@@ -64,7 +81,7 @@ class DisplayController extends ActionController
      *
      * @return array|NULL Array of rows, or NULL in case of SQL error
      */
-   protected function getRowsWhereIdactionUrlRef($id = '', $limit = '3')
+   protected function getRowsWhereIdActionUrlRef($id = '', $limit = '3')
    {
        // TODO: Solve with one query?
        $pagesUrl = $this->getPiwikDatabaseConnection()->exec_SELECTgetRows(
@@ -141,13 +158,31 @@ class DisplayController extends ActionController
             'piwik_log_action',
             'name = \'' . $uri . '\''
         );
+        
         return $result['idaction'];
     }
     
     /**
      * Decodes URL using realurl cache
+     *
+     * @param string $url
+     *
+     * @return string
      */
-    protected function decodeUrl() {
+    protected function decodeUrl($url = '') {
         
+        return $url;
+    }
+    
+    /**
+     * removes domain so only path remains
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    protected function getPagePath($url = '') {
+        
+        return $url;
     }
 }
