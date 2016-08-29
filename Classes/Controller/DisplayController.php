@@ -36,8 +36,8 @@ class DisplayController extends ActionController
      */
    public function showAction()
    {
-       $result = $this->getRowsWhereIdactionUrlRef($this->getPageIdFromGlobals());
-       $this->view->assign('recommendedPages', $result);
+       $recommendedPages = $this->getRowsWhereIdactionUrlRef($this->getPageIdFromGlobals());
+       $this->view->assign('recommendedPages', $recommendedPages);
    }
    
     /**
@@ -103,7 +103,8 @@ class DisplayController extends ActionController
      *
      * @return string
      */
-    protected function getPageIdFromGlobals() {
+    protected function getPageIdFromGlobals()
+    {
         return $this->getPiwikIdFromUri($this->uriBuilder->getRequest()->getRequestUri());
     }
     
@@ -114,8 +115,11 @@ class DisplayController extends ActionController
      *
      * @return string
      */
-    protected function getPiwikIdFromUri($uri = '') {
+    protected function getPiwikIdFromUri($uri = '')
+    {
+        // Removes http:// or https:// from uri
         $uri = preg_replace('/^\w+:\/\//', '', $uri);
+        
         $result = $this->getPiwikDatabaseConnection()->exec_SELECTgetSingleRow(
             'idaction',
             'piwik_log_action',
