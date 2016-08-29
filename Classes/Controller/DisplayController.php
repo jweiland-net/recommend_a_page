@@ -14,17 +14,12 @@ namespace JWeiland\RecommendAPage\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use DmitryDulepov\Realurl\Cache\CacheFactory;
-use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
-use DmitryDulepov\Realurl\Decoder\UrlDecoder;
-use DmitryDulepov\Realurl\Utility;
+use DmitryDulepov\Realurl\Cache\DatabaseCache;
 use JWeiland\RecommendAPage\Database\PiwikDatabaseInterface;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Reflection\MethodReflection;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
@@ -32,6 +27,8 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
  */
 class DisplayController extends ActionController
 {
+    // TODO: Move logical methods to external classes
+    
     /**
      * @var DatabaseConnection
      */
@@ -53,21 +50,14 @@ class DisplayController extends ActionController
        
        // Check if realurl is active
        if ($packageManager->isPackageActive('realurl')) {
+           $speakingUrl = $this->getSpeakingUrl();
            
+           /** @var DatabaseCache $realurlDatabaseCache */
+           $realurlDatabaseCache = GeneralUtility::makeInstance(DatabaseCache::class);
+           
+           DebuggerUtility::var_dump($realurlDatabaseCache->getPathFromCacheByPagePath('1', null, $speakingUrl));
        } else {
            $recommendedPages = $this->getRowsWhereIdActionUrlRef($this->getPageIdFromGlobals());
-       }
-    
-       $urlDecoder = new \ReflectionClass('\DmitryDulepov\Realurl\Decoder\UrlDecoder');
-       $siteScript = $urlDecoder->getProperty('siteScript');
-       $siteScript->setAccessible(true);
-       
-       if ($GLOBALS['BE_USER']) {
-           $urlDecoder = GeneralUtility::makeInstance(
-               UrlDecoder::class, GeneralUtility::makeInstance(ConfigurationReader::class, ConfigurationReader::MODE_DECODE)
-           );
-    
-           DebuggerUtility::var_dump(GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT'));
        }
        
        $this->view->assign('recommendedPages', $recommendedPages);
@@ -163,15 +153,12 @@ class DisplayController extends ActionController
     }
     
     /**
-     * Decodes URL using realurl cache
-     *
-     * @param string $url
+     * Returns speaking url
      *
      * @return string
      */
-    protected function decodeUrl($url = '') {
-        
-        return $url;
+    protected function getSpeakingUrl() {
+        return GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT');
     }
     
     /**
