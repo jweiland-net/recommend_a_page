@@ -1,0 +1,14 @@
+# cat=basic/enable; type=string; label=Url of your piwik installation make sure it has no starting nor trailing slashes. It looks like: sub.domain.tld;
+piwikUrl =
+
+# cat=basic/enable; type=string; label=Url of your piwik installation;
+piwikDatabaseHost =
+
+# cat=basic/enable; type=string; label=User of your piwik database;
+piwikDatabaseUser =
+
+# cat=basic/enable; type=string; label=Password for the database zser;
+piwikDatabasePassword =
+
+# cat=basic/enable; type=string; label=Name of the piwik database;
+piwikDatabaseName =

@@ -1,0 +1,23 @@
+# TODO: Move this to it's own js file
+
+page.800 = COA
+page.800 {
+    10 = TEXT
+    10.value = <div id="piwikInfo" data-pid="
+
+    15 = TEXT
+    15.data = field:uid
+
+    20 = TEXT
+    20.value = " data-domain="
+
+    25 = TEXT
+    25.data = TSFE:TYPO3_CONF_VARS|EXTCONF|recommend_a_page|piwikUrl
+
+    30 = TEXT
+    30.value = "></div>
+}
+
+page.includeJSFooter {
+    recommendAPagePiwik = EXT:recommend_a_page/Resources/Public/Javascripts/piwik.js
+}

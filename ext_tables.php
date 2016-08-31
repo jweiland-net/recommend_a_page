@@ -11,3 +11,9 @@ if (TYPO3_MODE === 'BE') {
         'Recommend Pages'
     );
 }
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
+    $_EXTKEY,
+    'Configuration/TypoScript',
+    'Recommend a Page Typoscript'
+);
