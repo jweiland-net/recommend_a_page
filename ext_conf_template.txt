@@ -12,3 +12,6 @@ piwikDatabasePassword =
 
 # cat=basic/enable; type=string; label=Name of the piwik database;
 piwikDatabaseName =
+
+# cat=basic/enable; type=string; label=Defines how many pages should be recommended;
+countOfRecommendedPages =
