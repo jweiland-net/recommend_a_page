@@ -27,6 +27,7 @@ class DisplayController extends ActionController
 {
     // TODO: Move logical methods to external classes
     // TODO: Needs rework use custom vars for piwik
+    // TODO: Hide pages that are marked as hidden in menu
     
     /**
      * @var DatabaseConnection

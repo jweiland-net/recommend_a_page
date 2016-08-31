@@ -1,13 +1,11 @@
 var _paq = _paq || [];
+var piwikInfo = document.getElementById('piwikInfo');
+var pid=piwikInfo.dataset.pid;
+_paq.push(['setCustomVariable', 1, 'typo3pid', pid, 'page']);
 _paq.push(['trackPageView']);
 _paq.push(['enableLinkTracking']);
 (function() {
-	var piwikInfo = document.getElementById('pageid');
-
-	var pid=piwikInfo.dataset.pid;
-	var u='//'+piwikInfo.dataset.piwikUrl+'/';
-
-	_paq.push(['setCustomVariable','1','typo3pid',pid]);
+	var u='//'+window.piwikInfo.dataset.domain+'/';
 	_paq.push(['setTrackerUrl', u+'piwik.php']);
 	_paq.push(['setSiteId', 1]);
 	var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
