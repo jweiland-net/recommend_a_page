@@ -27,7 +27,8 @@ class UriResolverUtility
      *
      * @return string
      */
-    public function prepareUriForPiwik($uri = '') {
+    public function prepareUriForPiwik($uri = '')
+    {
         // Removes http:// or https:// from uri
         return preg_replace('/^\w+:\/\//', '', $uri);
     }

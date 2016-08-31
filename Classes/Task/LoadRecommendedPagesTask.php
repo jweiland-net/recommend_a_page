@@ -25,7 +25,8 @@ class LoadRecommendedPagesTask extends AbstractTask
      *
      * @return bool Returns TRUE on successful execution, FALSE on error
      */
-    public function execute() {
+    public function execute()
+    {
         
     }
 }

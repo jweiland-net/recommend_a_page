@@ -13,6 +13,7 @@ namespace JWeiland\RecommendAPage\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use JWeiland\RecommendAPage\Database\PiwikDatabaseInterface;
 use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
@@ -33,7 +34,8 @@ class PiwikDatabaseService
      *
      * @return void
      */
-    public function initializeObject() {
+    public function initializeObject()
+    {
         $this->databaseConnection = $this->getDatabaseConnection();
     }
     
@@ -44,7 +46,8 @@ class PiwikDatabaseService
      *
      * @return int
      */
-    public function getPiwikPageIdByUri($uri = '') {
+    public function getPiwikPageIdByUri($uri = '')
+    {
         /** @var UriResolverUtility $uriResolver */
         $uriResolver = GeneralUtility::makeInstance(UriResolverUtility::class);
         
@@ -64,7 +67,8 @@ class PiwikDatabaseService
      *
      * @return array|NULL Array of rows, or NULL in case of SQL error
      */
-    public function getRecommendedPagesByCurrentPiwikPid($piwikId = 0, $limit = '3') {
+    public function getRecommendedPagesByCurrentPiwikPid($piwikId = 0, $limit = '3')
+    {
         return $this->databaseConnection->exec_SELECTgetRows(
             'custom_var_v1 AS pid, piwik_log_action.name AS title',
             'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_name',

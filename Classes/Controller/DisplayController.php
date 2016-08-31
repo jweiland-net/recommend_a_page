@@ -31,7 +31,8 @@ class DisplayController extends ActionController
     /**
      * Displays the recommended pages
      */
-    public function showAction() {
+    public function showAction()
+    {
         $this->piwikDatabaseService = $this->objectManager->get(PiwikDatabaseService::class);
         
         $piwikPid = $this->piwikDatabaseService->getPiwikPageIdByUri($this->uriBuilder->getRequest()->getRequestUri());
