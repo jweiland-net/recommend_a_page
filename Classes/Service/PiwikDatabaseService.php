@@ -14,7 +14,6 @@ namespace JWeiland\RecommendAPage\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
-use JWeiland\RecommendAPage\Database\PiwikDatabaseInterface;
 use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,12 +29,18 @@ class PiwikDatabaseService
     private $databaseConnection = null;
     
     /**
+     * @var array
+     */
+    private $databaseConfiguration = array();
+    
+    /**
      * Initialization
      *
      * @return void
      */
     public function initializeObject()
     {
+        $this->databaseConfiguration = $this->getDatabaseConfiguration();
         $this->databaseConnection = $this->getDatabaseConnection();
     }
     
@@ -63,12 +68,13 @@ class PiwikDatabaseService
      * Returns the TYPO3 pid from the last visits that is defined as custom var k1 in piwik
      *
      * @param int $piwikId
-     * @param string $limit
      *
      * @return array|NULL Array of rows, or NULL in case of SQL error
      */
-    public function getRecommendedPagesByCurrentPiwikPid($piwikId = 0, $limit = '3')
+    public function getRecommendedPagesByCurrentPiwikPid($piwikId = 0)
     {
+        $limit = $this->databaseConfiguration['countOfRecommendedPages'];
+        
         return $this->databaseConnection->exec_SELECTgetRows(
             'custom_var_v1 AS pid, piwik_log_action.name AS title',
             'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_name',
@@ -88,12 +94,21 @@ class PiwikDatabaseService
     {
         /** @var DatabaseConnection $databaseConnection */
         $databaseConnection = GeneralUtility::makeInstance(DatabaseConnection::class);
-        $databaseConnection->setDatabaseHost(PiwikDatabaseInterface::HOST);
-        $databaseConnection->setDatabaseName(PiwikDatabaseInterface::DATABASE);
-        $databaseConnection->setDatabaseUsername(PiwikDatabaseInterface::USER);
-        $databaseConnection->setDatabasePassword(PiwikDatabaseInterface::PASSWORD);
+        $databaseConnection->setDatabaseHost($this->databaseConfiguration['piwikDatabaseHost']);
+        $databaseConnection->setDatabaseName($this->databaseConfiguration['piwikDatabaseName']);
+        $databaseConnection->setDatabaseUsername($this->databaseConfiguration['piwikDatabaseUser']);
+        $databaseConnection->setDatabasePassword($this->databaseConfiguration['piwikDatabasePassword']);
         $this->databaseConnection = $databaseConnection;
         
         return $this->databaseConnection;
+    }
+    
+    /**
+     * Loads database details from ext conf
+     *
+     * @return array
+     */
+    protected function getDatabaseConfiguration() {
+        return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['recommend_a_page']);
     }
 }

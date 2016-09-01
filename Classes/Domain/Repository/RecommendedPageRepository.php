@@ -1,5 +1,5 @@
 <?php
-namespace JWeiland\RecommendAPage\Database;
+namespace JWeiland\RecommendAPage\Domain\Repository;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -13,29 +13,12 @@ namespace JWeiland\RecommendAPage\Database;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * Interface PiwikDatabaseInterface
+ * RecommendedPage
  */
-interface PiwikDatabaseInterface
+class RecommendedPageRepository extends Repository
 {
-    /**
-     * @var string
-     */
-    const USER = 'root';
     
-    /**
-     * @var string
-     */
-    const PASSWORD = 'geheim12';
-    
-    /**
-     * @var string
-     */
-    const DATABASE = 'piwik';
-    
-    /**
-     * @var string
-     */
-    const HOST = 'localhost';
 }

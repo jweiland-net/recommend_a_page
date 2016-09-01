@@ -13,6 +13,7 @@ namespace JWeiland\RecommendAPage\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * UriResolverUtility
@@ -29,7 +30,6 @@ class UriResolverUtility
      */
     public function prepareUriForPiwik($uri = '')
     {
-        // Removes http:// or https:// from uri
-        return preg_replace('/^\w+:\/\//', '', $uri);
+        return explode('//', $uri)[1];
     }
 }

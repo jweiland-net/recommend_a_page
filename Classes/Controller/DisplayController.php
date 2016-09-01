@@ -15,6 +15,8 @@ namespace JWeiland\RecommendAPage\Controller;
  */
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
+use JWeiland\RecommendAPage\Utility\UriResolverUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
@@ -26,18 +28,25 @@ class DisplayController extends ActionController
     /**
      * @var PiwikDatabaseService
      */
-    private $piwikDatabaseService = null;
+    protected $piwikDatabaseService = null;
+    
+    /**
+     * @var \JWeiland\RecommendAPage\Domain\Repository\RecommendedPageRepository
+     * @inject
+     */
+    protected $recommendedPageRepository = null;
     
     /**
      * Displays the recommended pages
      */
     public function showAction()
     {
-        $this->piwikDatabaseService = $this->objectManager->get(PiwikDatabaseService::class);
+        //$this->piwikDatabaseService = $this->objectManager->get(PiwikDatabaseService::class);
+
+        //$piwikPid = $this->piwikDatabaseService->getPiwikPageIdByUri($this->uriBuilder->getRequest()->getRequestUri());
+        //$recommendedPages = $this->piwikDatabaseService->getRecommendedPagesByCurrentPiwikPid(0);
+        //$this->view->assign('recommendedPages', $recommendedPages);
         
-        $piwikPid = $this->piwikDatabaseService->getPiwikPageIdByUri($this->uriBuilder->getRequest()->getRequestUri());
-        $recommendedPages = $this->piwikDatabaseService->getRecommendedPagesByCurrentPiwikPid(0);
-        DebuggerUtility::var_dump($recommendedPages);
-        $this->view->assign('recommendedPages', $recommendedPages);
+        //DebuggerUtility::var_dump($this->recommendedPageRepository->findAll());
     }
 }

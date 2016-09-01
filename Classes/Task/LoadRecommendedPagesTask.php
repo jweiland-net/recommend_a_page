@@ -13,10 +13,15 @@ namespace JWeiland\RecommendAPage\Task;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
- * DisplayController
+ * LoadRecommendedPagesTask
  */
 class LoadRecommendedPagesTask extends AbstractTask
 {
@@ -27,6 +32,23 @@ class LoadRecommendedPagesTask extends AbstractTask
      */
     public function execute()
     {
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         
+        /** @var PiwikDatabaseService $piwikDatabaseService */
+        $piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
+        
+        /** @var DatabaseConnection $databaseConnection */
+        $databaseConnection = $this->getDatabaseConnection();
+    }
+    
+    /**
+     * Returns the TYPO3 database connection from globals
+     *
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }
