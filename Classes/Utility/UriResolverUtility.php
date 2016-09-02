@@ -19,7 +19,6 @@ namespace JWeiland\RecommendAPage\Utility;
  */
 class UriResolverUtility
 {
-   
     /**
      * Returns the current page id that was given by piwik
      *

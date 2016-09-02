@@ -15,8 +15,6 @@ namespace JWeiland\RecommendAPage\Controller;
  */
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
-use JWeiland\RecommendAPage\Utility\UriResolverUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
@@ -53,6 +51,5 @@ class DisplayController extends ActionController
         
         //DebuggerUtility::var_dump($this->recommendedPageRepository->findAll());
         $uri = 'http://www.ma-ku.eu/tutorials/bla.php?uid=20&id=10';
-        DebuggerUtility::var_dump($getParams);
     }
 }
