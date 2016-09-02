@@ -41,7 +41,7 @@ class LoadRecommendedPagesTask extends AbstractTask
         $piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
         
         $recommendedPages = $piwikDatabaseService->getPreparedRecommendedPages();
-        DebuggerUtility::var_dump(GeneralUtility::getIndpEnv('_ARRAY'));
+        DebuggerUtility::var_dump($recommendedPages);
     }
     
     /**

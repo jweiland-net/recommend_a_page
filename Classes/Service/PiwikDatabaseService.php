@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PiwikDatabaseService
 {
-    // TODO: Respect piwik idsite field in case piwik is used for multiple sites
-    
     /**
      * databaseConnection
      *
@@ -102,9 +100,9 @@ class PiwikDatabaseService
     public function getPreparedRecommendedPages()
     {
         return $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'custom_var_v1 AS requestPid, custom_var_v2 AS targetPid, COUNT(*) AS requests',
+            'custom_var_v1 AS referrerPid, custom_var_v2 AS targetPid, COUNT(*) AS requests',
             'piwik_log_link_visit_action',
-            '',
+            'custom_var_v1 != "" AND custom_var_v2 != ""',
             'idaction_url_ref, idaction_url',
             'idaction_url_ref, requests DESC'
         );

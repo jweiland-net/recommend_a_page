@@ -13,7 +13,6 @@ namespace JWeiland\RecommendAPage\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * UriResolverUtility

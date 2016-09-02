@@ -13,7 +13,8 @@ namespace JWeiland\RecommendAPage\Domain\Model;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use SJBR\StaticInfoTables\Domain\Model\AbstractEntity;
+
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
  * RecommendedPage
