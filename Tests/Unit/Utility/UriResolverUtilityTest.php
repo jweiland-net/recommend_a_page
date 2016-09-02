@@ -1,5 +1,5 @@
 <?php
-namespace JWeiland\RecommendAPage\Utility;
+namespace JWeiland\RecommendAPage\Tests\Unit\Utility;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -14,12 +14,14 @@ namespace JWeiland\RecommendAPage\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use JWeiland\RecommendAPage\Utility\UriResolverUtility;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
+
 /**
- * UriResolverUtility
+ * UriResolverUtilityTest
  */
-class UriResolverUtility
+class UriResolverUtilityTest extends UnitTestCase
 {
-   
     /**
      * Returns the current page id that was given by piwik
      *
@@ -29,11 +31,15 @@ class UriResolverUtility
      */
     public function prepareUriForPiwik($uri = '')
     {
-        $uriArray = parse_url($uri);
-        $uriHostArray = array();
+        return explode('//', $uri)[1];
+    }
     
-        preg_match('~([w0-9]+\.)?(?P<domain>[[:alnum:]\-\.]+)~', $uriArray['host'], $uriHostArray);
-    
-        return $uriHostArray['domain'] . $uriArray['path'];
+    /**
+     * @test
+     */
+    public function validateRemoveSchemeFromUrl()
+    {
+        $utility = new UriResolverUtility();
+        $url = 'scheme://www.domain.tld';
     }
 }

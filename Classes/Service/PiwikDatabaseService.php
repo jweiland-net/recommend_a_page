@@ -23,12 +23,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PiwikDatabaseService
 {
+    // TODO: Respect piwik idsite field in case piwik is used for multiple sites
+    
     /**
+     * databaseConnection
+     *
      * @var DatabaseConnection
      */
     private $databaseConnection = null;
     
     /**
+     * databaseConfiguration
+     *
      * @var array
      */
     private $databaseConfiguration = array();
@@ -77,11 +83,30 @@ class PiwikDatabaseService
         
         return $this->databaseConnection->exec_SELECTgetRows(
             'custom_var_v1 AS pid, piwik_log_action.name AS title',
-            'piwik_log_link_visit_action INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_name',
-            'custom_var_k1 = "typo3pid" AND idaction_url_ref = ' . $piwikId . ' AND NOT idaction_url = idaction_url_ref',
+            'piwik_log_link_visit_action 
+            INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_name',
+            'custom_var_k1 = "typo3pid" 
+            AND idaction_url_ref = ' . $piwikId .
+            ' AND NOT idaction_url = idaction_url_ref',
             'custom_var_v1 DESC',
             null,
             $limit
+        );
+    }
+    
+    /**
+     * Returns an array of all recommended pages already grouped and sorted
+     *
+     * @return array
+     */
+    public function getPreparedRecommendedPages()
+    {
+        return $this->getDatabaseConnection()->exec_SELECTgetRows(
+            'idaction_url_ref, custom_var_v1 , COUNT( * ) AS amount',
+            'piwik_log_link_visit_action',
+            '',
+            'idaction_url_ref, idaction_url',
+            'idaction_url_ref, amount DESC'
         );
     }
     
@@ -108,7 +133,8 @@ class PiwikDatabaseService
      *
      * @return array
      */
-    protected function getDatabaseConfiguration() {
+    protected function getDatabaseConfiguration()
+    {
         return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['recommend_a_page']);
     }
 }

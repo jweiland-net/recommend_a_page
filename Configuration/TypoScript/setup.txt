@@ -1,5 +1,3 @@
-# TODO: Move this to it's own js file
-
 page.800 = COA
 page.800 {
     10 = TEXT

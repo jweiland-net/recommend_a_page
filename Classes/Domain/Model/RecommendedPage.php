@@ -21,30 +21,54 @@ use SJBR\StaticInfoTables\Domain\Model\AbstractEntity;
 class RecommendedPage extends AbstractEntity
 {
     /**
+     * refPid
+     *
      * @var int
      */
     protected $refPid;
     
     /**
+     * targetPid
+     *
      * @var int
      */
     protected $targetPid;
     
+    /**
+     * Set refPid
+     *
+     * @param int $refPid
+     */
     public function setRefPid($refPid)
     {
         $this->refPid = $refPid;
     }
     
+    /**
+     * Set targetPid
+     *
+     * @param int $targetPid
+     */
     public function setTargetPid($targetPid)
     {
         $this->targetPid = $targetPid;
     }
     
+    /**
+     * Return refPid
+     *
+     * @return int
+     */
     public function getRefPid()
     {
         return $this->refPid;
     }
     
+    /**
+     * Return targetPid
+     *
+     * @return int
+     */
     public function getTargetPid()
     {
         return $this->targetPid;

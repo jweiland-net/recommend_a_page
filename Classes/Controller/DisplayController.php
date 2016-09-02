@@ -26,11 +26,15 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 class DisplayController extends ActionController
 {
     /**
+     * piwikDatabaseService
+     *
      * @var PiwikDatabaseService
      */
     protected $piwikDatabaseService = null;
     
     /**
+     * recommendedPageRepository
+     *
      * @var \JWeiland\RecommendAPage\Domain\Repository\RecommendedPageRepository
      * @inject
      */
@@ -48,5 +52,6 @@ class DisplayController extends ActionController
         //$this->view->assign('recommendedPages', $recommendedPages);
         
         //DebuggerUtility::var_dump($this->recommendedPageRepository->findAll());
+        $uri = 'http://www.ma-ku.eu/index.php';
     }
 }

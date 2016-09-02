@@ -16,7 +16,7 @@ namespace JWeiland\RecommendAPage\Domain\Repository;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
- * RecommendedPage
+ * RecommendedPageRepository
  */
 class RecommendedPageRepository extends Repository
 {
