@@ -29,11 +29,11 @@ class RealUrlDatabaseService
      */
     public function getPidFromPagePath($pagePath = '')
     {
-       $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
+       return $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
            'pid',
            'tx_realurl_pathcache',
            'pagepath = \'' . $pagePath . '\''
-       );
+       )['pid'];
     }
     
     /**
