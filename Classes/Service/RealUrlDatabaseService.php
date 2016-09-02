@@ -32,7 +32,7 @@ class RealUrlDatabaseService
        $this->getDatabaseConnection()->exec_SELECTgetSingleRow(
            'pid',
            'tx_realurl_pathcache',
-           'pagepath = ' . $pagePath
+           'pagepath = \'' . $pagePath . '\''
        );
     }
     
