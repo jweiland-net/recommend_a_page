@@ -16,6 +16,7 @@ namespace JWeiland\RecommendAPage\Controller;
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * DisplayController
@@ -39,6 +40,8 @@ class DisplayController extends ActionController
     
     /**
      * Displays the recommended pages
+     *
+     * @return void
      */
     public function showAction()
     {
@@ -49,6 +52,8 @@ class DisplayController extends ActionController
         //$this->view->assign('recommendedPages', $recommendedPages);
         
         //DebuggerUtility::var_dump($this->recommendedPageRepository->findAll());
-        $uri = 'http://www.ma-ku.eu/tutorials/bla.php?uid=20&id=10';
+        
+        DebuggerUtility::var_dump($this->recommendedPageRepository->findAll());
+        
     }
 }

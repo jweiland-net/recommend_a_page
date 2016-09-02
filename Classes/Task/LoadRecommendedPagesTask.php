@@ -17,9 +17,7 @@ namespace JWeiland\RecommendAPage\Task;
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Web\FrontendRequestHandler;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -41,7 +39,14 @@ class LoadRecommendedPagesTask extends AbstractTask
         $piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
         
         $recommendedPages = $piwikDatabaseService->getPreparedRecommendedPages();
-        DebuggerUtility::var_dump($recommendedPages);
+        for ($i = 0; $i < count($recommendedPages); $i++) {
+            unset($recommendedPages[$i]['requests']);
+        }
+        if (!$this->insertRecommendedPagesToDatabase($this->getDatabaseConnection(), $recommendedPages)) {
+            return false;
+        }
+        
+        return true;
     }
     
     /**
@@ -55,7 +60,7 @@ class LoadRecommendedPagesTask extends AbstractTask
     {
         return $database->exec_INSERTmultipleRows(
             'tx_recommendapage_domain_model_recommendedpage',
-            array('idaction_url_ref', 'custom_var_v1'),
+            array('referrer_pid', 'target_pid'),
             $recommendedPages
         );
     }

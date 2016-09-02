@@ -22,11 +22,11 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class RecommendedPage extends AbstractEntity
 {
     /**
-     * refPid
+     * referrerPid
      *
      * @var int
      */
-    protected $refPid;
+    protected $referrerPid;
     
     /**
      * targetPid
@@ -36,13 +36,13 @@ class RecommendedPage extends AbstractEntity
     protected $targetPid;
     
     /**
-     * Set refPid
+     * Set referrerPid
      *
-     * @param int $refPid
+     * @param int $referrerPid
      */
-    public function setRefPid($refPid)
+    public function setReferrerPid($referrerPid)
     {
-        $this->refPid = $refPid;
+        $this->referrerPid = $referrerPid;
     }
     
     /**
@@ -56,13 +56,13 @@ class RecommendedPage extends AbstractEntity
     }
     
     /**
-     * Return refPid
+     * Return referrerPid
      *
      * @return int
      */
-    public function getRefPid()
+    public function getReferrerPid()
     {
-        return $this->refPid;
+        return $this->referrerPid;
     }
     
     /**

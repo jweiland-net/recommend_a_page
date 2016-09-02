@@ -21,7 +21,7 @@ return array(
         ),
     ),
     'columns' => array(
-        'ref_pid' => array(
+        'referrer_pid' => array(
             'exclude' => 1,
             'label' => 'LLL:EXT:recommend_a_page/Resources/Private/Language/locallang.xlf:db.ref_id',
             'config' => array(
