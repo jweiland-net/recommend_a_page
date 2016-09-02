@@ -102,7 +102,7 @@ class PiwikDatabaseService
     public function getPreparedRecommendedPages()
     {
         return $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'idaction_url_ref, custom_var_v1 , COUNT(*) AS requests',
+            'custom_var_v1 AS requestPid, custom_var_v2 AS targetPid, COUNT(*) AS requests',
             'piwik_log_link_visit_action',
             '',
             'idaction_url_ref, idaction_url',
