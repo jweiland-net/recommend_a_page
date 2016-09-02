@@ -1,8 +1,8 @@
 var _paq = _paq || [];
 var piwikInfo = document.getElementById('piwikInfo');
-var requestPid=piwikInfo.dataset.requestPid;
+var referrerPid=piwikInfo.dataset.referrerPid;
 var targetPid=piwikInfo.dataset.targetPid;
-_paq.push(['setCustomVariable', 1, 'requestPid', requestPid, 'page']);
+_paq.push(['setCustomVariable', 1, 'referrerPid', referrerPid, 'page']);
 _paq.push(['setCustomVariable', 2, 'targetPid', targetPid, 'page']);
 _paq.push(['trackPageView']);
 _paq.push(['enableLinkTracking']);
