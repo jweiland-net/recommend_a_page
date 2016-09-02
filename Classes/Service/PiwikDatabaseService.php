@@ -97,16 +97,16 @@ class PiwikDatabaseService
     /**
      * Returns an array of all recommended pages already grouped and sorted
      *
-     * @return array
+     * @return array|NULL Array of rows, or NULL in case of SQL error
      */
     public function getPreparedRecommendedPages()
     {
         return $this->getDatabaseConnection()->exec_SELECTgetRows(
-            'idaction_url_ref, custom_var_v1 , COUNT( * ) AS amount',
+            'idaction_url_ref, custom_var_v1 , COUNT(*) AS requests',
             'piwik_log_link_visit_action',
             '',
             'idaction_url_ref, idaction_url',
-            'idaction_url_ref, amount DESC'
+            'idaction_url_ref, requests DESC'
         );
     }
     
