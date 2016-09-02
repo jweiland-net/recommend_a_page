@@ -47,7 +47,7 @@ class UriResolverUtility
     public function getPagePath($uri)
     {
         $uriArray = parse_url($uri);
-        return ltrim($uriArray['path'], '/');
+        return trim($uriArray['path'], '/');
     }
     
     /**

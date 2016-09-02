@@ -1,5 +1,3 @@
-// TODO: Create a Userfunc and convert HTTP_REFERER (if same host) to pid
-
 var _paq = _paq || [];
 var piwikInfo = document.getElementById('piwikInfo');
 var referrerPid=piwikInfo.dataset.referrerPid;
