@@ -27,7 +27,7 @@ class UriResolverUtility
      *
      * @return string
      */
-    public function prepareUriForPiwik($uri = '')
+    public function prepareUriForPiwik($uri)
     {
         $uriArray = parse_url($uri);
         $uriHostArray = array();
@@ -35,5 +35,31 @@ class UriResolverUtility
         preg_match('~([w0-9]+\.)?(?P<domain>[[:alnum:]\-\.]+)~', $uriArray['host'], $uriHostArray);
     
         return $uriHostArray['domain'] . $uriArray['path'];
+    }
+    
+    /**
+     * Returns realurl like page path from uri
+     *
+     * @param string $uri
+     *
+     * @return string
+     */
+    public function getPagePath($uri)
+    {
+        $uriArray = parse_url($uri);
+        return ltrim($uriArray['path'], '/');
+    }
+    
+    /**
+     * Extracts get params from an uri
+     *
+     * @param $uri
+     *
+     * @return array
+     */
+    public function getGetParams($uri)
+    {
+        $query = parse_url($uri)['query'];
+        return explode('&', $query);
     }
 }

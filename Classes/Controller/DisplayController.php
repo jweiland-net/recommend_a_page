@@ -52,7 +52,7 @@ class DisplayController extends ActionController
         //$this->view->assign('recommendedPages', $recommendedPages);
         
         //DebuggerUtility::var_dump($this->recommendedPageRepository->findAll());
-        $uri = 'http://www.ma-ku.eu/index.php';
-        DebuggerUtility::var_dump(GeneralUtility::getIndpEnv('_ARRAY'));
+        $uri = 'http://www.ma-ku.eu/tutorials/bla.php?uid=20&id=10';
+        DebuggerUtility::var_dump($getParams);
     }
 }

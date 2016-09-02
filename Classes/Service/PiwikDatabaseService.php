@@ -57,7 +57,7 @@ class PiwikDatabaseService
      *
      * @return int
      */
-    public function getPiwikPageIdByUri($uri = '')
+    public function getPiwikPageIdByUri($uri)
     {
         /** @var UriResolverUtility $uriResolver */
         $uriResolver = GeneralUtility::makeInstance(UriResolverUtility::class);
@@ -77,7 +77,7 @@ class PiwikDatabaseService
      *
      * @return array|NULL Array of rows, or NULL in case of SQL error
      */
-    public function getRecommendedPagesByCurrentPiwikPid($piwikId = 0)
+    public function getRecommendedPagesByCurrentPiwikPid($piwikId)
     {
         $limit = $this->databaseConfiguration['countOfRecommendedPages'];
         

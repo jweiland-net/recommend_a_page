@@ -51,7 +51,7 @@ class LoadRecommendedPagesTask extends AbstractTask
      * @param array $recommendedPages
      * @return bool|\mysqli_result|object MySQLi result object / DBAL object
      */
-    protected function insertRecommendedPagesToDatabase($database = DatabaseConnection::class, $recommendedPages = array())
+    protected function insertRecommendedPagesToDatabase($database, $recommendedPages)
     {
         return $database->exec_INSERTmultipleRows(
             'tx_recommendapage_domain_model_recommendedpage',
