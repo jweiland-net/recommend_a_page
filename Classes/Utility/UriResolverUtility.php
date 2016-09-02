@@ -13,6 +13,7 @@ namespace JWeiland\RecommendAPage\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * UriResolverUtility
@@ -59,6 +60,13 @@ class UriResolverUtility
     public function getGetParams($uri)
     {
         $query = parse_url($uri)['query'];
-        return explode('&', $query);
+        $query = explode('&', $query);
+        $query = array_filter($query);
+        $params = array();
+        foreach ($query as $key => $value) {
+            list($k, $v) = explode('=', $value);
+            $params[$k] = $v;
+        }
+        return $params;
     }
 }

@@ -43,7 +43,7 @@ class RequestHandler
         if (!empty($referrerUri) && !preg_match('~index.php~', $referrerUri)) {
             /** @var PackageManager $packageManager */
             $packageManager = GeneralUtility::makeInstance(PackageManager::class);
-    
+            
             if ($packageManager->isPackageActive('realurl')) {
                 /** @var RealUrlDatabaseService $realUrlDatabaseService */
                 $realUrlDatabaseService = GeneralUtility::makeInstance(RealUrlDatabaseService::class);
@@ -57,7 +57,6 @@ class RequestHandler
         } else {
             $pid = $uriResolverUtility->getGetParams($referrerUri)['id'];
         }
-        DebuggerUtility::var_dump($pid);
         return $pid;
     }
 }
