@@ -14,10 +14,14 @@ namespace JWeiland\RecommendAPage\UserFunc;
  * The TYPO3 project - inspiring people to share!
  */
 
+use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
+use DmitryDulepov\Realurl\Utility;
 use JWeiland\RecommendAPage\Service\RealUrlDatabaseService;
 use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Package\PackageManager;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * RequestHandler
@@ -34,25 +38,31 @@ class RequestHandler
      */
     public function convertRefUriToPid($content, $conf)
     {
-        $referrerUri = GeneralUtility::getIndpEnv('_ARRAY')['HTTP_REFERER'];
+        $referrerUri = GeneralUtility::getIndpEnv('HTTP_REFERER');
         
         /** @var UriResolverUtility $uriResolverUtility */
         $uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);
-        
-        if (!empty($referrerUri) && !preg_match('~index.php~', $referrerUri)) {
-            /** @var PackageManager $packageManager */
-            $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        DebuggerUtility::var_dump($referrerUri);
+        if (
+            !empty($referrerUri) &&
+            ExtensionManagementUtility::isLoaded('realurl')
+        ) {
+            /** @var ConfigurationReader $realUrlConfiguration */
+            $realUrlConfiguration = GeneralUtility::makeInstance(
+                ConfigurationReader::class,
+                ConfigurationReader::MODE_DECODE
+            );
             
-            if ($packageManager->isPackageActive('realurl')) {
-                /** @var RealUrlDatabaseService $realUrlDatabaseService */
-                $realUrlDatabaseService = GeneralUtility::makeInstance(RealUrlDatabaseService::class);
-                
-                $pagePath = $uriResolverUtility->getPagePath($referrerUri);
-                
-                $pid = $realUrlDatabaseService->getPidFromPagePath($pagePath);
-            } else {
-                $pid = null;
-            }
+            /** @var Utility $realUrlUtility */
+            $realUrlUtility = GeneralUtility::makeInstance(Utility::class, $realUrlConfiguration);
+            
+            $rootPageId = (int)$realUrlConfiguration->get('pagePath/rootpage_id');
+            $convertedUrl = $realUrlUtility->getCache()->getUrlFromCacheBySpeakingUrl(
+                $rootPageId,
+                $uriResolverUtility->getPagePath($referrerUri),
+                (int)GeneralUtility::_GET('L')
+            );
+            $pid = $convertedUrl['pageid'];
         } else {
             $pid = $uriResolverUtility->getGetParams($referrerUri)['id'];
         }

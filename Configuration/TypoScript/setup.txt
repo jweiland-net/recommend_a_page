@@ -1,28 +1,15 @@
-page.800 = COA
-page.800 {
-    10 = TEXT
-    10.value = <div id="piwikInfo" data-target-pid="
-
-    15 = TEXT
-    15.data = field:uid
+page.700 = COA
+page.700 {
+    10 = LOAD_REGISTER
+    10.convertRefUri.cObject = USER_INT
+    10.convertRefUri.cObject.userFunc = JWeiland\RecommendAPage\UserFunc\RequestHandler->convertRefUriToPid
 
     20 = TEXT
-    20.value = " data-referrer-pid="
+    20.value = <div id="piwikInfo" data-target-pid="{PAGE:uid}" data-referrer-pid="{REGISTER:convertRefUri}" data-domain="{TSFE:TYPO3_CONF_VARS|EXTCONF|recommend_a_page|piwikUrl}"></div>
+    20.insertData = 1
 
-    25 = USER_INT
-    25.userFunc = JWeiland\RecommendAPage\UserFunc\RequestHandler->convertRefUriToPid
-
-    30 = TEXT
-    30.value = " data-domain="
-
-    35 = TEXT
-    35.data = TSFE:TYPO3_CONF_VARS|EXTCONF|recommend_a_page|piwikUrl
-
-    40 = TEXT
-    40.value = "></div>
+    30 = RESTORE_REGISTER
 }
-
-
 
 page.includeJSFooter {
     recommendAPagePiwik = EXT:recommend_a_page/Resources/Public/Javascripts/piwik.js
