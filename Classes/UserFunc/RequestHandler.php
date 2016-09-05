@@ -16,12 +16,9 @@ namespace JWeiland\RecommendAPage\UserFunc;
 
 use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
 use DmitryDulepov\Realurl\Utility;
-use JWeiland\RecommendAPage\Service\RealUrlDatabaseService;
 use JWeiland\RecommendAPage\Utility\UriResolverUtility;
-use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * RequestHandler
@@ -42,7 +39,6 @@ class RequestHandler
         
         /** @var UriResolverUtility $uriResolverUtility */
         $uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);
-        DebuggerUtility::var_dump($referrerUri);
         if (
             !empty($referrerUri) &&
             ExtensionManagementUtility::isLoaded('realurl')

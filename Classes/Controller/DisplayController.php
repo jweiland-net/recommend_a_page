@@ -15,10 +15,7 @@ namespace JWeiland\RecommendAPage\Controller;
  */
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
-use JWeiland\RecommendAPage\UserFunc\RequestHandler;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * DisplayController
@@ -54,7 +51,5 @@ class DisplayController extends ActionController
         //$this->view->assign('recommendedPages', $recommendedPages);
         
         //DebuggerUtility::var_dump($this->recommendedPageRepository->findAll());
-        
-        DebuggerUtility::var_dump($this->recommendedPageRepository->findAll());
     }
 }
