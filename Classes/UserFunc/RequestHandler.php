@@ -28,12 +28,9 @@ class RequestHandler
     /**
      * Converts the refUri to a pid
      *
-     * @param string $content
-     * @param array $conf
-     *
      * @return int|null
      */
-    public function convertRefUriToPid($content, $conf)
+    public function convertRefUriToPid()
     {
         $referrerUri = GeneralUtility::getIndpEnv('HTTP_REFERER');
         
