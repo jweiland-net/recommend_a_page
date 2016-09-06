@@ -14,6 +14,7 @@ namespace JWeiland\RecommendAPage\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 /**
@@ -21,5 +22,19 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class RecommendedPageRepository extends Repository
 {
-    
+    /**
+     * Returns all entries to a specific referrer pid
+     *
+     * @param int $referrerId
+     *
+     * @return array
+     */
+    public function findAllByUid($referrerId)
+    {
+        $query = $this->createQuery();
+        $query->matching(
+            $query->equals('referrer_pid', $referrerId)
+        );
+        return $query->execute();
+    }
 }
