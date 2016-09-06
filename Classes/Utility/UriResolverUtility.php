@@ -51,6 +51,10 @@ class UriResolverUtility
      */
     public function getSpeakingUrl($uri)
     {
+        if (!strpos($uri, '://')) {
+            $uri = 'http://' . $uri;
+        }
+        
         $path = parse_url($uri)['path'];
         if ($path !== '/') {
             $path = trim($path, '/');
