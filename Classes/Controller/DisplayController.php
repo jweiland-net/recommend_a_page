@@ -44,7 +44,7 @@ class DisplayController extends ActionController
      */
     public function showAction()
     {
-        $recommendations = $this->recommendedPageRepository->findByUid($GLOBALS['TSFE']->id);
+        $recommendations = $this->recommendedPageRepository->findAllByUid($GLOBALS['TSFE']->id);
         $this->view->assign('recommendations', $recommendations);
     }
 }
