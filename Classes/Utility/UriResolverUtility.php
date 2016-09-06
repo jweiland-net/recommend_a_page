@@ -19,6 +19,7 @@ use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
 use DmitryDulepov\Realurl\Utility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * UriResolverUtility
@@ -105,12 +106,14 @@ class UriResolverUtility
             $realUrlUtility = GeneralUtility::makeInstance(Utility::class, $realUrlConfiguration);
         
             $rootPageId = (int)$realUrlConfiguration->get('pagePath/rootpage_id');
+            
             /** @var UrlCacheEntry $convertedUrl */
             $convertedUrl = $realUrlUtility->getCache()->getUrlFromCacheBySpeakingUrl(
                 $rootPageId,
                 $this->getSpeakingUrl($uri),
                 (int)GeneralUtility::_GET('L')
             );
+            DebuggerUtility::var_dump($uri);
             $pid = $convertedUrl->getPageId();
         } else {
             $pid = $this->getGetParams($uri)['id'];

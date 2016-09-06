@@ -26,6 +26,8 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 class PreparePiwikDatabaseTask extends AbstractTask
 {
     /**
+     * TODO: Problem with real url because it only allows FE Environment
+     *
      * This is the main method that is called when a task is executed
      *
      * @return bool Returns TRUE on successful execution, FALSE on error
