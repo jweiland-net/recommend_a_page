@@ -33,7 +33,7 @@ class RecommendedPageRepository extends Repository
     {
         $query = $this->createQuery();
         $query->matching(
-            $query->equals('referrer_pid', $referrerId)
+            $query->equals('referrerPid', $referrerId)
         );
         return $query->execute();
     }
