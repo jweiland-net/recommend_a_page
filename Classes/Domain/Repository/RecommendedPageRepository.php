@@ -32,9 +32,8 @@ class RecommendedPageRepository extends Repository
     public function findAllByUid($referrerId)
     {
         $query = $this->createQuery();
-        $query->matching(
-            $query->equals('referrerPid', $referrerId)
-        );
-        return $query->execute();
+        return $query->matching(
+            $query->equals('referrer_pid', $referrerId)
+        )->execute();
     }
 }
