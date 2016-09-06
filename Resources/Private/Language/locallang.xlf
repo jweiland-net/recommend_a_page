@@ -10,6 +10,12 @@
 			<trans-unit id="task.loadRecommendedPages.description">
 				<source>Loads recommended pages from piwik database and saves them to a own table</source>
 			</trans-unit>
+			<trans-unit id="task.preparePiwikDatabaseTask.title">
+				<source>Prepare piwik database</source>
+			</trans-unit>
+			<trans-unit id="task.preparePiwikDatabaseTask.description">
+				<source>Sets all custom vars that are needed for the extension to work</source>
+			</trans-unit>
 			<trans-unit id="db.ref_id">
 				<source>Referrer id</source>
 			</trans-unit>

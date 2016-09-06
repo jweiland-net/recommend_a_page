@@ -49,6 +49,42 @@ class PiwikDatabaseService
     }
     
     /**
+     * Sets the custom vars in piwik
+     *
+     * @param array $fieldsValues
+     * @param string $where
+     *
+     * @return void
+     */
+    public function updateRows($fieldsValues, $where)
+    {
+        $this->databaseConnection->UPDATEquery(
+            'piwik_log_link_visit_action',
+            $where,
+            $fieldsValues
+        );
+    }
+    
+    /**
+     * Returns all known actions ids and names
+     *
+     * @param int $limit
+     *
+     * @return array|NULL Array of rows, or NULL in case of SQL error
+     */
+    public function getActionIdsAndUrls($limit)
+    {
+        return $this->getDatabaseConnection()->exec_SELECTgetRows(
+            'idaction, name',
+            'piwik_log_action',
+            'type != 4',
+            '',
+            '',
+            $limit
+        );
+    }
+    
+    /**
      * Returns the pid piwik defined for it self
      *
      * @param string $uri

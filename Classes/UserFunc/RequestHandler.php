@@ -14,10 +14,7 @@ namespace JWeiland\RecommendAPage\UserFunc;
  * The TYPO3 project - inspiring people to share!
  */
 
-use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
-use DmitryDulepov\Realurl\Utility;
 use JWeiland\RecommendAPage\Utility\UriResolverUtility;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -36,29 +33,7 @@ class RequestHandler
         
         /** @var UriResolverUtility $uriResolverUtility */
         $uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);
-        if (
-            !empty($referrerUri) &&
-            ExtensionManagementUtility::isLoaded('realurl')
-        ) {
-            /** @var ConfigurationReader $realUrlConfiguration */
-            $realUrlConfiguration = GeneralUtility::makeInstance(
-                ConfigurationReader::class,
-                ConfigurationReader::MODE_DECODE
-            );
-            
-            /** @var Utility $realUrlUtility */
-            $realUrlUtility = GeneralUtility::makeInstance(Utility::class, $realUrlConfiguration);
-            
-            $rootPageId = (int)$realUrlConfiguration->get('pagePath/rootpage_id');
-            $convertedUrl = $realUrlUtility->getCache()->getUrlFromCacheBySpeakingUrl(
-                $rootPageId,
-                $uriResolverUtility->getPagePath($referrerUri),
-                (int)GeneralUtility::_GET('L')
-            );
-            $pid = $convertedUrl['pageid'];
-        } else {
-            $pid = $uriResolverUtility->getGetParams($referrerUri)['id'];
-        }
-        return $pid;
+        
+        return $uriResolverUtility->getTYPO3PidFromUri($referrerUri);
     }
 }

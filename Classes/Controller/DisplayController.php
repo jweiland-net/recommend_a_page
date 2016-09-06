@@ -16,7 +16,6 @@ namespace JWeiland\RecommendAPage\Controller;
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * DisplayController
@@ -45,12 +44,7 @@ class DisplayController extends ActionController
      */
     public function showAction()
     {
-        //$this->piwikDatabaseService = $this->objectManager->get(PiwikDatabaseService::class);
-
-        //$piwikPid = $this->piwikDatabaseService->getPiwikPageIdByUri($this->uriBuilder->getRequest()->getRequestUri());
-        //$recommendedPages = $this->piwikDatabaseService->getRecommendedPagesByCurrentPiwikPid(0);
-        //$this->view->assign('recommendedPages', $recommendedPages);
-        
-        //DebuggerUtility::var_dump($this->recommendedPageRepository->findAll());
+        $recommendedPages = $this->recommendedPageRepository->findByUid($GLOBALS['TSFE']->id);
+        $this->view->assign('recommendedPages', $recommendedPages);
     }
 }
