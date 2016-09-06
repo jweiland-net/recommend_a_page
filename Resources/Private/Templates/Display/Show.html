@@ -1,9 +1,8 @@
 <f:layout name="Default"/>
 <f:section name="main">
-	<f:debug>{recommendations}</f:debug>
 	<ul>
 		<f:for each="{recommendations}" as="recommendation">
-			<f:link.page pageUid="{recommendation.targetPid}">Recommended Page</f:link.page>
+			<li><f:link.page pageUid="{recommendation.targetPid}">Recommended Page</f:link.page></li>
 		</f:for>
 	</ul>
 </f:section>
