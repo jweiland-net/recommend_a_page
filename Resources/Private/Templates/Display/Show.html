@@ -1,6 +1,7 @@
 <f:layout name="Default"/>
 <f:section name="main">
 	<ul>
+		<f:debug>{recommendedPages}</f:debug>
 		<f:for each="{recommendedPages}" as="page">
 			<f:link.page pageUid="{page.id}">{page.title}</f:link.page>
 		</f:for>
