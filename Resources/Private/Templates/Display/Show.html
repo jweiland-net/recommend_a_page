@@ -1,8 +1,12 @@
+{namespace recommendAPage=JWeiland\RecommendAPage\ViewHelper}
+
 <f:layout name="Default"/>
 <f:section name="main">
 	<ul>
 		<f:for each="{recommendations}" as="recommendation">
-			<li><f:link.page pageUid="{recommendation.targetPid}">Recommended Page</f:link.page></li>
+			<li><f:link.page pageUid="{recommendation.targetPid}">
+				<recommendAPage:PageIdToTitle pageId="{recommendation.targetPid}"/>
+			</f:link.page></li>
 		</f:for>
 	</ul>
 </f:section>
