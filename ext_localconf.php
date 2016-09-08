@@ -38,5 +38,3 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][JWeiland\Recomme
 if (!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY])) {
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][$_EXTKEY] = @unserialize($_EXTCONF);
 }
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'recommend a page');
