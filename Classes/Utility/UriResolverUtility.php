@@ -14,6 +14,7 @@ namespace JWeiland\RecommendAPage\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use DmitryDulepov\Realurl\Cache\CacheFactory;
 use DmitryDulepov\Realurl\Cache\UrlCacheEntry;
 use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
 use DmitryDulepov\Realurl\Utility;
@@ -101,13 +102,10 @@ class UriResolverUtility
                 ConfigurationReader::MODE_DECODE
             );
         
-            /** @var Utility $realUrlUtility */
-            $realUrlUtility = GeneralUtility::makeInstance(Utility::class, $realUrlConfiguration);
-        
             $rootPageId = (int)$realUrlConfiguration->get('pagePath/rootpage_id');
             
             /** @var UrlCacheEntry $convertedUrl */
-            $convertedUrl = $realUrlUtility->getCache()->getUrlFromCacheBySpeakingUrl(
+            $convertedUrl = CacheFactory::getCache()->getUrlFromCacheBySpeakingUrl(
                 $rootPageId,
                 $this->getSpeakingUrl($uri),
                 (int)GeneralUtility::_GET('L')
