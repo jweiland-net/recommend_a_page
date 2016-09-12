@@ -59,7 +59,7 @@ class PiwikDatabaseService
         return $this->getDatabaseConnection()->exec_SELECTgetRows(
             'idaction, name',
             'piwik_log_action',
-            'type != 4'
+            'type != 4 AND name LIKE \'%' . GeneralUtility::getIndpEnv('HTTP_HOST') . '%\''
         );
     }
     
