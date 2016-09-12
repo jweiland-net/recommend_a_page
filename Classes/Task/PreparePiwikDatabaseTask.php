@@ -46,23 +46,30 @@ class PreparePiwikDatabaseTask extends AbstractTask
         /** @var UriResolverUtility $uriResolverUtility */
         $uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);
         
+        $alreadyUpdatedPid = array();
+        
         foreach ($piwikActions as $action)
         {
-            $piwikDatabaseService->updateRows(
-                array(
-                    'custom_var_k1' => 'referrerPid',
-                    'custom_var_v1' => $uriResolverUtility->getTYPO3PidFromUri($action['name'])
-                ),
-                'idaction_url = ' . $action['idaction']
-            );
-            $piwikDatabaseService->updateRows(
-                array(
-                    'custom_var_k2' => 'targetPid',
-                    'custom_var_v2' => $uriResolverUtility->getTYPO3PidFromUri($action['name'])
-                ),
-                'idaction_url_ref = ' . $action['idaction']
-            );
+            $pid = $uriResolverUtility->getTYPO3PidFromUri($action['name']);
+            if (true) {
+                $alreadyUpdatedPid[$pid] = 'updated';
+                $piwikDatabaseService->updateRows(
+                    array(
+                        'custom_var_k1' => 'referrerPid',
+                        'custom_var_v1' => $pid
+                    ),
+                    'idaction_url = ' . $action['idaction']
+                );
+                $piwikDatabaseService->updateRows(
+                    array(
+                        'custom_var_k2' => 'targetPid',
+                        'custom_var_v2' => $pid
+                    ),
+                    'idaction_url_ref = ' . $action['idaction']
+                );
+            }
         }
+        DebuggerUtility::var_dump($alreadyUpdatedPid);
         return true;
     }
 }
