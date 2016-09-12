@@ -23,9 +23,11 @@ use TYPO3\CMS\Frontend\Page\PageRepository;
 class PageIdToTitleViewHelper extends AbstractViewHelper
 {
     /**
+     * Return page title
+     *
      * @param int $pageId
      *
-     * Return page title
+     * @return string
      */
     public function render($pageId)
     {

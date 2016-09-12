@@ -85,6 +85,8 @@ class UriResolverUtility
     }
     
     /**
+     * Returns the PID from the URI by either reverse realurl or from params
+     *
      * @param string $uri
      *
      * @return int|null

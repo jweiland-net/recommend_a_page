@@ -91,8 +91,8 @@ class LoadRecommendedPagesTask extends AbstractTask
         /** @var array $updateList List that holds already updated pages*/
         $updateList = array();
     
-        foreach ($pages as $key => $page)
-        {
+        // Go trough every page that piwik knows of
+        foreach ($pages as $key => $page) {
             $idaction = $page['idaction'];
             $name = $page['name'];
         
@@ -130,7 +130,7 @@ class LoadRecommendedPagesTask extends AbstractTask
      *
      * @param array $pages
      *
-     * @return bool|\mysqli_result|object MySQLi result object / DBAL object
+     * @return void
      */
     public function insertNewRecommendedPagesIntoDatabase($pages)
     {

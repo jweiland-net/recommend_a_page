@@ -62,7 +62,7 @@ class PiwikDatabaseService
     }
     
     /**
-     * Returns top x recommended pages grouped
+     * Returns configured count top clicked pages grouped
      *
      * @param int $pid
      *
@@ -76,7 +76,7 @@ class PiwikDatabaseService
             'idaction_url_ref = ' . $pid,
             'idaction_url_ref, idaction_url',
             'clicks',
-            $this->databaseConfiguration['countOfRecommendedPages']
+            $this->getDatabaseConfiguration()['countOfRecommendedPages']
         );
     }
     
@@ -89,10 +89,10 @@ class PiwikDatabaseService
     {
         /** @var DatabaseConnection $databaseConnection */
         $databaseConnection = GeneralUtility::makeInstance(DatabaseConnection::class);
-        $databaseConnection->setDatabaseHost($this->databaseConfiguration['piwikDatabaseHost']);
-        $databaseConnection->setDatabaseName($this->databaseConfiguration['piwikDatabaseName']);
-        $databaseConnection->setDatabaseUsername($this->databaseConfiguration['piwikDatabaseUser']);
-        $databaseConnection->setDatabasePassword($this->databaseConfiguration['piwikDatabasePassword']);
+        $databaseConnection->setDatabaseHost($this->getDatabaseConfiguration()['piwikDatabaseHost']);
+        $databaseConnection->setDatabaseName($this->getDatabaseConfiguration()['piwikDatabaseName']);
+        $databaseConnection->setDatabaseUsername($this->getDatabaseConfiguration()['piwikDatabaseUser']);
+        $databaseConnection->setDatabasePassword($this->getDatabaseConfiguration()['piwikDatabasePassword']);
         $this->databaseConnection = $databaseConnection;
         
         return $this->databaseConnection;
@@ -105,7 +105,7 @@ class PiwikDatabaseService
      */
     protected function getDatabaseConfiguration()
     {
-        return $this->databaseConfiguration =  unserialize(
+        return $this->databaseConfiguration = unserialize(
             $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['recommend_a_page']
         );
     }

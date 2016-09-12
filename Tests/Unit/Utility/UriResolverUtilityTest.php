@@ -27,8 +27,6 @@ class UriResolverUtilityTest extends TestCase
      */
     protected $subject = null;
     
-    protected $testUri = 'https://www.test.more.often/your/page.php?uid=10&l=2';
-    
     public function setUp() {
         $this->subject = new UriResolverUtility();
     }
@@ -73,7 +71,7 @@ class UriResolverUtilityTest extends TestCase
             'uid' => 10,
             'l' => 2
         );
-        $result = $this->subject->getGetParams($this->testUri);
+        $result = $this->subject->getGetParams('https://www.test.more.often/your/page.php?uid=10&l=2');
         $this->assertEquals($expectedArray, $result);
     }
     
@@ -90,7 +88,6 @@ class UriResolverUtilityTest extends TestCase
             )
         );
     }
-    
     
     public function getHttpHostProvider()
     {
