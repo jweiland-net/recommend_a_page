@@ -16,7 +16,6 @@ namespace JWeiland\RecommendAPage\Controller;
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * DisplayController

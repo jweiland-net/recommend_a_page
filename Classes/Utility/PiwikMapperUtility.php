@@ -36,6 +36,7 @@ class PiwikMapperUtility
         foreach ($pages as $key => $page) {
             $mappedPages[$page['idaction']] = $uriResolverUtility->getTYPO3PidFromUri($page['name']);
         }
+        
         return $mappedPages;
     }
 }
