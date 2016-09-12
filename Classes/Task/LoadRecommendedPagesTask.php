@@ -52,7 +52,7 @@ class LoadRecommendedPagesTask extends AbstractTask
             $name = $page['name'];
             
             $typo3Pid = $uriResolverUtility->getTYPO3PidFromUri($name);
-            if ($updateList[$idaction] && $idaction !== null) {
+            if (!$updateList[$idaction] && $idaction !== null) {
                 $updateList[$idaction] = $typo3Pid;
                 
                 /*
@@ -60,6 +60,8 @@ class LoadRecommendedPagesTask extends AbstractTask
                  * - Get count for this from configuration
                  */
                 $recommendedPages = $piwikDatabaseService->getTargetPids($idaction);
+    
+                DebuggerUtility::var_dump($recommendedPages);
                 foreach ($recommendedPages as $targetPage) {
                     $targetPid = $targetPage['targetPid'];
                     
