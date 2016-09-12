@@ -66,6 +66,24 @@ class UriResolverUtility
     }
     
     /**
+     * Returns http host
+     *
+     * @param string $uri
+     *
+     * @return string
+     */
+    public function getHttpHost($uri)
+    {
+        if (!strpos($uri, '://')) {
+            $uri = 'http://' . $uri;
+        }
+        
+        $host = parse_url($uri)['host'];
+        
+        return $host;
+    }
+    
+    /**
      * Extracts get params from an uri
      *
      * @param $uri
@@ -88,10 +106,14 @@ class UriResolverUtility
     /**
      * @param string $uri
      *
-     * @return int
+     * @return int|null
      */
     public function getTYPO3PidFromUri($uri)
     {
+        if ($this->getHttpHost($uri) != GeneralUtility::getIndpEnv('HTTP_HOST')) {
+            return null;
+        }
+        
         if (
             !empty($uri) &&
             ExtensionManagementUtility::isLoaded('realurl') &&
@@ -102,7 +124,7 @@ class UriResolverUtility
                 ConfigurationReader::class,
                 ConfigurationReader::MODE_DECODE
             );
-        
+            
             $rootPageId = (int)$realUrlConfiguration->get('pagePath/rootpage_id');
             
             /** @var UrlCacheEntry $convertedUrl */
@@ -111,11 +133,7 @@ class UriResolverUtility
                 $this->getSpeakingUrl($uri),
                 (int)GeneralUtility::_GET('L')
             );
-            DebuggerUtility::var_dump($convertedUrl);
-            if ($convertedUrl == null) {
-                DebuggerUtility::var_dump($uri, 'uri');
-                DebuggerUtility::var_dump($this->getSpeakingUrl($uri), 'speakingUrl');
-            }
+            
             $pid = $convertedUrl->getPageId();
         } else {
             $pid = $this->getGetParams($uri)['id'];
