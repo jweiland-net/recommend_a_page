@@ -19,8 +19,6 @@ use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
-use TYPO3\CMS\Fluid\ViewHelpers\DebugViewHelper;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -35,6 +33,7 @@ class LoadRecommendedPagesTask extends AbstractTask
      */
     public function execute()
     {
+        // Initialize
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         
@@ -48,10 +47,14 @@ class LoadRecommendedPagesTask extends AbstractTask
         
         $piwikToTypo3PidList = array();
         
+        // Do stuff
+        
+        // Get TYPO3 pids for all pages that are known to piwik
         foreach ($knownPiwikPageList as $key => $page) {
             $piwikToTypo3PidList[$page['idaction']] = $uriResolverUtility->getTYPO3PidFromUri($page['name']);
         }
         
+        /** @var array $updateList List that holds already updated pages*/
         $updateList = array();
         
         foreach ($knownPiwikPageList as $key => $page)
@@ -65,9 +68,8 @@ class LoadRecommendedPagesTask extends AbstractTask
                 $typo3Pid = $piwikToTypo3PidList[$idaction];
             }
             
+            // Piwik does not know if two uris point to the same pid so check for it
             if (!$updateList[$idaction] && $idaction !== null) {
-                $updateList[$idaction] = $typo3Pid;
-                
                 /*
                  * TODO:
                  * - Get count for this from configuration
@@ -77,7 +79,10 @@ class LoadRecommendedPagesTask extends AbstractTask
                 foreach ($recommendedPages as $targetPage) {
                     $targetPid = $piwikToTypo3PidList[$targetPage['targetPid']];
                     if ($targetPid != null) {
-                        $this->insertRecommendedPageIntoDatabase($typo3Pid, $targetPid);
+                        $updateList[$idaction] = array(
+                            'referrer_pid' =>  $typo3Pid,
+                            'target_pid' => $targetPid
+                        );
                     }
                 }
             }
@@ -89,19 +94,15 @@ class LoadRecommendedPagesTask extends AbstractTask
     /**
      * Insert recommended Pages into the database
      *
-     * @param int $referrerPid
-     * @param int $targetPid
+     * @param array $pages
      *
      * @return bool|\mysqli_result|object MySQLi result object / DBAL object
      */
-    protected function insertRecommendedPageIntoDatabase($referrerPid, $targetPid)
+    protected function insertRecommendedPagesIntoDatabase($pages)
     {
         return $this->getDatabaseConnection()->exec_INSERTquery(
             'tx_recommendapage_domain_model_recommendedpage',
-            array(
-                'referrer_pid' => $referrerPid,
-                'target_pid' => $targetPid
-            )
+            $pages
         );
     }
     
