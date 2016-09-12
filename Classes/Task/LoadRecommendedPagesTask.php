@@ -52,8 +52,6 @@ class LoadRecommendedPagesTask extends AbstractTask
             $piwikToTypo3PidList[$page['idaction']] = $uriResolverUtility->getTYPO3PidFromUri($page['name']);
         }
         
-        DebuggerUtility::var_dump($piwikToTypo3PidList);
-        
         $updateList = array();
         
         foreach ($knownPiwikPageList as $key => $page)
@@ -75,12 +73,11 @@ class LoadRecommendedPagesTask extends AbstractTask
                  * - Get count for this from configuration
                  */
                 $recommendedPages = $piwikDatabaseService->getTargetPids($idaction);
-                DebuggerUtility::var_dump($recommendedPages);
+                
                 foreach ($recommendedPages as $targetPage) {
                     $targetPid = $piwikToTypo3PidList[$targetPage['targetPid']];
-                    DebuggerUtility::var_dump(array($typo3Pid => $targetPid));
                     if ($targetPid != null) {
-                        $this->insertRecommendedPagesToDatabase($typo3Pid, $targetPid);
+                        $this->insertRecommendedPageIntoDatabase($typo3Pid, $targetPid);
                     }
                 }
             }
@@ -97,11 +94,10 @@ class LoadRecommendedPagesTask extends AbstractTask
      *
      * @return bool|\mysqli_result|object MySQLi result object / DBAL object
      */
-    protected function insertRecommendedPagesToDatabase($referrerPid, $targetPid)
+    protected function insertRecommendedPageIntoDatabase($referrerPid, $targetPid)
     {
-        return $this->getDatabaseConnection()->exec_INSERTmultipleRows(
+        return $this->getDatabaseConnection()->exec_INSERTquery(
             'tx_recommendapage_domain_model_recommendedpage',
-            array('referrer_pid', 'target_pid'),
             array(
                 'referrer_pid' => $referrerPid,
                 'target_pid' => $targetPid
