@@ -20,6 +20,7 @@ use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -104,8 +105,9 @@ class LoadRecommendedPagesTask extends AbstractTask
             }
         
             // Piwik does not know that two uris point to the same pid so check for it
-            if (!$updateList[$idaction] && $idaction !== null) {
+            if ($idaction !== null && !$updateList[$idaction]) {
                 $recommendedPages = $this->piwikDatabaseService->getTargetPids($idaction);
+                DebuggerUtility::var_dump($recommendedPages);
                 
                 $updateList[$idaction] = array();
                 
