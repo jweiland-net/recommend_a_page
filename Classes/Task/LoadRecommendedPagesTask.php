@@ -19,6 +19,7 @@ use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -70,6 +71,7 @@ class LoadRecommendedPagesTask extends AbstractTask
                         $targetPid = $updateList[$targetPid];
                     }
                     $this->insertRecommendedPagesToDatabase($typo3Pid, $targetPid);
+                    DebuggerUtility::var_dump(array($typo3Pid, $targetPid));
                 }
             }
         }
