@@ -1,10 +1,10 @@
 {
   "name": "jweiland/recommend-a-page",
   "type": "typo3-cms-extension",
-  "description": "Which pages do other visitors go to? Display them now!",
-  "version": "0.1.0",
+  "description": "Want to know what page other visitors are interested in? Display them now!",
+  "version": "1.4.5",
   "license": "GPL-2.0+",
-  "keywords": ["typo3", "TYPO3 CMS", "recommend-a-page"],
+  "keywords": ["typo3", "TYPO3 CMS", "recommend-a-page", "Recommend a page"],
   "homepage": "http://www.jweiland.net",
   "authors": [
     {
@@ -15,9 +15,11 @@
   ],
   "support": {
     "email": "projects@jweiland.net",
+    "issues": "https://bitbucket.org/shiryo/recommend_a_page/issues",
+    "source": "https://bitbucket.org/shiryo/recommend_a_page"
   },
   "require": {
-    "php": ">=5.6.0 <8.0",
+    "php": ">=5.6.10 <8.0",
     "typo3/cms-core": ">=6.2.14,<8.5"
   },
   "require-dev": {
