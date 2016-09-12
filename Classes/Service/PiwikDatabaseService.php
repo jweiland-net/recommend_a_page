@@ -73,7 +73,7 @@ class PiwikDatabaseService
      */
     public function getTargetPids($pid, $count = 3)
     {
-        $this->databaseConnection->exec_SELECTgetRows(
+        return $this->databaseConnection->exec_SELECTgetRows(
             'idaction_url as targetPid',
             'piwik_log_link_visit_action',
             'idaction_url_ref = ' . $pid,
