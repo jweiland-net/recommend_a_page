@@ -69,19 +69,14 @@ class PiwikDatabaseService
     /**
      * Returns all known actions ids and names
      *
-     * @param int $limit
-     *
      * @return array|NULL Array of rows, or NULL in case of SQL error
      */
-    public function getActionIdsAndUrls($limit)
+    public function getActionIdsAndUrls()
     {
         return $this->getDatabaseConnection()->exec_SELECTgetRows(
             'idaction, name',
             'piwik_log_action',
-            'type != 4',
-            '',
-            '',
-            $limit
+            'type != 4'
         );
     }
     

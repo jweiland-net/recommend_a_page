@@ -41,7 +41,7 @@ class PreparePiwikDatabaseTask extends AbstractTask
         /** @var PiwikDatabaseService $piwikDatabaseService */
         $piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
         
-        $piwikActions = $piwikDatabaseService->getActionIdsAndUrls(30);
+        $piwikActions = $piwikDatabaseService->getActionIdsAndUrls();
         
         /** @var UriResolverUtility $uriResolverUtility */
         $uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);

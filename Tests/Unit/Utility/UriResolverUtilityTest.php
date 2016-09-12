@@ -66,6 +66,19 @@ class UriResolverUtilityTest extends TestCase
     
     /**
      * @test
+     * @dataProvider getHttpHostProvider
+     *
+     * @param array $expected
+     * @param array $actual
+     */
+    public function getHttpHostWithStringAsStringWithHttpHost($expected, $actual)
+    {
+        $result = $this->subject->getHttpHost($actual);
+        $this->assertEquals($expected, $result);
+    }
+    
+    /**
+     * @test
      */
     public function getGetParamsWithStringAsArrayInExpectedValues()
     {
@@ -87,6 +100,21 @@ class UriResolverUtilityTest extends TestCase
             array(
                 'more/often/',
                 'https://w3.test.your.page/more/often?uid=10&l=2'
+            )
+        );
+    }
+    
+    
+    public function getHttpHostProvider()
+    {
+        return array(
+            array(
+                'www.test.your.page',
+                'http://www.test.your.page/'
+            ),
+            array(
+                'test.your.page',
+                'https//test.your.page/testindex.php?uid=213890'
             )
         );
     }
