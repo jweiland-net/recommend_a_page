@@ -85,6 +85,7 @@ class LoadRecommendedPagesTask extends AbstractTask
         /** @var PiwikMapperUtility $piwikMapper */
         $piwikMapper = GeneralUtility::makeInstance(PiwikMapperUtility::class);
     
+        /** @var array $mappedPages array(piwikPid => TYPO3pid) */
         $mappedPages = $piwikMapper->mapPiwikPidsToTYPO3Pids($pages);
         
         /** @var array $updateList List that holds already updated pages*/

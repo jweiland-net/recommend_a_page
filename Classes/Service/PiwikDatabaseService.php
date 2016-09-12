@@ -65,11 +65,10 @@ class PiwikDatabaseService
      * Returns top x recommended pages grouped
      *
      * @param int $pid
-     * @param int $count
      *
      * @return array
      */
-    public function getTargetPids($pid, $count = 3)
+    public function getTargetPids($pid)
     {
         return $this->databaseConnection->exec_SELECTgetRows(
             'idaction_url as targetPid',
@@ -77,7 +76,7 @@ class PiwikDatabaseService
             'idaction_url_ref = ' . $pid,
             'idaction_url_ref, idaction_url',
             'idlink_va DESC',
-            $count
+            $this->getDatabaseConfiguration()['countOfRecommendedPages']
         );
     }
     
