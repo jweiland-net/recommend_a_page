@@ -51,7 +51,10 @@ class LoadRecommendedPagesTask extends AbstractTask
     {
         $this->init();
         
-        $knownPiwikPageList = $this->piwikDatabaseService->getActionIdsAndUrls();
+        $knownPiwikPagesList = $this->piwikDatabaseService->getActionIdsAndUrls();
+        
+        $recommendedPages = $this->getRecommendPagesForEachPage($knownPiwikPagesList);
+        DebuggerUtility::var_dump($recommendedPages);
         
         return true;
     }
@@ -74,6 +77,8 @@ class LoadRecommendedPagesTask extends AbstractTask
      * Create an array that holds all recommended Pages for every page
      *
      * @param $pages
+     *
+     * @return array
      */
     protected function getRecommendPagesForEachPage($pages)
     {
@@ -115,7 +120,7 @@ class LoadRecommendedPagesTask extends AbstractTask
                 }
             }
         }
-        DebuggerUtility::var_dump($updateList);
+        
         return $updateList;
     }
     
