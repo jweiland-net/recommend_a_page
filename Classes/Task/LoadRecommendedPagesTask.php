@@ -45,6 +45,12 @@ class LoadRecommendedPagesTask extends AbstractTask
         
         $knownPiwikPageList = $piwikDatabaseService->getActionIdsAndUrls();
         
+        $piwikToTypo3PidList = array();
+        
+        foreach ($knownPiwikPageList as $key => $page) {
+            $piwikToTypo3PidList[$key] = $uriResolverUtility->getTYPO3PidFromUri($page['name']);
+        }
+        
         $updateList = array();
         
         foreach ($knownPiwikPageList as $key => $page)
@@ -63,15 +69,7 @@ class LoadRecommendedPagesTask extends AbstractTask
                 $recommendedPages = $piwikDatabaseService->getTargetPids($idaction);
                 
                 foreach ($recommendedPages as $targetPage) {
-                    $targetPid = $targetPage['targetPid'];
-                    
-                    if (!$updateList[$targetPid]) {
-                        $targetPid =  $uriResolverUtility->getTYPO3PidFromUri($name);
-                    } else {
-                        $targetPid = $updateList[$targetPid];
-                    }
-                    $this->insertRecommendedPagesToDatabase($typo3Pid, $targetPid);
-                    DebuggerUtility::var_dump(array($typo3Pid, $targetPid));
+                    $this->insertRecommendedPagesToDatabase($typo3Pid, $piwikToTypo3PidList[$targetPage['targetPid']]);
                 }
             }
         }
