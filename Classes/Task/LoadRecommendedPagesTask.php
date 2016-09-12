@@ -52,6 +52,8 @@ class LoadRecommendedPagesTask extends AbstractTask
             $piwikToTypo3PidList[$key] = $uriResolverUtility->getTYPO3PidFromUri($page['name']);
         }
         
+        DebuggerUtility::var_dump($piwikToTypo3PidList);
+        
         $updateList = array();
         
         foreach ($knownPiwikPageList as $key => $page)
