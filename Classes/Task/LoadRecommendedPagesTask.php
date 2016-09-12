@@ -112,6 +112,7 @@ class LoadRecommendedPagesTask extends AbstractTask
                 foreach ($recommendedPages as $targetPage) {
                     $targetPid = $mappedPages[$targetPage['targetPid']];
                     if ($targetPid != null) {
+                        $updateList[$idaction] = array();
                         array_push($updateList[$idaction], array(
                             'referrer_pid' =>  $typo3Pid,
                             'target_pid' => $targetPid
