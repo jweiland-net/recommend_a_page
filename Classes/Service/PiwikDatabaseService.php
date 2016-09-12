@@ -59,7 +59,7 @@ class PiwikDatabaseService
      */
     public function updateRows($fieldsValues, $where)
     {
-        $this->databaseConnection->UPDATEquery(
+        $this->databaseConnection->exec_UPDATEquery(
             'piwik_log_link_visit_action',
             $where,
             $fieldsValues
