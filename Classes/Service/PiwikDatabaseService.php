@@ -76,7 +76,7 @@ class PiwikDatabaseService
             'idaction_url_ref = ' . $pid,
             'idaction_url_ref, idaction_url',
             'idlink_va DESC',
-            $this->getDatabaseConfiguration()['countOfRecommendedPages']
+            $this->databaseConfiguration['countOfRecommendedPages']
         );
     }
     

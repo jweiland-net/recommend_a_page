@@ -105,10 +105,6 @@ class LoadRecommendedPagesTask extends AbstractTask
         
             // Piwik does not know that two uris point to the same pid so check for it
             if (!$updateList[$idaction] && $idaction !== null) {
-                /*
-                 * TODO:
-                 * - Get count for this from configuration
-                 */
                 $recommendedPages = $this->piwikDatabaseService->getTargetPids($idaction);
                 
                 $updateList[$idaction] = array();
