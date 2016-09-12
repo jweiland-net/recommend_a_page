@@ -69,7 +69,11 @@ class LoadRecommendedPagesTask extends AbstractTask
                 $recommendedPages = $piwikDatabaseService->getTargetPids($idaction);
                 
                 foreach ($recommendedPages as $targetPage) {
-                    $this->insertRecommendedPagesToDatabase($typo3Pid, $piwikToTypo3PidList[$targetPage['targetPid']]);
+                    $targetPid = $piwikToTypo3PidList[$targetPage['targetPid']];
+                    
+                    if (!empty($targetPid)) {
+                        $this->insertRecommendedPagesToDatabase($typo3Pid, $targetPid);
+                    }
                 }
             }
         }
