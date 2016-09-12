@@ -18,6 +18,7 @@ use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -62,6 +63,7 @@ class PreparePiwikDatabaseTask extends AbstractTask
                 'idaction_url_ref = ' . $action['idaction']
             );
         }
+        DebuggerUtility::var_dump($piwikActions);
         
         return true;
     }
