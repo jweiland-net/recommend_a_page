@@ -110,6 +110,8 @@ class UriResolverUtility
      */
     public function getTYPO3PidFromUri($uri)
     {
+        DebuggerUtility::var_dump($this->getHttpHost($uri));
+        DebuggerUtility::var_dump(GeneralUtility::getIndpEnv('HTTP_HOST'));
         if ($this->getHttpHost($uri) != GeneralUtility::getIndpEnv('HTTP_HOST')) {
             return null;
         }
