@@ -16,6 +16,7 @@ namespace JWeiland\RecommendAPage\Controller;
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * DisplayController
@@ -45,6 +46,7 @@ class DisplayController extends ActionController
     public function showAction()
     {
         $recommendations = $this->recommendedPageRepository->findAllByUid($GLOBALS['TSFE']->id);
+        DebuggerUtility::var_dump($recommendations);
         $this->view->assign('recommendations', $recommendations);
     }
 }
