@@ -18,7 +18,6 @@ use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -27,8 +26,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 class PreparePiwikDatabaseTask extends AbstractTask
 {
     /**
-     * TODO: Problem with real url because it only allows FE Environment
-     *
      * This is the main method that is called when a task is executed
      *
      * @return bool Returns TRUE on successful execution, FALSE on error

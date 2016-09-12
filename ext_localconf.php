@@ -14,16 +14,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][JWeiland\Recomme
         '/Resources/Private/Language/locallang.xlf:task.loadRecommendedPages.description',
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][JWeiland\RecommendAPage\Task\PreparePiwikDatabaseTask::class] = array(
-    'extension' => $_EXTKEY,
-    'title' => 'LLL:EXT:' .
-        $_EXTKEY .
-        '/Resources/Private/Language/locallang.xlf:task.preparePiwikDatabaseTask.title',
-    'description' => 'LLL:EXT:' .
-        $_EXTKEY .
-        '/Resources/Private/Language/locallang.xlf:task.preparePiwikDatabaseTask.description',
-);
-
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'JWeiland.' . $_EXTKEY,
     'recommendPages',

@@ -15,9 +15,10 @@ namespace JWeiland\RecommendAPage\Task;
  */
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
+use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -35,43 +36,42 @@ class LoadRecommendedPagesTask extends AbstractTask
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         
+        /** @var UriResolverUtility $uriResolverUtility */
+        $uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);
+        
         /** @var PiwikDatabaseService $piwikDatabaseService */
         $piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
         
-        $recommendedPages = $piwikDatabaseService->getPreparedRecommendedPages();
-        for ($i = 0; $i < count($recommendedPages); $i++) {
-            unset($recommendedPages[$i]['requests']);
-        }
-        if (!$this->insertRecommendedPagesToDatabase($this->getDatabaseConnection(), $recommendedPages)) {
-            return false;
+        $knownPiwikPageList = $piwikDatabaseService->getActionIdsAndUrls();
+        
+        $updateList = array();
+        
+        foreach ($knownPiwikPageList as $key => $page)
+        {
+            $idaction = $page['idaction'];
+            $name = $page['name'];
+            
+            $typo3Pid = $uriResolverUtility->getTYPO3PidFromUri($name);
+            if ($updateList[$idaction] && $idaction !== null) {
+                $updateList[$idaction] = $typo3Pid;
+                
+                /*
+                 * TODO:
+                 * - Get count for this from configuration
+                 */
+                $recommendedPages = $piwikDatabaseService->getTargetPids($idaction);
+                foreach ($recommendedPages as $targetPage) {
+                    $targetPid = $targetPage['targetPid'];
+                    
+                    if (!$updateList[$targetPid]) {
+                        $updateList[$idaction] = $uriResolverUtility->getTYPO3PidFromUri($name);
+                    }
+                }
+            }
         }
         
+        DebuggerUtility::var_dump($updateList);
+        
         return true;
-    }
-    
-    /**
-     * Insert recommended Pages into the database
-     *
-     * @param DatabaseConnection $database
-     * @param array $recommendedPages
-     * @return bool|\mysqli_result|object MySQLi result object / DBAL object
-     */
-    protected function insertRecommendedPagesToDatabase($database, $recommendedPages)
-    {
-        return $database->exec_INSERTmultipleRows(
-            'tx_recommendapage_domain_model_recommendedpage',
-            array('referrer_pid', 'target_pid'),
-            $recommendedPages
-        );
-    }
-    
-    /**
-     * Returns the TYPO3 database connection from globals
-     *
-     * @return DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

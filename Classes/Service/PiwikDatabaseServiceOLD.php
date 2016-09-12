@@ -22,7 +22,7 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 /**
  * PiwikDatabaseService
  */
-class PiwikDatabaseService
+class PiwikDatabaseServiceOLD
 {
     /**
      * databaseConnection
@@ -50,6 +50,23 @@ class PiwikDatabaseService
     }
     
     /**
+     * Sets the custom vars in piwik
+     *
+     * @param array $fieldsValues
+     * @param string $where
+     *
+     * @return void
+     */
+    public function updateRows($fieldsValues, $where)
+    {
+        $this->databaseConnection->exec_UPDATEquery(
+            'piwik_log_link_visit_action',
+            $where,
+            $fieldsValues
+        );
+    }
+    
+    /**
      * Returns all known actions ids and names
      *
      * @return array|NULL Array of rows, or NULL in case of SQL error
@@ -64,22 +81,62 @@ class PiwikDatabaseService
     }
     
     /**
-     * Returns top x recommended pages grouped
+     * Returns the pid piwik defined for it self
      *
-     * @param int $pid
-     * @param int $count
+     * @param string $uri
      *
-     * @return array
+     * @return int
      */
-    public function getTargetPids($pid, $count = 3)
+    public function getPiwikPageIdByUri($uri)
     {
-        $this->databaseConnection->exec_SELECTgetRows(
-            'idaction_url as targetPid',
+        /** @var UriResolverUtility $uriResolver */
+        $uriResolver = GeneralUtility::makeInstance(UriResolverUtility::class);
+        
+        $uri = $uriResolver->prepareUriForPiwik($uri);
+    
+        $result = $this->databaseConnection->exec_SELECTgetSingleRow('idaction', 'piwik_log_action',
+            'name = \'' . $uri . '\'');
+    
+        return $result['idaction'];
+    }
+    
+    /**
+     * Returns the TYPO3 pid from the last visits that is defined as custom var k1 in piwik
+     *
+     * @param int $piwikId
+     *
+     * @return array|NULL Array of rows, or NULL in case of SQL error
+     */
+    public function getRecommendedPagesByCurrentPiwikPid($piwikId)
+    {
+        $limit = $this->databaseConfiguration['countOfRecommendedPages'];
+        
+        return $this->databaseConnection->exec_SELECTgetRows(
+            'custom_var_v1 AS pid, piwik_log_action.name AS title',
+            'piwik_log_link_visit_action 
+            INNER JOIN piwik_log_action ON piwik_log_action.idaction = piwik_log_link_visit_action.idaction_name',
+            'custom_var_k1 = "typo3pid" 
+            AND idaction_url_ref = ' . $piwikId .
+            ' AND NOT idaction_url = idaction_url_ref',
+            'custom_var_v1 DESC',
+            null,
+            $limit
+        );
+    }
+    
+    /**
+     * Returns an array of all recommended pages already grouped and sorted
+     *
+     * @return array|NULL Array of rows, or NULL in case of SQL error
+     */
+    public function getPreparedRecommendedPages()
+    {
+        return $this->getDatabaseConnection()->exec_SELECTgetRows(
+            'custom_var_v1 AS referrerPid, custom_var_v2 AS targetPid, COUNT(*) AS requests',
             'piwik_log_link_visit_action',
-            'idaction_url_ref = ' . $pid,
+            'custom_var_v1 != "" AND custom_var_v2 != ""',
             'idaction_url_ref, idaction_url',
-            'idlink_va DESC',
-            $count
+            'idaction_url_ref, requests DESC'
         );
     }
     
@@ -108,8 +165,6 @@ class PiwikDatabaseService
      */
     protected function getDatabaseConfiguration()
     {
-        return $this->databaseConfiguration =  unserialize(
-            $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['recommend_a_page']
-        );
+        return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['recommend_a_page']);
     }
 }
