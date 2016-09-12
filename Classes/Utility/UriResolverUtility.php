@@ -112,6 +112,10 @@ class UriResolverUtility
                 (int)GeneralUtility::_GET('L')
             );
             DebuggerUtility::var_dump($convertedUrl);
+            if ($convertedUrl == null) {
+                DebuggerUtility::var_dump($uri, 'uri');
+                DebuggerUtility::var_dump($this->getSpeakingUrl($uri), 'speakingUrl');
+            }
             $pid = $convertedUrl->getPageId();
         } else {
             $pid = $this->getGetParams($uri)['id'];
