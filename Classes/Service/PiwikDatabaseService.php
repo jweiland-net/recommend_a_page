@@ -17,6 +17,7 @@ namespace JWeiland\RecommendAPage\Service;
 use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * PiwikDatabaseService
@@ -58,11 +59,12 @@ class PiwikDatabaseService
      */
     public function updateRows($fieldsValues, $where)
     {
-        $this->databaseConnection->UPDATEquery(
+        $lol = $this->databaseConnection->UPDATEquery(
             'piwik_log_link_visit_action',
             $where,
             $fieldsValues
         );
+        DebuggerUtility::var_dump($lol);
     }
     
     /**

@@ -48,8 +48,6 @@ class PreparePiwikDatabaseTask extends AbstractTask
         
         foreach ($piwikActions as $action)
         {
-            DebuggerUtility::var_dump($action);
-            DebuggerUtility::var_dump($uriResolverUtility->getTYPO3PidFromUri($action['name']));
             $piwikDatabaseService->updateRows(
                 array(
                     'custom_var_k1' => 'referrerPid',
