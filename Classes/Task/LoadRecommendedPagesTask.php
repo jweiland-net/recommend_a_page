@@ -61,7 +61,12 @@ class LoadRecommendedPagesTask extends AbstractTask
             $idaction = $page['idaction'];
             $name = $page['name'];
             
-            $typo3Pid = $uriResolverUtility->getTYPO3PidFromUri($name);
+            if (!$piwikToTypo3PidList[$idaction]) {
+                $typo3Pid = $uriResolverUtility->getTYPO3PidFromUri($name);
+            } else {
+                $typo3Pid = $piwikToTypo3PidList[$idaction];
+            }
+            
             if (!$updateList[$idaction] && $idaction !== null) {
                 $updateList[$idaction] = $typo3Pid;
                 
