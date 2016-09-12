@@ -59,12 +59,11 @@ class PiwikDatabaseService
      */
     public function updateRows($fieldsValues, $where)
     {
-        $lol = $this->databaseConnection->UPDATEquery(
+        $this->databaseConnection->UPDATEquery(
             'piwik_log_link_visit_action',
             $where,
             $fieldsValues
         );
-        DebuggerUtility::var_dump($lol);
     }
     
     /**

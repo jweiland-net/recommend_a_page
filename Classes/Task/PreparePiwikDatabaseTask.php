@@ -51,7 +51,7 @@ class PreparePiwikDatabaseTask extends AbstractTask
         foreach ($piwikActions as $action)
         {
             $pid = $uriResolverUtility->getTYPO3PidFromUri($action['name']);
-            if (true) {
+            if (true && $pid !== null) {
                 $alreadyUpdatedPid[$pid] = 'updated';
                 $piwikDatabaseService->updateRows(
                     array(
@@ -69,7 +69,6 @@ class PreparePiwikDatabaseTask extends AbstractTask
                 );
             }
         }
-        DebuggerUtility::var_dump($alreadyUpdatedPid);
         return true;
     }
 }
