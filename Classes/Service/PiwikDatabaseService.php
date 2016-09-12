@@ -71,11 +71,11 @@ class PiwikDatabaseService
     public function getTargetPids($pid)
     {
         return $this->databaseConnection->exec_SELECTgetRows(
-            'idaction_url as targetPid',
+            'idaction_url as targetPid, COUNT(*) AS clicks',
             'piwik_log_link_visit_action',
             'idaction_url_ref = ' . $pid,
             'idaction_url_ref, idaction_url',
-            'idlink_va DESC',
+            'clicks',
             $this->databaseConfiguration['countOfRecommendedPages']
         );
     }

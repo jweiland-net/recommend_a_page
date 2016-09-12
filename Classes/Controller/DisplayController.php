@@ -14,7 +14,6 @@ namespace JWeiland\RecommendAPage\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -22,13 +21,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class DisplayController extends ActionController
 {
-    /**
-     * piwikDatabaseService
-     *
-     * @var PiwikDatabaseService
-     */
-    protected $piwikDatabaseService = null;
-    
     /**
      * recommendedPageRepository
      *
