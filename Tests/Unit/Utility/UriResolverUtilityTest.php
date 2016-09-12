@@ -40,19 +40,6 @@ class UriResolverUtilityTest extends TestCase
     
     /**
      * @test
-     * @dataProvider prepareUriForPiwikProvider
-     *
-     * @param array $expected
-     * @param array $actual
-     */
-    public function prepareUriForPiwikWithStringAsStringWithOnlyHostAndPath($expected, $actual)
-    {
-        $result = $this->subject->prepareUriForPiwik($actual);
-        $this->assertEquals($expected, $result);
-    }
-    
-    /**
-     * @test
      * @dataProvider getSpeakingUrlProvider
      *
      * @param array $expected
@@ -114,21 +101,7 @@ class UriResolverUtilityTest extends TestCase
             ),
             array(
                 'test.your.page',
-                'https//test.your.page/testindex.php?uid=213890'
-            )
-        );
-    }
-    
-    public function prepareUriForPiwikProvider()
-    {
-        return array(
-            array(
-                'test.your.page/',
-                'http://www.test.your.page/'
-            ),
-            array(
-                'test.your.page/more/often',
-                'https://w3.test.your.page/more/often?uid=10&l=2'
+                'https://test.your.page/testindex.php?uid=213890'
             )
         );
     }

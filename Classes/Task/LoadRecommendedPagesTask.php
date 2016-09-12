@@ -15,10 +15,12 @@ namespace JWeiland\RecommendAPage\Task;
  */
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
+use JWeiland\RecommendAPage\Utility\PiwikMapperUtility;
 use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -27,57 +29,83 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 class LoadRecommendedPagesTask extends AbstractTask
 {
     /**
+     * UriResolverUtility
+     *
+     * @var UriResolverUtility $uriResolverUtility
+     */
+    protected $uriResolverUtility;
+    
+    /**
+     * PiwikDatabaseService
+     *
+     * @var PiwikDatabaseService $piwikDatabaseService
+     */
+    protected $piwikDatabaseService;
+    
+    /**
      * This is the main method that is called when a task is executed
      *
      * @return bool Returns TRUE on successful execution, FALSE on error
      */
     public function execute()
     {
-        // Initialize
+        $this->init();
+        
+        $knownPiwikPageList = $this->piwikDatabaseService->getActionIdsAndUrls();
+        
+        return true;
+    }
+    
+    /**
+     * Init obj and resolve dependencies
+     *
+     * @return void
+     */
+    protected function init()
+    {
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         
-        /** @var UriResolverUtility $uriResolverUtility */
-        $uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);
-        
-        /** @var PiwikDatabaseService $piwikDatabaseService */
-        $piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
-        
-        $knownPiwikPageList = $piwikDatabaseService->getActionIdsAndUrls();
-        
-        $piwikToTypo3PidList = array();
-        
-        // Do stuff
-        
-        // Get TYPO3 pids for all pages that are known to piwik
-        foreach ($knownPiwikPageList as $key => $page) {
-            $piwikToTypo3PidList[$page['idaction']] = $uriResolverUtility->getTYPO3PidFromUri($page['name']);
-        }
+        $this->uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);
+        $this->piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
+    }
+    
+    /**
+     * Create an array that holds all recommended Pages for every page
+     *
+     * @param $pages
+     */
+    protected function getRecommendPagesForEachPage($pages)
+    {
+        /** @var PiwikMapperUtility $piwikMapper */
+        $piwikMapper = GeneralUtility::makeInstance(PiwikMapperUtility::class);
+    
+        $mappedPages = $piwikMapper->mapPiwikPidsToTYPO3Pids($pages);
         
         /** @var array $updateList List that holds already updated pages*/
         $updateList = array();
-        
-        foreach ($knownPiwikPageList as $key => $page)
+    
+        foreach ($pages as $key => $page)
         {
             $idaction = $page['idaction'];
             $name = $page['name'];
-            
-            if (!$piwikToTypo3PidList[$idaction]) {
-                $typo3Pid = $uriResolverUtility->getTYPO3PidFromUri($name);
+        
+            if (!$mappedPages[$idaction]) {
+                $typo3Pid = $this->uriResolverUtility->getTYPO3PidFromUri($name);
             } else {
-                $typo3Pid = $piwikToTypo3PidList[$idaction];
+                $typo3Pid = $mappedPages[$idaction];
             }
-            
+        
             // Piwik does not know if two uris point to the same pid so check for it
             if (!$updateList[$idaction] && $idaction !== null) {
                 /*
                  * TODO:
                  * - Get count for this from configuration
                  */
-                $recommendedPages = $piwikDatabaseService->getTargetPids($idaction);
-                
+                $recommendedPages = $this->piwikDatabaseService->getTargetPids($idaction);
+            
                 foreach ($recommendedPages as $targetPage) {
-                    $targetPid = $piwikToTypo3PidList[$targetPage['targetPid']];
+                    $targetPid = $mappedPages[$targetPage['targetPid']];
                     if ($targetPid != null) {
                         $updateList[$idaction] = array(
                             'referrer_pid' =>  $typo3Pid,
@@ -87,8 +115,8 @@ class LoadRecommendedPagesTask extends AbstractTask
                 }
             }
         }
-        
-        return true;
+        DebuggerUtility::var_dump($updateList);
+        return $updateList;
     }
     
     /**

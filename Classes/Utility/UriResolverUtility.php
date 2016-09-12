@@ -28,23 +28,6 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 class UriResolverUtility
 {
     /**
-     * Returns the current page id that was given by piwik
-     *
-     * @param string $uri
-     *
-     * @return string
-     */
-    public function prepareUriForPiwik($uri)
-    {
-        $uriArray = parse_url($uri);
-        $uriHostArray = array();
-    
-        preg_match('~([w0-9]+\.)?(?P<domain>[[:alnum:]\-\.]+)~', $uriArray['host'], $uriHostArray);
-    
-        return $uriHostArray['domain'] . $uriArray['path'];
-    }
-    
-    /**
      * Returns realurl like speaking url
      *
      * @param string $uri
