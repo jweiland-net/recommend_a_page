@@ -108,7 +108,8 @@ class LoadRecommendedPagesTask extends AbstractTask
                  * - Get count for this from configuration
                  */
                 $recommendedPages = $this->piwikDatabaseService->getTargetPids($idaction);
-            
+                DebuggerUtility::var_dump($recommendedPages);
+                
                 foreach ($recommendedPages as $targetPage) {
                     $targetPid = $mappedPages[$targetPage['targetPid']];
                     if ($targetPid != null) {
