@@ -68,11 +68,11 @@ class LoadRecommendedPagesTask extends AbstractTask
                  * - Get count for this from configuration
                  */
                 $recommendedPages = $piwikDatabaseService->getTargetPids($idaction);
-                
+                DebuggerUtility::var_dump($recommendedPages);
                 foreach ($recommendedPages as $targetPage) {
                     $targetPid = $piwikToTypo3PidList[$targetPage['targetPid']];
                     DebuggerUtility::var_dump(array($typo3Pid => $targetPid));
-                    if (!empty($targetPid)) {
+                    if ($targetPid != null) {
                         $this->insertRecommendedPagesToDatabase($typo3Pid, $targetPid);
                     }
                 }
