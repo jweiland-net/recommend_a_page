@@ -16,9 +16,9 @@ namespace JWeiland\RecommendAPage\Task;
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use JWeiland\RecommendAPage\Utility\UriResolverUtility;
+use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -60,20 +60,50 @@ class LoadRecommendedPagesTask extends AbstractTask
                  * - Get count for this from configuration
                  */
                 $recommendedPages = $piwikDatabaseService->getTargetPids($idaction);
-    
-                DebuggerUtility::var_dump($recommendedPages);
+                
                 foreach ($recommendedPages as $targetPage) {
                     $targetPid = $targetPage['targetPid'];
                     
                     if (!$updateList[$targetPid]) {
-                        $updateList[$idaction] = $uriResolverUtility->getTYPO3PidFromUri($name);
+                        $targetPid =  $uriResolverUtility->getTYPO3PidFromUri($name);
+                    } else {
+                        $targetPid = $updateList[$targetPid];
                     }
+                    $this->insertRecommendedPagesToDatabase($typo3Pid, $targetPid);
                 }
             }
         }
         
-        DebuggerUtility::var_dump($updateList);
-        
         return true;
+    }
+    
+    /**
+     * Insert recommended Pages into the database
+     *
+     * @param int $referrerPid
+     * @param int $targetPid
+     *
+     * @return bool|\mysqli_result|object MySQLi result object / DBAL object
+     */
+    protected function insertRecommendedPagesToDatabase($referrerPid, $targetPid)
+    {
+        return $this->getDatabaseConnection()->exec_INSERTmultipleRows(
+            'tx_recommendapage_domain_model_recommendedpage',
+            array('referrer_pid', 'target_pid'),
+            array(
+                'referrer_pid' => $referrerPid,
+                'target_pid' => $targetPid
+            )
+        );
+    }
+    
+    /**
+     * Returns the TYPO3 database connection from globals
+     *
+     * @return DatabaseConnection
+     */
+    protected function getDatabaseConnection()
+    {
+        return $GLOBALS['TYPO3_DB'];
     }
 }
