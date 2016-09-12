@@ -16,9 +16,6 @@ namespace JWeiland\RecommendAPage\Controller;
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Fluid\ViewHelpers\Be\PagePathViewHelper;
-use TYPO3\CMS\Frontend\Controller\PageInformationController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 /**
  * DisplayController

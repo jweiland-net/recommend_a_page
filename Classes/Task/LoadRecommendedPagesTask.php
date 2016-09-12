@@ -20,7 +20,6 @@ use JWeiland\RecommendAPage\Utility\UriResolverUtility;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -54,7 +53,8 @@ class LoadRecommendedPagesTask extends AbstractTask
         $knownPiwikPagesList = $this->piwikDatabaseService->getActionIdsAndUrls();
         
         $recommendedPages = $this->getRecommendPagesForEachPage($knownPiwikPagesList);
-        DebuggerUtility::var_dump($recommendedPages);
+        
+        $this->insertNewRecommendedPagesIntoDatabase($recommendedPages);
         
         return true;
     }
@@ -95,22 +95,24 @@ class LoadRecommendedPagesTask extends AbstractTask
             $idaction = $page['idaction'];
             $name = $page['name'];
         
+            // Get TYPO3 pid even if it not found in piwik
             if (!$mappedPages[$idaction]) {
                 $typo3Pid = $this->uriResolverUtility->getTYPO3PidFromUri($name);
             } else {
                 $typo3Pid = $mappedPages[$idaction];
             }
         
-            // Piwik does not know if two uris point to the same pid so check for it
+            // Piwik does not know that two uris point to the same pid so check for it
             if (!$updateList[$idaction] && $idaction !== null) {
                 /*
                  * TODO:
                  * - Get count for this from configuration
                  */
                 $recommendedPages = $this->piwikDatabaseService->getTargetPids($idaction);
-                DebuggerUtility::var_dump($recommendedPages);
                 
                 $updateList[$idaction] = array();
+                
+                // Get Recommended pages
                 foreach ($recommendedPages as $targetPage) {
                     $targetPid = $mappedPages[$targetPage['targetPid']];
                     if ($targetPid != null) {
@@ -133,12 +135,19 @@ class LoadRecommendedPagesTask extends AbstractTask
      *
      * @return bool|\mysqli_result|object MySQLi result object / DBAL object
      */
-    protected function insertRecommendedPagesIntoDatabase($pages)
+    public function insertNewRecommendedPagesIntoDatabase($pages)
     {
-        return $this->getDatabaseConnection()->exec_INSERTquery(
-            'tx_recommendapage_domain_model_recommendedpage',
-            $pages
-        );
+        $this->getDatabaseConnection()->exec_TRUNCATEquery('tx_recommendapage_domain_model_recommendedpage');
+        
+        foreach ($pages as $recommendedPages) {
+            $this->getDatabaseConnection()->exec_INSERTmultipleRows(
+                'tx_recommendapage_domain_model_recommendedpage',
+                array(
+                    'referrer_pid', 'target_pid'
+                ),
+                $recommendedPages
+            );
+        }
     }
     
     /**
