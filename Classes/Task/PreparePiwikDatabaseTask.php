@@ -63,8 +63,6 @@ class PreparePiwikDatabaseTask extends AbstractTask
                 'idaction_url_ref = ' . $action['idaction']
             );
         }
-        DebuggerUtility::var_dump($piwikActions);
-        
         return true;
     }
 }

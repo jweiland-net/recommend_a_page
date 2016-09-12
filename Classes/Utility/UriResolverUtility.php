@@ -104,13 +104,14 @@ class UriResolverUtility
             );
         
             $rootPageId = (int)$realUrlConfiguration->get('pagePath/rootpage_id');
-            DebuggerUtility::var_dump(CacheFactory::getCache());
+            
             /** @var UrlCacheEntry $convertedUrl */
             $convertedUrl = CacheFactory::getCache()->getUrlFromCacheBySpeakingUrl(
                 $rootPageId,
                 $this->getSpeakingUrl($uri),
                 (int)GeneralUtility::_GET('L')
             );
+            DebuggerUtility::var_dump($convertedUrl);
             $pid = $convertedUrl->getPageId();
         } else {
             $pid = $this->getGetParams($uri)['id'];
