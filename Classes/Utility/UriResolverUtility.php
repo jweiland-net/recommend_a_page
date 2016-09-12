@@ -20,6 +20,7 @@ use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
 use DmitryDulepov\Realurl\Utility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * UriResolverUtility
@@ -103,7 +104,7 @@ class UriResolverUtility
             );
         
             $rootPageId = (int)$realUrlConfiguration->get('pagePath/rootpage_id');
-            
+            DebuggerUtility::var_dump(CacheFactory::getCache());
             /** @var UrlCacheEntry $convertedUrl */
             $convertedUrl = CacheFactory::getCache()->getUrlFromCacheBySpeakingUrl(
                 $rootPageId,
