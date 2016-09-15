@@ -38,7 +38,7 @@ class UriResolverUtilityTest extends TestCase
     
     /**
      * @test
-     * @dataProvider getSpeakingUrlProvider
+     * @dataProvider getSpeakingUrlDataProvider
      *
      * @param array $expected
      * @param array $actual
@@ -51,7 +51,7 @@ class UriResolverUtilityTest extends TestCase
     
     /**
      * @test
-     * @dataProvider getHttpHostProvider
+     * @dataProvider getHttpHostDataProvider
      *
      * @param array $expected
      * @param array $actual
@@ -75,7 +75,12 @@ class UriResolverUtilityTest extends TestCase
         $this->assertEquals($expectedArray, $result);
     }
     
-    public function getSpeakingUrlProvider()
+    /**
+     * Provides data for getSpeakingUrl()
+     *
+     * @return array
+     */
+    public function getSpeakingUrlDataProvider()
     {
         return array(
             array(
@@ -89,7 +94,12 @@ class UriResolverUtilityTest extends TestCase
         );
     }
     
-    public function getHttpHostProvider()
+    /**
+     * Provides data for getHttpHost()
+     *
+     * @return array
+     */
+    public function getHttpHostDataProvider()
     {
         return array(
             array(
