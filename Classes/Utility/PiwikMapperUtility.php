@@ -30,6 +30,7 @@ class PiwikMapperUtility
      */
     public function mapPiwikPidsToTYPO3Pids($pages)
     {
+        /** @var UriResolverUtility $uriResolverUtility */
         $uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);
         
         $mappedPages = array();
