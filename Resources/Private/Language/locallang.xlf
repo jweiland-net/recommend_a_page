@@ -4,6 +4,9 @@
 				product-name="recommend_a_page">
 		<header/>
 		<body>
+			<trans-unit id="plugin.recommendapage.title">
+				<source>Recommended Pages</source>
+			</trans-unit>
 			<trans-unit id="task.loadRecommendedPages.title">
 				<source>Load recommended pages</source>
 			</trans-unit>
