@@ -33,6 +33,12 @@ class PageIdToTitleViewHelper extends AbstractViewHelper
     {
         /** @var PageRepository $pageRepository */
         $pageRepository = $this->objectManager->get(PageRepository::class);
-        return $pageRepository->getPage($pageId)['title'];
+        $pageTitle = $pageRepository->getPage($pageId)['title'];
+        
+        if (empty($pageTitle)) {
+            $pageTitle = '';
+        }
+        
+        return $pageTitle;
     }
 }
