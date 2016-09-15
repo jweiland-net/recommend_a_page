@@ -2,13 +2,15 @@
 
 <f:layout name="Default"/>
 <f:section name="main">
-	<ul>
-		<f:for each="{recommendations}" as="recommendation">
-			<li>
-				<f:link.page pageUid="{recommendation.targetPid}">
-					<vh:PageIdToTitle pageId="{recommendation.targetPid}"/>
-				</f:link.page>
-			</li>
-		</f:for>
-	</ul>
+	<f:if condition="{recommendations}">
+		<ul>
+			<f:for each="{recommendations}" as="recommendation">
+				<li>
+					<f:link.page pageUid="{recommendation.targetPid}">
+						<vh:PageIdToTitle pageId="{recommendation.targetPid}"/>
+					</f:link.page>
+				</li>
+			</f:for>
+		</ul>
+	</f:if>
 </f:section>
