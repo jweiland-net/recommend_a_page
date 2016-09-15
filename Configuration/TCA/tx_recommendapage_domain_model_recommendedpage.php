@@ -15,10 +15,8 @@
 
 return array(
     'ctrl' => array(
-        'ctrl' => array(
-            'label' => '',
-            'hideTable' => 1,
-        ),
+        'label' => '',
+        'hideTable' => 1,
     ),
     'columns' => array(
         'referrer_pid' => array(
