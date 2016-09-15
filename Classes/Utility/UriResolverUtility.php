@@ -74,14 +74,8 @@ class UriResolverUtility
     public function getGetParams($uri)
     {
         $query = parse_url($uri)['query'];
-        $query = explode('&', $query);
-        $query = array_filter($query);
-        $params = array();
-        foreach ($query as $key => $value) {
-            list($k, $v) = explode('=', $value);
-            $params[$k] = $v;
-        }
-        return $params;
+        parse_str($query, $result);
+        return $result;
     }
     
     /**
