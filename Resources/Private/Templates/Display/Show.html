@@ -1,4 +1,4 @@
-{namespace vh=JWeiland\RecommendAPage\ViewHelper}
+{namespace rap=JWeiland\RecommendAPage\ViewHelpers}
 
 <f:layout name="Default"/>
 <f:section name="main">
@@ -7,7 +7,7 @@
 			<f:for each="{recommendations}" as="recommendation">
 				<li>
 					<f:link.page pageUid="{recommendation.targetPid}">
-						<vh:PageIdToTitle pageId="{recommendation.targetPid}"/>
+						<rap:pageIdToTitle pageId="{recommendation.targetPid}"/>
 					</f:link.page>
 				</li>
 			</f:for>
