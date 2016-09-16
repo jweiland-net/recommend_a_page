@@ -29,7 +29,7 @@ class LoadRecommendedPagesTask extends AbstractTask
     /**
      * PiwikDatabaseService
      *
-     * @var PiwikDatabaseService $piwikDatabaseService
+     * @var PiwikDatabaseService
      */
     protected $piwikDatabaseService;
     
