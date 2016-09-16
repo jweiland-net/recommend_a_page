@@ -78,7 +78,7 @@ class LoadRecommendedPagesTask extends AbstractTask
         /** @var array $mappedPages array(piwikPid => TYPO3pid) */
         $mappedPages = $piwikMapper->mapPiwikPidsToTYPO3Pids($pages);
         
-        /** @var array $updateList List that holds already updated pages*/
+        /** @var array $updateList This list makes sure that uris that point to the same page aren't looped twice */
         $updateList = array();
     
         // Go trough every page that piwik knows of
@@ -92,8 +92,7 @@ class LoadRecommendedPagesTask extends AbstractTask
                 $recommendedPages = $this->piwikDatabaseService->getTargetPids($idAction);
                 
                 $updateList[$typo3Pid] = array();
-                
-                // Get Recommended pages
+
                 foreach ($recommendedPages as $targetPage) {
                     $updateList[$typo3Pid][] = $this->prepareRecommendedPageForDatabase(
                         $typo3Pid,
