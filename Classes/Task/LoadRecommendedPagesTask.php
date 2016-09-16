@@ -110,6 +110,7 @@ class LoadRecommendedPagesTask extends AbstractTask
      *
      * @param int $typo3Pid
      * @param int $targetPid
+     *
      * @return array Returns an array with column name as array key
      */
     public function prepareRecommendedPageForDatabase($typo3Pid, $targetPid)
