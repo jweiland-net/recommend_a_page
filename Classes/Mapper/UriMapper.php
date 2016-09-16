@@ -1,5 +1,5 @@
 <?php
-namespace JWeiland\RecommendAPage\Utility;
+namespace JWeiland\RecommendAPage\Mapper;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -21,9 +21,9 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * UriResolverUtility
+ * UriMapper
  */
-class UriResolverUtility
+class UriMapper
 {
     /**
      * Returns realurl like speaking url

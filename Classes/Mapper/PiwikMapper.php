@@ -1,5 +1,5 @@
 <?php
-namespace JWeiland\RecommendAPage\Utility;
+namespace JWeiland\RecommendAPage\Mapper;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -17,9 +17,9 @@ namespace JWeiland\RecommendAPage\Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * PiwikMapperUtility
+ * PiwikMapper
  */
-class PiwikMapperUtility
+class PiwikMapper
 {
     /**
      * Maps piwik pids to typo3 pids
@@ -30,8 +30,8 @@ class PiwikMapperUtility
      */
     public function mapPiwikPidsToTYPO3Pids($pages)
     {
-        /** @var UriResolverUtility $uriResolverUtility */
-        $uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);
+        /** @var UriMapper $uriResolverUtility */
+        $uriResolverUtility = GeneralUtility::makeInstance(UriMapper::class);
         
         $mappedPages = array();
         foreach ($pages as $key => $page) {

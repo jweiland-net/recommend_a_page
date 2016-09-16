@@ -15,8 +15,8 @@ namespace JWeiland\RecommendAPage\Task;
  */
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
-use JWeiland\RecommendAPage\Utility\PiwikMapperUtility;
-use JWeiland\RecommendAPage\Utility\UriResolverUtility;
+use JWeiland\RecommendAPage\Mapper\PiwikMapper;
+use JWeiland\RecommendAPage\Mapper\UriMapper;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -30,9 +30,9 @@ class LoadRecommendedPagesTask extends AbstractTask
     /**
      * UriResolverUtility
      *
-     * @var UriResolverUtility $uriResolverUtility
+     * @var UriMapper $uriResolverUtility
      */
-    protected $uriResolverUtility;
+    protected $uriMapper;
     
     /**
      * PiwikDatabaseService
@@ -69,7 +69,7 @@ class LoadRecommendedPagesTask extends AbstractTask
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         
-        $this->uriResolverUtility = GeneralUtility::makeInstance(UriResolverUtility::class);
+        $this->uriMapper = GeneralUtility::makeInstance(UriMapper::class);
         $this->piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
     }
     
@@ -82,8 +82,8 @@ class LoadRecommendedPagesTask extends AbstractTask
      */
     protected function getRecommendPagesForEachPage($pages)
     {
-        /** @var PiwikMapperUtility $piwikMapper */
-        $piwikMapper = GeneralUtility::makeInstance(PiwikMapperUtility::class);
+        /** @var PiwikMapper $piwikMapper */
+        $piwikMapper = GeneralUtility::makeInstance(PiwikMapper::class);
     
         /** @var array $mappedPages array(piwikPid => TYPO3pid) */
         $mappedPages = $piwikMapper->mapPiwikPidsToTYPO3Pids($pages);
@@ -130,14 +130,19 @@ class LoadRecommendedPagesTask extends AbstractTask
     {
         $this->getDatabaseConnection()->exec_TRUNCATEquery('tx_recommendapage_domain_model_recommendedpage');
         
+        $offset = 0;
+        $nextOffset = 300;
+        
         foreach ($pages as $recommendedPages) {
+            $pagesToInsert = array_slice($recommendedPages, $offset, $nextOffset);
             $this->getDatabaseConnection()->exec_INSERTmultipleRows(
                 'tx_recommendapage_domain_model_recommendedpage',
                 array(
                     'referrer_pid', 'target_pid'
                 ),
-                $recommendedPages
+                $pagesToInsert
             );
+            $offset += $nextOffset;
         }
     }
     
