@@ -50,17 +50,23 @@ class PiwikDatabaseService
     /**
      * Returns all known actions ids and names
      *
-     * @return array|NULL Array of rows, or NULL in case of SQL error
+     * @return array Array of rows, or empty array in case of SQL error
      */
     public function getActionIdsAndUrls()
     {
-        return $this->getDatabaseConnection()->exec_SELECTgetRows(
+        $result = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'idaction, name',
             'piwik_log_action',
             'type != 4 AND name LIKE \'%' .
             $this->databaseConnection->escapeStrForLike(GeneralUtility::getIndpEnv('HTTP_HOST'), 'piwik_log_action') .
             '%\''
         );
+        
+        if ($result === null) {
+            $result = array();
+        }
+        
+        return $result;
     }
     
     /**
