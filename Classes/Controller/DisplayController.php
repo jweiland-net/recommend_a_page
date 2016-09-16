@@ -25,7 +25,7 @@ class DisplayController extends ActionController
     /**
      * recommendedPageRepository
      *
-     * @var \JWeiland\RecommendAPage\Domain\Repository\RecommendedPageRepository
+     * @var RecommendedPageRepository
      */
     protected $recommendedPageRepository = null;
     
