@@ -94,14 +94,8 @@ class LoadRecommendedPagesTask extends AbstractTask
         // Go trough every page that piwik knows of
         foreach ($pages as $key => $page) {
             $idaction = $page['idaction'];
-            $name = $page['name'];
-        
-            // Get TYPO3 pid even if it not found in piwik
-            if (!$mappedPages[$idaction]) {
-                $typo3Pid = $this->uriResolverUtility->getTYPO3PidFromUri($name);
-            } else {
-                $typo3Pid = $mappedPages[$idaction];
-            }
+
+            $typo3Pid = $mappedPages[$idaction];
         
             // Piwik does not know that two uris point to the same pid so check for it
             if ($idaction !== null && !$updateList[$typo3Pid]) {
