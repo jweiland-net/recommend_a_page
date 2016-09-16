@@ -1,5 +1,5 @@
 #
-# Table structure for table 'tx_rookieinternshipconnector_domain_model_application'
+# Table structure for table 'tx_recommendapage_domain_model_recommendedpage'
 #
 CREATE TABLE tx_recommendapage_domain_model_recommendedpage (
 	uid int(11) NOT NULL auto_increment,
