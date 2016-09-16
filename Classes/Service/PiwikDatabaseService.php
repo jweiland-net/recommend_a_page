@@ -91,6 +91,10 @@ class PiwikDatabaseService
      */
     protected function getDatabaseConnection()
     {
+        if (!empty($this->databaseConnection)) {
+            return $this->databaseConnection;
+        }
+        
         /** @var DatabaseConnection $databaseConnection */
         $databaseConnection = GeneralUtility::makeInstance(DatabaseConnection::class);
         $databaseConnection->setDatabaseHost($this->getDatabaseConfiguration()['piwikDatabaseHost']);
