@@ -30,7 +30,11 @@ class DisplayController extends ActionController
     protected $recommendedPageRepository = null;
     
     /**
+     * Injects the RecommendedPageRepository
+     *
      * @param RecommendedPageRepository $recommendedPageRepository
+     *
+     * @return void
      */
     public function injectRecommendedPageRepository(RecommendedPageRepository $recommendedPageRepository)
     {
