@@ -14,6 +14,7 @@ namespace JWeiland\RecommendAPage\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
+use JWeiland\RecommendAPage\Domain\Repository\RecommendedPageRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -25,9 +26,16 @@ class DisplayController extends ActionController
      * recommendedPageRepository
      *
      * @var \JWeiland\RecommendAPage\Domain\Repository\RecommendedPageRepository
-     * @inject
      */
     protected $recommendedPageRepository = null;
+    
+    /**
+     * @param RecommendedPageRepository $recommendedPageRepository
+     */
+    public function injectRecommendedPageRepository(RecommendedPageRepository $recommendedPageRepository)
+    {
+        $this->recommendedPageRepository = $recommendedPageRepository;
+    }
     
     /**
      * Displays the recommended pages

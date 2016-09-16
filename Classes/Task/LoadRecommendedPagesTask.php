@@ -16,7 +16,6 @@ namespace JWeiland\RecommendAPage\Task;
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use JWeiland\RecommendAPage\Mapper\PiwikMapper;
-use JWeiland\RecommendAPage\Mapper\UriMapper;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -84,13 +83,13 @@ class LoadRecommendedPagesTask extends AbstractTask
     
         // Go trough every page that piwik knows of
         foreach ($pages as $key => $page) {
-            $idaction = $page['idaction'];
+            $idAction = $page['idaction'];
 
-            $typo3Pid = $mappedPages[$idaction];
+            $typo3Pid = $mappedPages[$idAction];
         
             // Piwik does not know that two uris point to the same pid so check for it
-            if ($idaction !== null && !$updateList[$typo3Pid]) {
-                $recommendedPages = $this->piwikDatabaseService->getTargetPids($idaction);
+            if ($idAction !== null && !$updateList[$typo3Pid]) {
+                $recommendedPages = $this->piwikDatabaseService->getTargetPids($idAction);
                 
                 $updateList[$typo3Pid] = array();
                 
@@ -98,10 +97,10 @@ class LoadRecommendedPagesTask extends AbstractTask
                 foreach ($recommendedPages as $targetPage) {
                     $targetPid = $mappedPages[$targetPage['targetPid']];
                     if ($targetPid != null) {
-                        array_push($updateList[$typo3Pid], array(
+                        $updateList[$typo3Pid][] = array(
                             'referrer_pid' =>  $typo3Pid,
                             'target_pid' => $targetPid
-                        ));
+                        );
                     }
                 }
             }
