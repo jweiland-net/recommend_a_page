@@ -95,8 +95,10 @@ class LoadRecommendedPagesTask extends AbstractTask
                 
                 // Get Recommended pages
                 foreach ($recommendedPages as $targetPage) {
-                    $targetPid = $mappedPages[$targetPage['targetPid']];
-                    $updateList[$typo3Pid][] = $this->prepareRecommendedPageForDatabase($typo3Pid, $targetPid);
+                    $updateList[$typo3Pid][] = $this->prepareRecommendedPageForDatabase(
+                        $typo3Pid,
+                        $mappedPages[$targetPage['targetPid']]
+                    );
                 }
             }
         }
