@@ -70,6 +70,8 @@ class PiwikDatabaseService
      */
     public function getTargetPids($pid)
     {
+        $pid = $this->databaseConnection->fullQuoteStr($pid, 'piwik_log_link_visit_action');
+        
         return $this->databaseConnection->exec_SELECTgetRows(
             'idaction_url as targetPid, COUNT(*) AS clicks',
             'piwik_log_link_visit_action',
