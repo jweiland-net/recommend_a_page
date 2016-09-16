@@ -1,17 +1,17 @@
-# cat=basic/enable; type=string; label=Url of your piwik installation make sure it has no starting nor trailing slashes. It looks like: sub.domain.tld;
+# cat=basic/enable; type=string; label=Url of your piwik installation: Make sure it has no starting nor trailing slashes. It should look like: sub.domain.tld;
 piwikUrl =
 
-# cat=basic/enable; type=string; label=Database Host of your piwik Database;
+# cat=basic/enable; type=string; label=Piwik database host: Enter your piwik database host address here;
 piwikDatabaseHost =
 
-# cat=basic/enable; type=string; label=User of your piwik database;
+# cat=basic/enable; type=string; label=Piwik database user: Enter your piwik database username here;
 piwikDatabaseUser =
 
-# cat=basic/enable; type=string; label=Password for the database user;
+# cat=basic/enable; type=string; label=Piwik database password: Enter your piwik database password here;
 piwikDatabasePassword =
 
-# cat=basic/enable; type=string; label=Name of the piwik database;
+# cat=basic/enable; type=string; label=Piwik database name: Enter your piwik database name here;
 piwikDatabaseName =
 
-# cat=basic/enable; type=string; label=Defines how many pages should be recommended;
+# cat=basic/enable; type=string; label=Recommended pages to display: Specify how many pages you want to be recommended;
 countOfRecommendedPages = 3
