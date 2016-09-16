@@ -28,13 +28,6 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
 class LoadRecommendedPagesTask extends AbstractTask
 {
     /**
-     * UriResolverUtility
-     *
-     * @var UriMapper $uriResolverUtility
-     */
-    protected $uriMapper;
-    
-    /**
      * PiwikDatabaseService
      *
      * @var PiwikDatabaseService $piwikDatabaseService
@@ -68,8 +61,6 @@ class LoadRecommendedPagesTask extends AbstractTask
     {
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        
-        $this->uriMapper = GeneralUtility::makeInstance(UriMapper::class);
         $this->piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
     }
     
