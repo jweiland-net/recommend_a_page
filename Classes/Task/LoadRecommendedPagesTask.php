@@ -130,14 +130,19 @@ class LoadRecommendedPagesTask extends AbstractTask
     {
         $this->getDatabaseConnection()->exec_TRUNCATEquery('tx_recommendapage_domain_model_recommendedpage');
         
+        $offset = 0;
+        $nextOffset = 300;
+        
         foreach ($pages as $recommendedPages) {
+            $pagesToInsert = array_splice($recommendedPages, $offset, $nextOffset);
             $this->getDatabaseConnection()->exec_INSERTmultipleRows(
                 'tx_recommendapage_domain_model_recommendedpage',
                 array(
                     'referrer_pid', 'target_pid'
                 ),
-                $recommendedPages
+                $pagesToInsert
             );
+            $offset += $nextOffset;
         }
     }
     
