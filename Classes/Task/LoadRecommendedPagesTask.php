@@ -66,7 +66,7 @@ class LoadRecommendedPagesTask extends AbstractTask
     /**
      * Create an array that holds all recommended Pages for every page
      *
-     * @param $pages
+     * @param array $pages
      *
      * @return array
      */
