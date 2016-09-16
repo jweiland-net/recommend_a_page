@@ -42,9 +42,9 @@ class LoadRecommendedPagesTask extends AbstractTask
     {
         $this->init();
         
-        $knownPiwikPagesList = $this->piwikDatabaseService->getActionIdsAndUrls();
+        $knownPiwikPageList = $this->piwikDatabaseService->getActionIdsAndUrls();
         
-        $recommendedPages = $this->getRecommendPagesForEachPage($knownPiwikPagesList);
+        $recommendedPages = $this->getRecommendPagesForEachKnownPiwikPage($knownPiwikPageList);
         
         $this->insertNewRecommendedPagesIntoDatabase($recommendedPages);
         
@@ -70,11 +70,11 @@ class LoadRecommendedPagesTask extends AbstractTask
      *
      * @return array
      */
-    protected function getRecommendPagesForEachPage($pages)
+    protected function getRecommendPagesForEachKnownPiwikPage($pages)
     {
         /** @var PiwikMapper $piwikMapper */
         $piwikMapper = GeneralUtility::makeInstance(PiwikMapper::class);
-    
+
         /** @var array $mappedPages array(piwikPid => TYPO3pid) */
         $mappedPages = $piwikMapper->mapPiwikPidsToTYPO3Pids($pages);
         
@@ -96,17 +96,27 @@ class LoadRecommendedPagesTask extends AbstractTask
                 // Get Recommended pages
                 foreach ($recommendedPages as $targetPage) {
                     $targetPid = $mappedPages[$targetPage['targetPid']];
-                    if ($targetPid != null) {
-                        $updateList[$typo3Pid][] = array(
-                            'referrer_pid' =>  $typo3Pid,
-                            'target_pid' => $targetPid
-                        );
-                    }
+                    $updateList[$typo3Pid][] = $this->prepareRecommendedPageForDatabase($typo3Pid, $targetPid);
                 }
             }
         }
         
         return $updateList;
+    }
+
+    /**
+     * Add typo3Pid and targetPid to an assoc array for database insert
+     *
+     * @param int $typo3Pid
+     * @param int $targetPid
+     * @return array Returns an array with column name as array key
+     */
+    public function prepareRecommendedPageForDatabase($typo3Pid, $targetPid)
+    {
+        return array(
+            'referrer_pid' =>  $typo3Pid,
+            'target_pid' => $targetPid
+        );
     }
     
     /**
