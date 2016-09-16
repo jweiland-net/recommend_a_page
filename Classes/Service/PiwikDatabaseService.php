@@ -80,7 +80,7 @@ class PiwikDatabaseService
     {
         $pid = $this->databaseConnection->fullQuoteStr($pid, 'piwik_log_link_visit_action');
         
-        return $this->databaseConnection->exec_SELECTgetRows(
+        $result = $this->databaseConnection->exec_SELECTgetRows(
             'idaction_url as targetPid, COUNT(*) AS clicks',
             'piwik_log_link_visit_action',
             'idaction_url_ref = ' . $pid,
@@ -88,6 +88,12 @@ class PiwikDatabaseService
             'clicks',
             $this->getDatabaseConfiguration()['countOfRecommendedPages']
         );
+        
+        if ($result === null) {
+            $result = array();
+        }
+        
+        return $result;
     }
     
     /**
