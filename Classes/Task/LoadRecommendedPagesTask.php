@@ -82,19 +82,19 @@ class LoadRecommendedPagesTask extends AbstractTask
         /** @var array $updateList This list makes sure that uris that point to the same page aren't looped twice */
         $updateList = array();
     
+        DebuggerUtility::var_dump($pages);
         // Go trough every page that piwik knows of
         foreach ($pages as $key => $page) {
             $idAction = $page['idaction'];
 
             $typo3Pid = $mappedPages[$idAction];
-        
+            
             // Piwik does not know that two uris point to the same pid so check for it
             if ($idAction !== null && !$updateList[$typo3Pid]) {
                 $recommendedPages = $this->piwikDatabaseService->getTargetPids($idAction);
                 
                 $updateList[$typo3Pid] = array();
-
-                DebuggerUtility::var_dump($recommendedPages);
+                
                 foreach ($recommendedPages as $targetPage) {
                     $updateList[$typo3Pid][] = $this->prepareRecommendedPageForDatabase(
                         $typo3Pid,
