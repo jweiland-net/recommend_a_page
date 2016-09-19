@@ -15,8 +15,8 @@
   ],
   "support": {
     "email": "projects@jweiland.net",
-    "issues": "https://bitbucket.org/shiryo/recommend_a_page/issues",
-    "source": "https://bitbucket.org/shiryo/recommend_a_page"
+    "issues": "https://github.com/jweiland-net/recommend_a_page/issues",
+    "source": "https://github.com/jweiland-net/recommend_a_page/recommend_a_page"
   },
   "require": {
     "php": ">=5.6.10 <8.0",
