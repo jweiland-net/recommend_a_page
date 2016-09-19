@@ -16,7 +16,7 @@
   "support": {
     "email": "projects@jweiland.net",
     "issues": "https://github.com/jweiland-net/recommend_a_page/issues",
-    "source": "https://github.com/jweiland-net/recommend_a_page/recommend_a_page"
+    "source": "https://github.com/jweiland-net/recommend_a_page"
   },
   "require": {
     "php": ">=5.6.10 <8.0",
