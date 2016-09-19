@@ -1,6 +1,6 @@
 <?php
 $EM_CONF[$_EXTKEY] = array(
-    'title' => 'Recommend users pages others use to go',
+    'title' => 'Recommend a Page',
     'description' => 'Recommend pages using PIWIK Statistics',
     'category' => '',
     'author' => 'Markus Kugler',
