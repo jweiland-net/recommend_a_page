@@ -16,6 +16,7 @@ namespace JWeiland\RecommendAPage\Service;
 
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * PiwikDatabaseService
@@ -64,6 +65,8 @@ class PiwikDatabaseService
                 'piwik_log_action'
             )
         );
+        
+        DebuggerUtility::var_dump($this->databaseConnection->debug_lastBuiltQuery);
         
         if ($result === null) {
             $result = array();
