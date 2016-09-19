@@ -57,13 +57,14 @@ class PiwikDatabaseService
         $result = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'idaction, name',
             'piwik_log_action',
-            'type != 4 AND name LIKE %' .
+            'type != 4 AND name LIKE' .
             $this->databaseConnection->fullQuoteStr(
+                '%' .
                 $this->databaseConnection->escapeStrForLike(
                     GeneralUtility::getIndpEnv('HTTP_HOST'),
-                'piwik_log_action'),
-            'piwik_log_action') .
-            '%'
+                'piwik_log_action') .
+                '%',
+            'piwik_log_action')
         );
         
         if ($result === null) {
