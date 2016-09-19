@@ -16,7 +16,6 @@ namespace JWeiland\RecommendAPage\Service;
 
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * PiwikDatabaseService
@@ -58,15 +57,14 @@ class PiwikDatabaseService
         $result = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'idaction, name',
             'piwik_log_action',
+            'type != 4 AND name LIKE %' .
             $this->databaseConnection->fullQuoteStr(
-                'type != 4 AND name LIKE %' .
-                $this->databaseConnection->escapeStrForLike(GeneralUtility::getIndpEnv('HTTP_HOST'), 'piwik_log_action') .
-                '%',
-                'piwik_log_action'
-            )
+                $this->databaseConnection->escapeStrForLike(
+                    GeneralUtility::getIndpEnv('HTTP_HOST'),
+                'piwik_log_action'),
+            'piwik_log_action') .
+            '%'
         );
-        
-        DebuggerUtility::var_dump($this->databaseConnection->debug_lastBuiltQuery);
         
         if ($result === null) {
             $result = array();

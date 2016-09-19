@@ -19,7 +19,6 @@ use JWeiland\RecommendAPage\Mapper\PiwikMapper;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -82,7 +81,6 @@ class LoadRecommendedPagesTask extends AbstractTask
         /** @var array $updateList This list makes sure that uris that point to the same page aren't looped twice */
         $updateList = array();
     
-        DebuggerUtility::var_dump($pages);
         // Go trough every page that piwik knows of
         foreach ($pages as $key => $page) {
             $idAction = $page['idaction'];
