@@ -36,26 +36,6 @@ class RecommendedPage extends AbstractEntity
     protected $targetPid;
     
     /**
-     * Set referrerPid
-     *
-     * @param int $referrerPid
-     */
-    public function setReferrerPid($referrerPid)
-    {
-        $this->referrerPid = (int)$referrerPid;
-    }
-    
-    /**
-     * Set targetPid
-     *
-     * @param int $targetPid
-     */
-    public function setTargetPid($targetPid)
-    {
-        $this->targetPid = (int)$targetPid;
-    }
-    
-    /**
      * Return referrerPid
      *
      * @return int
@@ -66,6 +46,16 @@ class RecommendedPage extends AbstractEntity
     }
     
     /**
+     * Set referrerPid
+     *
+     * @param int $referrerPid
+     */
+    public function setReferrerPid($referrerPid)
+    {
+        $this->referrerPid = (int)$referrerPid;
+    }
+    
+    /**
      * Return targetPid
      *
      * @return int
@@ -73,5 +63,15 @@ class RecommendedPage extends AbstractEntity
     public function getTargetPid()
     {
         return $this->targetPid;
+    }
+    
+    /**
+     * Set targetPid
+     *
+     * @param int $targetPid
+     */
+    public function setTargetPid($targetPid)
+    {
+        $this->targetPid = (int)$targetPid;
     }
 }
