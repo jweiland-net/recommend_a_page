@@ -44,7 +44,7 @@ class DisplayController extends ActionController
      */
     public function showAction()
     {
-        $recommendations = $this->recommendedPageRepository->findByReferrerPid($GLOBALS['TSFE']->id);
+        $recommendations = $this->recommendedPageRepository->findByReferrerPid((int)$GLOBALS['TSFE']->id);
         $this->view->assign('recommendations', $recommendations);
     }
 }
