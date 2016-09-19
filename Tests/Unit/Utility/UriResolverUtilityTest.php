@@ -14,7 +14,7 @@ namespace JWeiland\RecommendAPage\Tests\Unit\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use JWeiland\RecommendAPage\Utility\UriResolverUtility;
+use JWeiland\RecommendAPage\Mapper\UriMapper;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,12 +23,12 @@ use PHPUnit\Framework\TestCase;
 class UriResolverUtilityTest extends TestCase
 {
     /**
-     * @var UriResolverUtility
+     * @var UriMapper
      */
     protected $subject = null;
     
     public function setUp() {
-        $this->subject = new UriResolverUtility();
+        $this->subject = new UriMapper();
     }
     
     public function tearDown()
