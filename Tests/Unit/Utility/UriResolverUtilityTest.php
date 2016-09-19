@@ -90,6 +90,10 @@ class UriResolverUtilityTest extends TestCase
             array(
                 'more/often/',
                 'https://w3.test.your.page/more/often?uid=10&l=2'
+            ),
+            array(
+                'more/often/test.html',
+                'https://w3.test.your.page/more/often/test.html'
             )
         );
     }

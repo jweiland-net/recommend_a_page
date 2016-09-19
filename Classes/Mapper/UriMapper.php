@@ -41,7 +41,9 @@ class UriMapper
         $path = parse_url($uri)['path'];
         if ($path !== '/') {
             $path = trim($path, '/');
-            $path .= '/';
+            if (!strpos($path, '.')) {
+                $path .= '/';
+            }
         }
         return $path;
     }
