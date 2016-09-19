@@ -1,6 +1,3 @@
-# cat=basic/enable; type=string; label=Url of your piwik installation: Make sure it has no starting nor trailing slashes. It should look like: sub.domain.tld;
-piwikUrl =
-
 # cat=basic/enable; type=string; label=Piwik database host: Enter your piwik database host address here;
 piwikDatabaseHost =
 
