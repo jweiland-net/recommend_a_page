@@ -25,12 +25,16 @@ class DisplayController extends ActionController
     /**
      * recommendedPageRepository
      *
-     * @var \JWeiland\RecommendAPage\Domain\Repository\RecommendedPageRepository
+     * @var RecommendedPageRepository
      */
     protected $recommendedPageRepository = null;
     
     /**
+     * Injects the RecommendedPageRepository
+     *
      * @param RecommendedPageRepository $recommendedPageRepository
+     *
+     * @return void
      */
     public function injectRecommendedPageRepository(RecommendedPageRepository $recommendedPageRepository)
     {
