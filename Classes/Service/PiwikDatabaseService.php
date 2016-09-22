@@ -56,20 +56,36 @@ class PiwikDatabaseService
     {
         $host = $this->getHost();
         
+        $constraints = array();
+        
+        $constraints[] = 'name LIKE ' .
+            $this->databaseConnection->fullQuoteStr(
+                $this->databaseConnection->escapeStrForLike(
+                    $host, 'piwik_log_action'
+                ) . '%', 'piwik_log_action'
+            );
+    
+        $constraints[] = 'name LIKE ' .
+            $this->databaseConnection->fullQuoteStr(
+                'http://' .
+                $this->databaseConnection->escapeStrForLike(
+                    $host, 'piwik_log_action'
+                ) . '%', 'piwik_log_action'
+            );
+    
+        $constraints[] = 'name LIKE ' .
+            $this->databaseConnection->fullQuoteStr(
+                'https://' .
+                $this->databaseConnection->escapeStrForLike(
+                    $host, 'piwik_log_action'
+                ) . '%', 'piwik_log_action'
+            );
+        
         $result = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'idaction, name',
             'piwik_log_action',
-            $this->databaseConnection->fullQuoteStr(
-                'type != 4 AND name LIKE \'' .
-                $this->databaseConnection->escapeStrForLike(
-                    $host,
-                'piwik_log_action') .
-                '%\' OR name LIKE \'http%://' .
-                $this->databaseConnection->escapeStrForLike(
-                    $host,
-                    'piwik_log_action') .
-                '%\'',
-            'piwik_log_action')
+            'type != 4 AND ' .
+            implode(' OR ', $constraints)
         );
         
         if ($result === null) {

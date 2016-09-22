@@ -19,7 +19,6 @@ use JWeiland\RecommendAPage\Mapper\PiwikMapper;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
@@ -41,7 +40,6 @@ class LoadRecommendedPagesTask extends AbstractTask
      */
     public function execute()
     {
-        DebuggerUtility::var_dump(GeneralUtility::getIndpEnv('HTTP_HOST'));
         $this->init();
         
         $knownPiwikPageList = $this->piwikDatabaseService->getActionIdsAndUrls();
