@@ -88,7 +88,7 @@ class LoadRecommendedPagesTask extends AbstractTask
             $typo3Pid = $mappedPages[$idAction];
             
             // Piwik does not know that two uris point to the same pid so check for it
-            if ($idAction !== null && !$updateList[$typo3Pid]) {
+            if ($typo3Pid !== null && !$updateList[$typo3Pid]) {
                 $recommendedPages = $this->piwikDatabaseService->getTargetPids($idAction);
                 
                 $updateList[$typo3Pid] = array();
