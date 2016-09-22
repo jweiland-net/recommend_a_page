@@ -111,7 +111,7 @@ class PiwikDatabaseService
             'piwik_log_link_visit_action',
             'idaction_url_ref = ' . $pid . ' AND idaction_url <> ' . $pid,
             'idaction_url_ref, idaction_url',
-            'clicks',
+            'clicks DESC',
             $this->getDatabaseConfiguration()['countOfRecommendedPages']
         );
         
