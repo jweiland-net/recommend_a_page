@@ -54,16 +54,21 @@ class PiwikDatabaseService
      */
     public function getActionIdsAndUrls()
     {
+        $host = $this->getHost();
+        
         $result = $this->getDatabaseConnection()->exec_SELECTgetRows(
             'idaction, name',
             'piwik_log_action',
-            'type != 4 AND name LIKE' .
             $this->databaseConnection->fullQuoteStr(
-                '%' .
+                'type != 4 AND name LIKE \'' .
                 $this->databaseConnection->escapeStrForLike(
-                    GeneralUtility::getIndpEnv('HTTP_HOST'),
+                    $host,
                 'piwik_log_action') .
-                '%',
+                '%\' OR name LIKE \'http%://' .
+                $this->databaseConnection->escapeStrForLike(
+                    $host,
+                    'piwik_log_action') .
+                '%\'',
             'piwik_log_action')
         );
         
@@ -133,5 +138,15 @@ class PiwikDatabaseService
         return $this->databaseConfiguration = unserialize(
             $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['recommend_a_page']
         );
+    }
+    
+    /**
+     * Returns host from IndpEnv
+     *
+     * @return string
+     */
+    protected function getHost()
+    {
+        return GeneralUtility::getIndpEnv('HTTP_HOST');
     }
 }

@@ -16,6 +16,7 @@ namespace JWeiland\RecommendAPage\Controller;
 
 use JWeiland\RecommendAPage\Domain\Repository\RecommendedPageRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * DisplayController
