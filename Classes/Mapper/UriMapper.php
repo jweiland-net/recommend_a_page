@@ -113,6 +113,10 @@ class UriMapper
                 (int)GeneralUtility::_GET('L')
             );
             
+            if ($convertedUrl === null) {
+                return null;
+            }
+            
             $pid = $convertedUrl->getPageId();
         } else {
             $pid = $this->getGetParams($uri)['id'];
