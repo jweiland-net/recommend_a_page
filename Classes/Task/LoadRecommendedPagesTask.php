@@ -80,7 +80,7 @@ class LoadRecommendedPagesTask extends AbstractTask
         
         /** @var array $updateList This list makes sure that uris that point to the same page aren't looped twice */
         $updateList = array();
-    
+        
         // Go trough every page that piwik knows of
         foreach ($pages as $key => $page) {
             $idAction = $page['idaction'];
@@ -89,20 +89,51 @@ class LoadRecommendedPagesTask extends AbstractTask
             
             // Piwik does not know that two uris point to the same pid so check for it
             if ($typo3Pid !== null && !$updateList[$typo3Pid]) {
-                $recommendedPages = $this->piwikDatabaseService->getTargetPids($idAction);
+                $piwikRecommendedPages = $this->piwikDatabaseService->getTargetIdActions($idAction);
                 
+                $recommendedPages = $this->resolveRecommendedPages($piwikRecommendedPages, $mappedPages, $typo3Pid);
                 $updateList[$typo3Pid] = array();
                 
-                foreach ($recommendedPages as $targetPage) {
+                foreach ($recommendedPages as $targetPid => $clicks) {
                     $updateList[$typo3Pid][] = $this->prepareRecommendedPageForDatabase(
                         $typo3Pid,
-                        $mappedPages[$targetPage['targetPid']]
+                        $targetPid
                     );
                 }
             }
         }
         
         return $updateList;
+    }
+    
+    /**
+     * Resolves idActions to pids according to mapping and returns count configured
+     *
+     * @param array $piwikRecommendedPages
+     * @param array $mapping
+     * @param int $referrerTypo3Pid
+     *
+     * @return array returns empty array if pages cannot be resolved
+     */
+    protected function resolveRecommendedPages($piwikRecommendedPages, $mapping, $referrerTypo3Pid)
+    {
+        $recommendedPages = array();
+        $maxRecommendedPages = $this->getRecommendedPagesCount();
+        
+        for ($i = 0; $i < count($piwikRecommendedPages) && count($recommendedPages) < $maxRecommendedPages; $i++) {
+            $recommendedPage = $piwikRecommendedPages[$i];
+            $recommendedPageTypo3Pid = $mapping[$recommendedPage['targetPid']];
+            
+            if (
+                $recommendedPageTypo3Pid != null &&
+                $recommendedPageTypo3Pid != $referrerTypo3Pid &&
+                !$recommendedPages[$recommendedPageTypo3Pid]
+            ) {
+                $recommendedPages[$recommendedPageTypo3Pid] = $recommendedPage['clicks'];
+            }
+        }
+        
+        return $recommendedPages;
     }
 
     /**
@@ -151,5 +182,15 @@ class LoadRecommendedPagesTask extends AbstractTask
     protected function getDatabaseConnection()
     {
         return $GLOBALS['TYPO3_DB'];
+    }
+    
+    /**
+     * Returns count of recommended pages to display
+     *
+     * @return int
+     */
+    protected function getRecommendedPagesCount()
+    {
+        return $this->piwikDatabaseService->getDatabaseConfiguration()['countOfRecommendedPages'];
     }
 }

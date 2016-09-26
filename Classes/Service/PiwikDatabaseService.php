@@ -96,23 +96,22 @@ class PiwikDatabaseService
     }
     
     /**
-     * Returns configured count top clicked pages grouped
+     * Returns all pages that were visited from idAction
      *
-     * @param int $pid
+     * @param int $idAction
      *
      * @return array
      */
-    public function getTargetPids($pid)
+    public function getTargetIdActions($idAction)
     {
-        $pid = $this->databaseConnection->fullQuoteStr($pid, 'piwik_log_link_visit_action');
+        $idAction = $this->databaseConnection->fullQuoteStr($idAction, 'piwik_log_link_visit_action');
         
         $result = $this->databaseConnection->exec_SELECTgetRows(
             'idaction_url as targetPid, COUNT(*) AS clicks',
             'piwik_log_link_visit_action',
-            'idaction_url_ref = ' . $pid . ' AND idaction_url <> ' . $pid,
+            'idaction_url_ref = ' . $idAction . ' AND idaction_url <> ' . $idAction,
             'idaction_url_ref, idaction_url',
-            'clicks DESC',
-            $this->getDatabaseConfiguration()['countOfRecommendedPages']
+            'clicks DESC'
         );
         
         if ($result === null) {
@@ -149,7 +148,7 @@ class PiwikDatabaseService
      *
      * @return array
      */
-    protected function getDatabaseConfiguration()
+    public function getDatabaseConfiguration()
     {
         return $this->databaseConfiguration = unserialize(
             $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['recommend_a_page']
