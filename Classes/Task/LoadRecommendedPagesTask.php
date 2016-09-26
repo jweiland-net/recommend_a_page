@@ -76,7 +76,7 @@ class LoadRecommendedPagesTask extends AbstractTask
         $piwikMapper = GeneralUtility::makeInstance(PiwikMapper::class);
 
         /** @var array $mappedPages array(piwikPid => TYPO3pid) */
-        $mappedPages = $piwikMapper->mapPiwikPidsToTYPO3Pids($pages);
+        $mappedPages = $piwikMapper->mapPiwikPidsToTypo3Pids($pages);
         
         /** @var array $updateList This list makes sure that uris that point to the same page aren't looped twice */
         $updateList = array();

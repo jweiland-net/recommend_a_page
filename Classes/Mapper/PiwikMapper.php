@@ -28,7 +28,7 @@ class PiwikMapper
      *
      * @return array
      */
-    public function mapPiwikPidsToTYPO3Pids($pages)
+    public function mapPiwikPidsToTypo3Pids($pages)
     {
         /** @var UriMapper $uriMapper */
         $uriMapper = GeneralUtility::makeInstance(UriMapper::class);
