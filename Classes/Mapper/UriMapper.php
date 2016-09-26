@@ -19,12 +19,29 @@ use DmitryDulepov\Realurl\Cache\UrlCacheEntry;
 use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * UriMapper
  */
 class UriMapper
 {
+    /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+    
+    /**
+     * inject objectManager
+     *
+     * @param ObjectManager $objectManager
+     * @return void
+     */
+    public function injectObjectManager(ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+    
     /**
      * Returns realurl like speaking url
      *
@@ -87,7 +104,7 @@ class UriMapper
      *
      * @return int|null
      */
-    public function getTYPO3PidFromUri($uri)
+    public function getTypo3PidFromUri($uri)
     {
         if ($this->getHttpHost($uri) != GeneralUtility::getIndpEnv('HTTP_HOST')) {
             return null;
@@ -99,7 +116,7 @@ class UriMapper
             !preg_match('~index.php~', $uri)
         ) {
             /** @var ConfigurationReader $realUrlConfiguration */
-            $realUrlConfiguration = GeneralUtility::makeInstance(
+            $realUrlConfiguration = $this->objectManager->get(
                 ConfigurationReader::class,
                 ConfigurationReader::MODE_DECODE
             );

@@ -14,13 +14,27 @@ namespace JWeiland\RecommendAPage\Mapper;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * PiwikMapper
  */
 class PiwikMapper
 {
+    /**
+     * @var UriMapper
+     */
+    protected $uriMapper;
+    
+    /**
+     * inject uriMapper
+     *
+     * @param UriMapper $uriMapper
+     * @return void
+     */
+    public function injectUriMapper(UriMapper $uriMapper)
+    {
+        $this->uriMapper = $uriMapper;
+    }
+    
     /**
      * Maps piwik pids to typo3 pids
      *
@@ -30,12 +44,9 @@ class PiwikMapper
      */
     public function mapPiwikPidsToTypo3Pids($pages)
     {
-        /** @var UriMapper $uriMapper */
-        $uriMapper = GeneralUtility::makeInstance(UriMapper::class);
-        
         $mappedPages = array();
         foreach ($pages as $key => $page) {
-            $mappedPages[$page['idaction']] = $uriMapper->getTYPO3PidFromUri($page['name']);
+            $mappedPages[$page['idaction']] = $this->uriMapper->getTypo3PidFromUri($page['name']);
         }
         
         return $mappedPages;

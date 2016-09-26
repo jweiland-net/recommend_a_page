@@ -34,6 +34,13 @@ class LoadRecommendedPagesTask extends AbstractTask
     protected $piwikDatabaseService;
     
     /**
+     * ObjectManager
+     *
+     * @var ObjectManager
+     */
+    protected $objectManager;
+    
+    /**
      * This is the main method that is called when a task is executed
      *
      * @return bool Returns TRUE on successful execution, FALSE on error
@@ -59,7 +66,7 @@ class LoadRecommendedPagesTask extends AbstractTask
     protected function init()
     {
         /** @var ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->objectManager = $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
     }
     
@@ -73,7 +80,7 @@ class LoadRecommendedPagesTask extends AbstractTask
     protected function getRecommendPagesForEachKnownPiwikPage($pages)
     {
         /** @var PiwikMapper $piwikMapper */
-        $piwikMapper = GeneralUtility::makeInstance(PiwikMapper::class);
+        $piwikMapper = $this->objectManager->get(PiwikMapper::class);
 
         /** @var array $mappedPages array(piwikPid => TYPO3pid) */
         $mappedPages = $piwikMapper->mapPiwikPidsToTypo3Pids($pages);

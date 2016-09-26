@@ -16,12 +16,18 @@ namespace JWeiland\RecommendAPage\Service;
 
 use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * PiwikDatabaseService
  */
 class PiwikDatabaseService
 {
+    /**
+     * @var ObjectManager
+     */
+    protected $objectManager;
+    
     /**
      * databaseConnection
      *
@@ -35,6 +41,17 @@ class PiwikDatabaseService
      * @var array
      */
     private $databaseConfiguration = array();
+    
+    /**
+     * inject objectManager
+     *
+     * @param ObjectManager $objectManager
+     * @return void
+     */
+    public function injectObjectManager(ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
     
     /**
      * Initialization
@@ -133,7 +150,7 @@ class PiwikDatabaseService
         }
         
         /** @var DatabaseConnection $databaseConnection */
-        $databaseConnection = GeneralUtility::makeInstance(DatabaseConnection::class);
+        $databaseConnection = $this->objectManager->get(DatabaseConnection::class);
         $databaseConnection->setDatabaseHost($this->getDatabaseConfiguration()['piwikDatabaseHost']);
         $databaseConnection->setDatabaseName($this->getDatabaseConfiguration()['piwikDatabaseName']);
         $databaseConnection->setDatabaseUsername($this->getDatabaseConfiguration()['piwikDatabaseUser']);
