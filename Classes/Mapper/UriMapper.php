@@ -15,6 +15,7 @@ namespace JWeiland\RecommendAPage\Mapper;
  */
 
 use DmitryDulepov\Realurl\Cache\CacheFactory;
+use DmitryDulepov\Realurl\Cache\CacheInterface;
 use DmitryDulepov\Realurl\Cache\UrlCacheEntry;
 use DmitryDulepov\Realurl\Configuration\ConfigurationReader;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -30,6 +31,11 @@ class UriMapper
      * @var ObjectManager
      */
     protected $objectManager;
+    
+    /**
+     * @var CacheInterface
+     */
+    protected $realUrlCache;
     
     /**
      * inject objectManager
@@ -51,17 +57,16 @@ class UriMapper
      */
     public function getSpeakingUrl($uri)
     {
-        if (!strpos($uri, '://')) {
-            $uri = 'http://' . $uri;
+        $path = (string)parse_url(
+            $this->sanitizeUri($uri),
+            PHP_URL_PATH
+        );
+        $path = trim($path, '/') . '/';
+        $pathParts = pathinfo($path);
+        if (isset($pathParts['extension'])) {
+            $path = rtrim($path, '/');
         }
         
-        $path = parse_url($uri)['path'];
-        if ($path !== '/') {
-            $path = trim($path, '/');
-            if (!strpos($path, '.')) {
-                $path .= '/';
-            }
-        }
         return $path;
     }
     
@@ -74,27 +79,36 @@ class UriMapper
      */
     public function getHttpHost($uri)
     {
+        return parse_url($this->sanitizeUri($uri))['host'];
+    }
+    
+    /**
+     * Sanitize URI
+     *
+     * @param string $uri
+     *
+     * @return string
+     */
+    protected function sanitizeUri($uri)
+    {
         if (!strpos($uri, '://')) {
             $uri = 'http://' . $uri;
         }
-        
-        $host = parse_url($uri)['host'];
-        
-        return $host;
+        return $uri;
     }
     
     /**
      * Extracts get params from an uri
      *
-     * @param $uri
+     * @param string $uri
      *
-     * @return array
+     * @return int|null
      */
-    public function getGetParams($uri)
+    protected function getUidFromUri($uri)
     {
-        $query = parse_url($uri)['query'];
+        $query = parse_url($uri, PHP_URL_QUERY);
         parse_str($query, $result);
-        return $result;
+        return isset($result['id']) ? $result['id'] : null;
     }
     
     /**
@@ -106,39 +120,84 @@ class UriMapper
      */
     public function getTypo3PidFromUri($uri)
     {
-        if ($this->getHttpHost($uri) != GeneralUtility::getIndpEnv('HTTP_HOST')) {
+        if (!$this->isValidUri($uri)) {
             return null;
         }
-        
-        if (
-            !empty($uri) &&
-            ExtensionManagementUtility::isLoaded('realurl') &&
-            !preg_match('~index.php~', $uri)
-        ) {
-            /** @var ConfigurationReader $realUrlConfiguration */
-            $realUrlConfiguration = $this->objectManager->get(
-                ConfigurationReader::class,
-                ConfigurationReader::MODE_DECODE
-            );
-            
-            $rootPageId = (int)$realUrlConfiguration->get('pagePath/rootpage_id');
-            
-            /** @var UrlCacheEntry $convertedUrl */
-            $convertedUrl = CacheFactory::getCache()->getUrlFromCacheBySpeakingUrl(
-                $rootPageId,
-                $this->getSpeakingUrl($uri),
-                (int)GeneralUtility::_GET('L')
-            );
-            
-            if ($convertedUrl === null) {
-                return null;
-            }
-            
-            $pid = $convertedUrl->getPageId();
+
+        if ($this->isRealUrlCompatibleUri($uri)) {
+            $pid = (int)$this->getPidFromRealUrlApi($uri);
         } else {
-            $pid = $this->getGetParams($uri)['id'];
+            $pid = (int)$this->getUidFromUri($uri);
         }
         
         return $pid;
+    }
+    
+    /**
+     * Get RealUrl Cache
+     *
+     * @return \DmitryDulepov\Realurl\Cache\CacheInterface
+     */
+    protected function getRealUrlCache()
+    {
+        if ($this->realUrlCache === null) {
+            $this->realUrlCache = CacheFactory::getCache();
+        }
+        return $this->realUrlCache;
+    }
+    
+    /**
+     * Is valid URI
+     *
+     * @param string $uri
+     *
+     * @return bool
+     */
+    protected function isValidUri($uri)
+    {
+        return !empty($uri) && $this->getHttpHost($uri) === GeneralUtility::getIndpEnv('HTTP_HOST');
+    }
+    
+    /**
+     * Check, if realurl is loaded and URI does not contain 'index.php'
+     *
+     * @param string $uri
+     *
+     * @return bool
+     */
+    protected function isRealUrlCompatibleUri($uri)
+    {
+        return ExtensionManagementUtility::isLoaded('realurl') && $this->getUidFromUri($uri) === null;
+    }
+    
+    /**
+     * Get PID from realurl API
+     *
+     * @param string $uri
+     *
+     * @return int|null
+     */
+    protected function getPidFromRealUrlApi($uri)
+    {
+        /** @var ConfigurationReader $realUrlConfiguration */
+        $realUrlConfiguration = $this->objectManager->get(
+            ConfigurationReader::class,
+            ConfigurationReader::MODE_DECODE
+        );
+    
+        $rootPageId = (int)$realUrlConfiguration->get('pagePath/rootpage_id');
+    
+        /** @var UrlCacheEntry $convertedUrl */
+        $convertedUrl = $this->getRealUrlCache()->getUrlFromCacheBySpeakingUrl(
+            $rootPageId,
+            $this->getSpeakingUrl($uri),
+            (int)GeneralUtility::_GET('L')
+        );
+    
+        if ($convertedUrl === null) {
+            return null;
+        }
+    
+        return $convertedUrl->getPageId();
     }
 }
