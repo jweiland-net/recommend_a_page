@@ -45,6 +45,11 @@ class PiwikMapper
     public function mapPiwikPidsToTypo3Pids($pages)
     {
         $mappedPages = array();
+        
+        if (!is_array($pages)) {
+            return array();
+        }
+        
         foreach ($pages as $key => $page) {
             $mappedPages[$page['idaction']] = $this->uriMapper->getTypo3PidFromUri($page['name']);
         }
