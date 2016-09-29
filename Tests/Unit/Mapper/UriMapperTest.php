@@ -210,27 +210,27 @@ class UriMapperTest extends UnitTestCase
     public function getTypo3PidFromUriWithRealUrlCallsGetPidFromRealUrlApiReturnsPid() {
         if (ExtensionManagementUtility::isLoaded('realurl')) {
             /** @var ConfigurationReader|\PHPUnit_Framework_MockObject_MockObject $configurationReader */
-            $configurationReader = $this->getMock(ConfigurationReader::class, array('get'), array(), '', false);
+            $configurationReader = $this->createMock(ConfigurationReader::class);
             $configurationReader->expects($this->once())->method('get')->with(
                 $this->equalTo('pagePath/rootpage_id')
             )->willReturn(23);
             
             /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $objectManager */
-            $objectManager = $this->getMock(ObjectManager::class, array('get'));
+            $objectManager = $this->createMock(ObjectManager::class);
             $objectManager->expects($this->once())->method('get')->with(
                 $this->equalTo(ConfigurationReader::class),
                 $this->equalTo(ConfigurationReader::MODE_DECODE)
             )->willReturn($configurationReader);
     
             /** @var UrlCacheEntry|\PHPUnit_Framework_MockObject_MockObject $urlCacheEntry */
-            $urlCacheEntry = $this->getMock(UrlCacheEntry::class, array('getPageId'));
+            $urlCacheEntry = $this->createMock(UrlCacheEntry::class);
             $urlCacheEntry
                 ->expects($this->once())
                 ->method('getPageId')
                 ->willReturn(123);
             
             /** @var CacheInterface|\PHPUnit_Framework_MockObject_MockObject $realUrlCache */
-            $realUrlCache = $this->getMock(DatabaseCache::class, array('getUrlFromCacheBySpeakingUrl'));
+            $realUrlCache = $this->createMock(DatabaseCache::class);
             $realUrlCache
                 ->expects($this->once())
                 ->method('getUrlFromCacheBySpeakingUrl')

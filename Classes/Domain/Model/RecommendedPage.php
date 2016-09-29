@@ -42,7 +42,7 @@ class RecommendedPage extends AbstractEntity
      */
     public function getReferrerPid()
     {
-        return $this->referrerPid;
+        return (int)$this->referrerPid;
     }
     
     /**
@@ -62,7 +62,7 @@ class RecommendedPage extends AbstractEntity
      */
     public function getTargetPid()
     {
-        return $this->targetPid;
+        return (int)$this->targetPid;
     }
     
     /**
