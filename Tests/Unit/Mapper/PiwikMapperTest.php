@@ -1,5 +1,5 @@
 <?php
-namespace JWeiland\RecommendAPage\Tests\Unit\Domain\Model;
+namespace JWeiland\RecommendAPage\Tests\Unit\Mapper;
 
 /*
  * This file is part of the TYPO3 CMS project.
