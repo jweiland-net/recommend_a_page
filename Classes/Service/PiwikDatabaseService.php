@@ -120,8 +120,12 @@ class PiwikDatabaseService
      *
      * @return array
      */
-    public function getTargetIdActions(int $idAction)
+    public function getTargetIdActions($idAction)
     {
+        if (!is_numeric($idAction)) {
+            return array();
+        }
+        
         $idAction = $this->databaseConnection->fullQuoteStr($idAction, 'piwik_log_link_visit_action');
         
         $result = $this->databaseConnection->exec_SELECTgetRows(

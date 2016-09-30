@@ -69,17 +69,15 @@ class PiwikDatabaseServiceTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetIdActionsWillThrowTypeErrorWithNull()
+    public function getTargetIdActionsWillReturnEmptyArrayWithNull()
     {
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $databaseConnection */
         $databaseConnection = $this->createMock(DatabaseConnection::class);
         $databaseConnection->expects($this->never())->method('fullQuoteStr');
         
         $this->subject->_set('databaseConnection', $databaseConnection);
-    
-        $this->expectException(\TypeError::class);
         
-        $this->subject->getTargetIdActions(null);
+        $this->assertSame(array(), $this->subject->getTargetIdActions(null));
     }
     
     /**
