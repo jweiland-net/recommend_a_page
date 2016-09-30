@@ -40,7 +40,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * SetUp
      */
-    public function setUp() {
+    public function setUp()
+    {
         $this->subject = new UriMapper();
         $this->httpHostBackup = $_SERVER['HTTP_HOST'];
         $_SERVER['HTTP_HOST'] = 'jweiland.net';
@@ -58,7 +59,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSpeakingUrlWithInvalidStringReturnsGivenString() {
+    public function getSpeakingUrlWithInvalidStringReturnsGivenString()
+    {
         $this->assertSame(
             '/',
             $this->subject->getSpeakingUrl('test123')
@@ -68,7 +70,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSpeakingUrlWithIntegerReturnsSlash() {
+    public function getSpeakingUrlWithIntegerReturnsSlash()
+    {
         $this->assertSame(
             '/',
             $this->subject->getSpeakingUrl(12345)
@@ -78,7 +81,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSpeakingUrlWithValidHostReturnsSlash() {
+    public function getSpeakingUrlWithValidHostReturnsSlash()
+    {
         $this->assertSame(
             '/',
             $this->subject->getSpeakingUrl('jweiland.net')
@@ -88,7 +92,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSpeakingUrlWithValidHostAndSchemaReturnsSlash() {
+    public function getSpeakingUrlWithValidHostAndSchemaReturnsSlash()
+    {
         $this->assertSame(
             '/',
             $this->subject->getSpeakingUrl('http://www.jweiland.net')
@@ -98,7 +103,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSpeakingUrlWithValidUrlReturnsSlash() {
+    public function getSpeakingUrlWithValidUrlReturnsSlash()
+    {
         $this->assertSame(
             '/',
             $this->subject->getSpeakingUrl('http://www.jweiland.net/?id=123&tx_news[id]=231&L=2')
@@ -108,7 +114,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSpeakingUrlWithSpeakingUrlAndWithoutTrailingHtmlReturnsPath() {
+    public function getSpeakingUrlWithSpeakingUrlAndWithoutTrailingHtmlReturnsPath()
+    {
         $this->assertSame(
             'home/archive/2016/09/23/welcome/',
             $this->subject->getSpeakingUrl('http://www.jweiland.net/home/archive/2016/09/23/welcome/')
@@ -118,7 +125,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSpeakingUrlWithDottedSpeakingUrlReturnsPath() {
+    public function getSpeakingUrlWithDottedSpeakingUrlReturnsPath()
+    {
         $this->assertSame(
             'home/jochen.weiland/agb.html',
             $this->subject->getSpeakingUrl('http://www.jweiland.net/home/jochen.weiland/agb.html')
@@ -128,7 +136,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getSpeakingUrlWithSpeakingUrlAndWithTrailingHtmlReturnsPath() {
+    public function getSpeakingUrlWithSpeakingUrlAndWithTrailingHtmlReturnsPath()
+    {
         $this->assertSame(
             'home/archive/2016/09/23/welcome.html',
             $this->subject->getSpeakingUrl('http://www.jweiland.net/home/archive/2016/09/23/welcome.html')
@@ -138,7 +147,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHttpHostWithHostReturnsHost() {
+    public function getHttpHostWithHostReturnsHost()
+    {
         $this->assertSame(
             'test123',
             $this->subject->getHttpHost('test123')
@@ -148,7 +158,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHttpHostWithIntegerReturnsIntegerAsHost() {
+    public function getHttpHostWithIntegerReturnsIntegerAsHost()
+    {
         $this->assertSame(
             '12345',
             $this->subject->getHttpHost(12345)
@@ -168,7 +179,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getHttpHostWithUriReturnsHost() {
+    public function getHttpHostWithUriReturnsHost()
+    {
         $this->assertSame(
             'www.jweiland.net',
             $this->subject->getHttpHost('http://www.jweiland.net/?id=2&L=2')
@@ -178,7 +190,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTypo3PidFromUriWithEmptyUriReturnsNull() {
+    public function getTypo3PidFromUriWithEmptyUriReturnsNull()
+    {
         $this->assertNull(
             $this->subject->getTypo3PidFromUri('')
         );
@@ -187,7 +200,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTypo3PidFromUriWithInvalidHostReturnsNull() {
+    public function getTypo3PidFromUriWithInvalidHostReturnsNull()
+    {
         $this->assertNull(
             $this->subject->getTypo3PidFromUri('http://test123.net')
         );
@@ -196,7 +210,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTypo3PidFromUriWithNonRealUrlCallsGetUidFromUriReturnsPid() {
+    public function getTypo3PidFromUriWithNonRealUrlCallsGetUidFromUriReturnsPid()
+    {
         $this->subject = new UriMapper();
         $this->assertSame(
             123,
@@ -207,7 +222,8 @@ class UriMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTypo3PidFromUriWithRealUrlCallsGetPidFromRealUrlApiReturnsPid() {
+    public function getTypo3PidFromUriWithRealUrlCallsGetPidFromRealUrlApiReturnsPid()
+    {
         if (ExtensionManagementUtility::isLoaded('realurl')) {
             /** @var ConfigurationReader|\PHPUnit_Framework_MockObject_MockObject $configurationReader */
             $configurationReader = $this->createMock(ConfigurationReader::class);

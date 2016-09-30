@@ -30,7 +30,8 @@ class PiwikMapperTest extends UnitTestCase
     /**
      * SetUp
      */
-    public function setUp() {
+    public function setUp()
+    {
         $this->subject = new PiwikMapper();
     }
     
@@ -45,7 +46,8 @@ class PiwikMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function mapPiwikPidsToTypo3PidsWithNullReturnsEmptyArray() {
+    public function mapPiwikPidsToTypo3PidsWithNullReturnsEmptyArray()
+    {
         /** @var \PHPUnit_Framework_MockObject_MockObject|UriMapper $uriMapper */
         $uriMapper = $this->createMock(UriMapper::class);
         $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
@@ -59,7 +61,8 @@ class PiwikMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function mapPiwikPidsToTypo3PidsWithIntegerReturnsEmptyArray() {
+    public function mapPiwikPidsToTypo3PidsWithIntegerReturnsEmptyArray()
+    {
         /** @var \PHPUnit_Framework_MockObject_MockObject|UriMapper $uriMapper */
         $uriMapper = $this->createMock(UriMapper::class);
         $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
@@ -72,7 +75,8 @@ class PiwikMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function mapPiwikPidsToTypo3PidsWithStringReturnsEmptyArray() {
+    public function mapPiwikPidsToTypo3PidsWithStringReturnsEmptyArray()
+    {
         /** @var \PHPUnit_Framework_MockObject_MockObject|UriMapper $uriMapper */
         $uriMapper = $this->createMock(UriMapper::class);
         $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
@@ -85,7 +89,8 @@ class PiwikMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function mapPiwikPidsToTypo3PidsWithEmptyArrayReturnsEmptyArray() {
+    public function mapPiwikPidsToTypo3PidsWithEmptyArrayReturnsEmptyArray()
+    {
         /** @var \PHPUnit_Framework_MockObject_MockObject|UriMapper $uriMapper */
         $uriMapper = $this->createMock(UriMapper::class);
         $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
@@ -98,7 +103,8 @@ class PiwikMapperTest extends UnitTestCase
     /**
      * @test
      */
-    public function mapPiwikPidsToTypo3PidsWithPiwikPagesReturnsTypo3Pages() {
+    public function mapPiwikPidsToTypo3PidsWithPiwikPagesReturnsTypo3Pages()
+    {
         /** @var \PHPUnit_Framework_MockObject_MockObject|UriMapper $uriMapper */
         $uriMapper = $this->createMock(UriMapper::class);
         $piwikPages = array();

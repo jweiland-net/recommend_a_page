@@ -33,7 +33,7 @@ class PiwikDatabaseService
      *
      * @var DatabaseConnection
      */
-    private $databaseConnection = null;
+    protected $databaseConnection = null;
     
     /**
      * databaseConfiguration
@@ -46,6 +46,7 @@ class PiwikDatabaseService
      * inject objectManager
      *
      * @param ObjectManager $objectManager
+     *
      * @return void
      */
     public function injectObjectManager(ObjectManager $objectManager)
@@ -98,7 +99,7 @@ class PiwikDatabaseService
                 ) . '%', 'piwik_log_action'
             );
         
-        $result = $this->getDatabaseConnection()->exec_SELECTgetRows(
+        $result = $this->databaseConnection->exec_SELECTgetRows(
             'idaction, name',
             'piwik_log_action',
             'type != 4 AND ' .
@@ -119,7 +120,7 @@ class PiwikDatabaseService
      *
      * @return array
      */
-    public function getTargetIdActions($idAction)
+    public function getTargetIdActions(int $idAction)
     {
         $idAction = $this->databaseConnection->fullQuoteStr($idAction, 'piwik_log_link_visit_action');
         
