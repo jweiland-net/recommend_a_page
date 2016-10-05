@@ -31,13 +31,13 @@ class PageIdToTitleViewHelper extends AbstractViewHelper
      */
     public function render($pageId)
     {
+        if (!is_numeric($pageId)) {
+            return $pageTitle = '';
+        }
+        
         /** @var PageRepository $pageRepository */
         $pageRepository = $this->objectManager->get(PageRepository::class);
         $pageTitle = $pageRepository->getPage($pageId)['title'];
-        
-        if (empty($pageTitle)) {
-            $pageTitle = '';
-        }
         
         return $pageTitle;
     }

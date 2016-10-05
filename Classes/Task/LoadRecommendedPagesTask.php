@@ -66,7 +66,7 @@ class LoadRecommendedPagesTask extends AbstractTask
     protected function init()
     {
         /** @var ObjectManager $objectManager */
-        $this->objectManager = $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->objectManager = $objectManager = $this->getObjectManager();
         $this->piwikDatabaseService = $objectManager->get(PiwikDatabaseService::class);
     }
     
@@ -151,7 +151,7 @@ class LoadRecommendedPagesTask extends AbstractTask
      *
      * @return array Returns an array with column name as array key
      */
-    public function prepareRecommendedPageForDatabase($typo3Pid, $targetPid)
+    protected function prepareRecommendedPageForDatabase($typo3Pid, $targetPid)
     {
         return array(
             'referrer_pid' =>  $typo3Pid,
@@ -166,7 +166,7 @@ class LoadRecommendedPagesTask extends AbstractTask
      *
      * @return void
      */
-    public function insertNewRecommendedPagesIntoDatabase($pages)
+    protected function insertNewRecommendedPagesIntoDatabase($pages)
     {
         $this->getDatabaseConnection()->exec_TRUNCATEquery('tx_recommendapage_domain_model_recommendedpage');
         
@@ -199,5 +199,15 @@ class LoadRecommendedPagesTask extends AbstractTask
     protected function getRecommendedPagesCount()
     {
         return $this->piwikDatabaseService->getDatabaseConfiguration()['countOfRecommendedPages'];
+    }
+    
+    /**
+     * Get the ObjectManager
+     *
+     * @return ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return GeneralUtility::makeInstance(ObjectManager::class);
     }
 }
