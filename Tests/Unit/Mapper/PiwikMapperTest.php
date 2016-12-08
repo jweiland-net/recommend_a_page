@@ -100,9 +100,6 @@ class PiwikMapperTest extends UnitTestCase
         );
     }
     
-    /**
-     * @test
-     */
     public function mapPiwikPidsToTypo3PidsWithPiwikPagesReturnsTypo3Pages()
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|UriMapper $uriMapper */

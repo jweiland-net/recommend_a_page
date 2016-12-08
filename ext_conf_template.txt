@@ -1,14 +1,14 @@
-# cat=basic/enable; type=string; label=Piwik database host: Enter your piwik database host address here;
+# cat=basic/enable; type=string; label=Piwik database host: Enter your piwik database host address here
 piwikDatabaseHost =
 
-# cat=basic/enable; type=string; label=Piwik database user: Enter your piwik database username here;
+# cat=basic/enable; type=string; label=Piwik database user: Enter your piwik database username here
 piwikDatabaseUser =
 
-# cat=basic/enable; type=string; label=Piwik database password: Enter your piwik database password here;
+# cat=basic/enable; type=string; label=Piwik database password: Enter your piwik database password here
 piwikDatabasePassword =
 
-# cat=basic/enable; type=string; label=Piwik database name: Enter your piwik database name here;
+# cat=basic/enable; type=string; label=Piwik database name: Enter your piwik database name here
 piwikDatabaseName =
 
-# cat=basic/enable; type=string; label=Recommended pages to display: Specify how many pages you want to be recommended;
+# cat=basic/enable; type=int+; label=Recommended pages to display: Specify how many pages you want to be recommended
 countOfRecommendedPages = 3

@@ -14,15 +14,32 @@ namespace JWeiland\RecommendAPage\Mapper;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Frontend\Page\PageRepository;
+
 /**
  * PiwikMapper
  */
 class PiwikMapper
 {
     /**
+     * @var PageRepository
+     */
+    protected $pageRepository;
+    
+    /**
      * @var UriMapper
      */
     protected $uriMapper;
+    
+    /**
+     * inject pageRepository
+     *
+     * @param PageRepository $pageRepository
+     */
+    public function injectPageRepository(PageRepository $pageRepository)
+    {
+        $this->pageRepository = $pageRepository;
+    }
     
     /**
      * inject uriMapper
@@ -51,7 +68,11 @@ class PiwikMapper
         }
         
         foreach ($pages as $key => $page) {
-            $mappedPages[$page['idaction']] = $this->uriMapper->getTypo3PidFromUri($page['name']);
+            $typo3pid = $this->uriMapper->getTypo3PidFromUri($page['name']);
+            
+            if ($this->pageRepository->getPage($typo3pid)['nav_hide'] === 0) {
+                $mappedPages[$page['idaction']] = $typo3pid;
+            }
         }
         
         return $mappedPages;

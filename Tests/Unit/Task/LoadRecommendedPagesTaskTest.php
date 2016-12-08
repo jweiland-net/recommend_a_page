@@ -17,8 +17,8 @@ namespace JWeiland\RecommendAPage\Tests\Unit\Task;
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use JWeiland\RecommendAPage\Task\LoadRecommendedPagesTask;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * LoadRecommendedPagesTaskTest
@@ -26,16 +26,40 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 class LoadRecommendedPagesTaskTest extends UnitTestCase
 {
     /**
-     * @var LoadRecommendedPagesTask|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoadRecommendedPagesTask|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
      */
     protected $subject;
+    
+    /**
+     * @var PiwikDatabaseService|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $piwikDatabaseService;
+    
+    /**
+     * @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $databaseConnection;
     
     /**
      * SetUp
      */
     public function setUp()
     {
-        $this->subject = $this->createMock(LoadRecommendedPagesTask::class);
+        $this->subject = $this->getAccessibleMock(
+            LoadRecommendedPagesTask::class,
+            array(
+                'init',
+                'getRecommendPagesForEachKnownPiwikPage',
+                'getObjectManager',
+                'getDatabaseConnection'
+            ),
+            array(),
+            '',
+            false
+        );
+    
+        $this->piwikDatabaseService = $this->createMock(PiwikDatabaseService::class);
+        $this->databaseConnection = $this->createMock(DatabaseConnection::class);
     }
     
     /**
@@ -48,8 +72,41 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
     
     /**
      * @test
+     * @expectedException \PHPUnit_Framework_Error_Warning
      */
-    public function executeWillReturnTrueBySuccess()
+    public function executeWithNullWillThrowInvalidArgumentSuppliedForForeach()
+    {
+        $piwikDatabaseResultSet = array(null, null);
+    
+        $this->piwikDatabaseService->expects($this->once())
+            ->method('getActionIdsAndUrls')
+            ->willReturn(
+                $piwikDatabaseResultSet
+            );
+    
+        $this->subject->_set(
+            'piwikDatabaseService',
+            $this->piwikDatabaseService
+        );
+    
+        $this->databaseConnection->expects($this->once())
+            ->method('exec_TRUNCATEquery');
+    
+        $this->subject->expects($this->exactly(1))
+            ->method('getDatabaseConnection')
+            ->willReturn($this->databaseConnection);
+    
+        $this->subject->expects($this->once())
+            ->method('getRecommendPagesForEachKnownPiwikPage')
+            ->with($this->equalTo($piwikDatabaseResultSet));
+        
+        $this->subject->execute();
+    }
+    
+    /**
+     * @test
+     */
+    public function executeWithValidDataWillReturnTrue()
     {
         $piwikDatabaseResultSet = array(
             0 => array(
@@ -62,60 +119,60 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
             )
         );
         
-        /** @var PiwikDatabaseService|\PHPUnit_Framework_MockObject_MockObject $piwikDatabaseService */
-        $piwikDatabaseService = $this->createMock(PiwikDatabaseService::class);
-        $piwikDatabaseService->expects($this->once())
+        $expectedValue = array(
+            0 => array(
+                'referrer_pid' => 0,
+                'target_pid' => 20
+            ),
+            1 => array(
+                'referrer_pid' => 201,
+                'target_pid' => 10
+            )
+        );
+        
+        $this->piwikDatabaseService->expects($this->once())
             ->method('getActionIdsAndUrls')
             ->willReturn(
                 $piwikDatabaseResultSet
             );
         
-        /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $objectManager */
-        $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects($this->once())
-            ->method('get')
-            ->with(PiwikDatabaseService::class)
-            ->willReturn($piwikDatabaseService);
+        $this->subject->_set(
+            'piwikDatabaseService',
+            $this->piwikDatabaseService
+        );
         
         $this->subject->expects($this->once())
             ->method('getRecommendPagesForEachKnownPiwikPage')
-            ->with($piwikDatabaseResultSet)
-            ->willReturn(
-                array(
-                    0 => array(
-                        'referrer_pid' => 0,
-                        'target_pid' => 20
-                    ),
-                    1 => array(
-                        'referrer_pid' => 201,
-                        'target_pid' => 10
-                    )
-                )
-            );
+            ->with($this->equalTo($piwikDatabaseResultSet))
+            ->willReturn($expectedValue);
         
         $this->subject->expects($this->once())->method('init');
-        $this->subject->expects($this->once())
-            ->method('getObjectManager')
-            ->willReturn($objectManager);
-        
-        $this->subject->expects($this->once())
-            ->method('insertNewRecommendedPagesIntoDatabase')
-            ->with($piwikDatabaseResultSet);
-        
-        /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $databaseConnection */
-        $databaseConnection = $this->createMock(DatabaseConnection::class);
-        
-        $globalsTYPO3DbBackup = $GLOBALS['TYPO3_DB'];
-        $GLOBALS['TYPO3_DB'] = $databaseConnection;
     
-        $databaseConnection->expects($this->exactly(2))
+        $this->databaseConnection->expects($this->once())
+            ->method('exec_TRUNCATEquery');
+        
+        $this->databaseConnection->expects($this->at(1))
             ->method('exec_INSERTmultipleRows')
-            ->with($this->arrayHasKey('referrer_pid'))
-            ->with($this->arrayHasKey('target_pid'))
-            ->willReturn(TRUE);
+            ->with(
+                $this->equalTo('tx_recommendapage_domain_model_recommendedpage'),
+                $this->equalTo(array('referrer_pid', 'target_pid')),
+                $this->equalTo($expectedValue[0])
+            )
+            ->willReturn(true);
+    
+        $this->databaseConnection->expects($this->at(2))
+            ->method('exec_INSERTmultipleRows')
+            ->with(
+                $this->equalTo('tx_recommendapage_domain_model_recommendedpage'),
+                $this->equalTo(array('referrer_pid', 'target_pid')),
+                $this->equalTo($expectedValue[1])
+            )
+            ->willReturn(true);
+    
+        $this->subject->expects($this->exactly(3))
+            ->method('getDatabaseConnection')
+            ->willReturn($this->databaseConnection);
         
-        $this->assertSame(TRUE, $this->subject->execute());
-        
-        $GLOBALS['TYPO3_DB'] = $globalsTYPO3DbBackup;
+        $this->assertSame(true, $this->subject->execute());
     }
 }

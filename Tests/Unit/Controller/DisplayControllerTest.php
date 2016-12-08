@@ -17,7 +17,9 @@ namespace JWeiland\RecommendAPage\Tests\Unit\Controller;
 use JWeiland\RecommendAPage\Controller\DisplayController;
 use JWeiland\RecommendAPage\Domain\Model\RecommendedPage;
 use JWeiland\RecommendAPage\Domain\Repository\RecommendedPageRepository;
+use TYPO3\CMS\Core\Tests\AccessibleObjectInterface;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
+use TYPO3\CMS\Fluid\View\TemplateView;
 
 /**
  * DisplayControllerTest
@@ -25,7 +27,7 @@ use TYPO3\CMS\Core\Tests\UnitTestCase;
 class DisplayControllerTest extends UnitTestCase
 {
     /**
-     * @var DisplayController
+     * @var DisplayController|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
      */
     protected $subject;
     
@@ -34,7 +36,7 @@ class DisplayControllerTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->subject = new DisplayController();
+        $this->subject = $this->getAccessibleMock(DisplayController::class, array('dummy'));
     }
     
     /**
@@ -50,22 +52,32 @@ class DisplayControllerTest extends UnitTestCase
      */
     public function showActionWillFindRecommendedPagesAndAssignThemToView()
     {
-        $globalsTSFEBackup = $GLOBALS['TSFE']->id;
+        $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->id = 0;
         
         $recommendedPages = array(new RecommendedPage(), new RecommendedPage());
+    
+        /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject $view $view */
+        $view = $this->createMock(TemplateView::class);
+    
+        $view->expects($this->once())
+            ->method('assign')
+            ->with('recommendations', $recommendedPages);
+    
+        $this->subject->_set('view', $view);
         
-        /** @var RecommendedPageRepository|\PHPUnit_Framework_MockObject_MockObject $pageRepository */
+        /** @var RecommendedPageRepository|\PHPUnit_Framework_MockObject_MockObject $recommendedPageRepository */
         $recommendedPageRepository = $this->createMock(RecommendedPageRepository::class);
         $recommendedPageRepository->expects($this->once())
-            ->method('findByIdentifier')
-            ->with($this->identicalTo((int)$GLOBALS['TSFE']->id))
+            ->method('__call')
+            ->with(
+                $this->identicalTo('findByReferrerPid'),
+                $this->identicalTo(array((int)$GLOBALS['TSFE']->id))
+            )
             ->willReturn($recommendedPages);
         
-        $this->subject->injectRecommendedPageRepository($pageRepository);
+        $this->subject->injectRecommendedPageRepository($recommendedPageRepository);
         
         $this->subject->showAction();
-    
-        $GLOBALS['TSFE']->id = $globalsTSFEBackup;
     }
 }
