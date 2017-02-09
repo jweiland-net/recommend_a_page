@@ -29,7 +29,8 @@ class RecommendedPageTest extends UnitTestCase
     /**
      * SetUp
      */
-    public function setUp() {
+    public function setUp()
+    {
         $this->subject = new RecommendedPage();
     }
     
@@ -44,7 +45,8 @@ class RecommendedPageTest extends UnitTestCase
     /**
      * @test
      */
-    public function getReferrerPidInitiallyReturnsZero() {
+    public function getReferrerPidInitiallyReturnsZero()
+    {
         $this->assertSame(
             0,
             $this->subject->getReferrerPid()
@@ -54,7 +56,8 @@ class RecommendedPageTest extends UnitTestCase
     /**
      * @test
      */
-    public function setReferrerPidSetsReferrerPid() {
+    public function setReferrerPidSetsReferrerPid()
+    {
         $this->subject->setReferrerPid(123456);
     
         $this->assertSame(
@@ -66,7 +69,8 @@ class RecommendedPageTest extends UnitTestCase
     /**
      * @test
      */
-    public function setReferrerPidWithStringResultsInInteger() {
+    public function setReferrerPidWithStringResultsInInteger()
+    {
         $this->subject->setReferrerPid('123Test');
     
         $this->assertSame(
@@ -78,7 +82,8 @@ class RecommendedPageTest extends UnitTestCase
     /**
      * @test
      */
-    public function setReferrerPidWithBooleanResultsInInteger() {
+    public function setReferrerPidWithBooleanResultsInInteger()
+    {
         $this->subject->setReferrerPid(TRUE);
     
         $this->assertSame(
@@ -90,7 +95,8 @@ class RecommendedPageTest extends UnitTestCase
     /**
      * @test
      */
-    public function getTargetPidInitiallyReturnsZero() {
+    public function getTargetPidInitiallyReturnsZero()
+    {
         $this->assertSame(
             0,
             $this->subject->getTargetPid()
@@ -100,7 +106,8 @@ class RecommendedPageTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTargetPidSetsTargetPid() {
+    public function setTargetPidSetsTargetPid()
+    {
         $this->subject->setTargetPid(123456);
     
         $this->assertSame(
@@ -112,7 +119,8 @@ class RecommendedPageTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTargetPidWithStringResultsInInteger() {
+    public function setTargetPidWithStringResultsInInteger()
+    {
         $this->subject->setTargetPid('123Test');
     
         $this->assertSame(
@@ -124,7 +132,8 @@ class RecommendedPageTest extends UnitTestCase
     /**
      * @test
      */
-    public function setTargetPidWithBooleanResultsInInteger() {
+    public function setTargetPidWithBooleanResultsInInteger()
+    {
         $this->subject->setTargetPid(TRUE);
     
         $this->assertSame(
