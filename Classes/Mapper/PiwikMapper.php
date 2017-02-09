@@ -71,7 +71,11 @@ class PiwikMapper
             $typo3pid = $this->uriMapper->getTypo3PidFromUri($page['name']);
             $typo3Page = $this->pageRepository->getPage($typo3pid);
             
-            if ($typo3Page['nav_hide'] == 0 && $typo3Page['hidden'] == 0 && $typo3Page['deleted'] == 0) {
+            if (
+                $typo3Page['tx_recommend_a_page_do_not_recommend'] == 0 &&
+                $typo3Page['hidden'] == 0 &&
+                $typo3Page['deleted'] == 0
+            ) {
                 $mappedPages[$page['idaction']] = $typo3pid;
             }
         }

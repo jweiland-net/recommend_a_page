@@ -2,7 +2,7 @@
   "name": "jweiland/recommend-a-page",
   "type": "typo3-cms-extension",
   "description": "Recommend pages using PIWIK Statistics",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "GPL-2.0+",
   "keywords": ["typo3", "TYPO3 CMS", "recommend-a-page", "Recommend a page"],
   "homepage": "http://www.jweiland.net",

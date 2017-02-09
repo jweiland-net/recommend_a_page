@@ -25,6 +25,12 @@
 			<trans-unit id="db.target_id">
 				<source>Target id</source>
 			</trans-unit>
+			<trans-unit id="pages.recommend_a_page">
+				<source>Recommend a page</source>
+			</trans-unit>
+			<trans-unit id="pages.recommend_a_page.doNotRecommend">
+				<source>Do not recommend</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

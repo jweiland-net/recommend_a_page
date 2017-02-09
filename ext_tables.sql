@@ -14,3 +14,10 @@ CREATE TABLE tx_recommendapage_domain_model_recommendedpage (
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );
+
+#
+# (Additional) table structure for table 'pages'
+#
+CREATE TABLE pages (
+	tx_recommend_a_page_do_not_recommend TINYINT(1) DEFAULT 0 NOT NULL
+);
