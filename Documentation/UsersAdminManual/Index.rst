@@ -25,5 +25,6 @@ Set the count if recommended pages to display in the extension configuration.
 Other:
 ------
 
-This extension uses the "In Menus - hide" checkbox of pages to determine if a page should be recommended or not. So if to prevent a page from getting recommended just check this box for the specific page.
+This extensions will not display hidden or deleted pages. To exclude your own pages use the checkbox "Do not Recommend" in your page configuration.
+Be sure to run the task after making changes to apply them.
 Attention: Resolving the recommended pages is done by either reverse using `realurl <https://typo3.org/extensions/repository/view/realurl/>`__ or using the id get param.
