@@ -114,7 +114,9 @@ class PiwikMapperTest extends UnitTestCase
         
         $piwikPages = array();
         
-        $piwikPagesNavHide = array(0, 1, 1, 0, 1);
+        $pagesDoNotRecommend = array(0, 1, 1, 0, 1);
+        $pagesHidden = array(1, 0, 1, 0, 0);
+        $pagesDeleted = array(0, 1, 0, 0, 0);
         
         for ($i = 0; $i < 5; $i++) {
             $piwikPage = array();
@@ -127,14 +129,17 @@ class PiwikMapperTest extends UnitTestCase
             $pageRepository->expects($this->at($i))
                 ->method('getPage')
                 ->with($i)
-                ->willReturn(array('nav_hide' => $piwikPagesNavHide[$i]));
+                ->willReturn(array(
+                    'tx_recommend_a_page_do_not_recommend' => $pagesDoNotRecommend[$i],
+                    'hidden' => $pagesHidden[$i],
+                    'deleted' => $pagesDeleted[$i]
+                ));
         }
         
         $this->subject->injectUriMapper($uriMapper);
         $this->subject->injectPageRepository($pageRepository);
         
         $expectedResult = array(
-            0 => 0,
             3 => 3,
         );
         
