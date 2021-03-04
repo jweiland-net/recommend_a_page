@@ -40,7 +40,6 @@ class PiwikMapper
      * inject uriMapper
      *
      * @param UriMapper $uriMapper
-     * @return void
      */
     public function injectUriMapper(UriMapper $uriMapper)
     {

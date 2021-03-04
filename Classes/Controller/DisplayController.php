@@ -22,14 +22,12 @@ class DisplayController extends ActionController
      *
      * @var RecommendedPageRepository
      */
-    protected $recommendedPageRepository = null;
+    protected $recommendedPageRepository;
 
     /**
      * Injects the RecommendedPageRepository
      *
      * @param RecommendedPageRepository $recommendedPageRepository
-     *
-     * @return void
      */
     public function injectRecommendedPageRepository(RecommendedPageRepository $recommendedPageRepository)
     {
@@ -38,8 +36,6 @@ class DisplayController extends ActionController
 
     /**
      * Displays the recommended pages
-     *
-     * @return void
      */
     public function showAction()
     {

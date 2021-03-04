@@ -36,7 +36,6 @@ class UriMapper
      * inject objectManager
      *
      * @param ObjectManager $objectManager
-     * @return void
      */
     public function injectObjectManager(ObjectManager $objectManager)
     {

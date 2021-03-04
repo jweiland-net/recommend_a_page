@@ -1,18 +1,13 @@
 <?php
-namespace JWeiland\RecommendAPage\Tests\Unit\Task;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/recommend_a_page.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\RecommendAPage\Tests\Unit\Task;
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use JWeiland\RecommendAPage\Task\LoadRecommendedPagesTask;
@@ -78,7 +73,7 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
     {
         $piwikDatabaseResultSet = [null, null];
 
-        $this->piwikDatabaseService->expects($this->once())
+        $this->piwikDatabaseService->expects(self::once())
             ->method('getActionIdsAndUrls')
             ->willReturn(
                 $piwikDatabaseResultSet
@@ -89,14 +84,14 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
             $this->piwikDatabaseService
         );
 
-        $this->databaseConnection->expects($this->once())
+        $this->databaseConnection->expects(self::once())
             ->method('exec_TRUNCATEquery');
 
-        $this->subject->expects($this->exactly(1))
+        $this->subject->expects(self::exactly(1))
             ->method('getDatabaseConnection')
             ->willReturn($this->databaseConnection);
 
-        $this->subject->expects($this->once())
+        $this->subject->expects(self::once())
             ->method('getRecommendPagesForEachKnownPiwikPage')
             ->with($this->equalTo($piwikDatabaseResultSet));
 

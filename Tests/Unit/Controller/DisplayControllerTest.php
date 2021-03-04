@@ -1,18 +1,13 @@
 <?php
-namespace JWeiland\RecommendAPage\Tests\Unit\Controller;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/recommend_a_page.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\RecommendAPage\Tests\Unit\Controller;
 
 use JWeiland\RecommendAPage\Controller\DisplayController;
 use JWeiland\RecommendAPage\Domain\Model\RecommendedPage;
@@ -60,7 +55,7 @@ class DisplayControllerTest extends UnitTestCase
         /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject $view $view */
         $view = $this->createMock(TemplateView::class);
 
-        $view->expects($this->once())
+        $view->expects(self::once())
             ->method('assign')
             ->with('recommendations', $recommendedPages);
 
@@ -68,7 +63,7 @@ class DisplayControllerTest extends UnitTestCase
 
         /** @var RecommendedPageRepository|\PHPUnit_Framework_MockObject_MockObject $recommendedPageRepository */
         $recommendedPageRepository = $this->createMock(RecommendedPageRepository::class);
-        $recommendedPageRepository->expects($this->once())
+        $recommendedPageRepository->expects(self::once())
             ->method('__call')
             ->with(
                 $this->identicalTo('findByReferrerPid'),
