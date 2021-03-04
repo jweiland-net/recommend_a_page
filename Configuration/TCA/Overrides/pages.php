@@ -3,20 +3,20 @@ if (!defined('TYPO3_MODE')) {
     die ('Access denied.');
 }
 
-$doNotRecommend = array(
-    'tx_recommend_a_page_do_not_recommend' => array(
+$doNotRecommend = [
+    'tx_recommend_a_page_do_not_recommend' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:recommend_a_page/Resources/Private/Language/locallang.xlf:pages.recommend_a_page',
-        'config' => array(
+        'config' => [
             'type' => 'check',
-            'items' => array(
-                '1' => array(
+            'items' => [
+                '1' => [
                     '0' => 'LLL:EXT:recommend_a_page/Resources/Private/Language/locallang.xlf:pages.recommend_a_page.doNotRecommend',
-                )
-            )
-        )
-    )
-);
+                ]
+            ]
+        ]
+    ]
+];
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'pages',

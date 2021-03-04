@@ -30,15 +30,15 @@ class DisplayControllerTest extends UnitTestCase
      * @var DisplayController|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
      */
     protected $subject;
-    
+
     /**
      * SetUp
      */
     public function setUp()
     {
-        $this->subject = $this->getAccessibleMock(DisplayController::class, array('dummy'));
+        $this->subject = $this->getAccessibleMock(DisplayController::class, ['dummy']);
     }
-    
+
     /**
      * TearDown
      */
@@ -46,7 +46,7 @@ class DisplayControllerTest extends UnitTestCase
     {
         unset($this->subject);
     }
-    
+
     /**
      * @test
      */
@@ -54,30 +54,30 @@ class DisplayControllerTest extends UnitTestCase
     {
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->id = 0;
-        
-        $recommendedPages = array(new RecommendedPage(), new RecommendedPage());
-    
+
+        $recommendedPages = [new RecommendedPage(), new RecommendedPage()];
+
         /** @var TemplateView|\PHPUnit_Framework_MockObject_MockObject $view $view */
         $view = $this->createMock(TemplateView::class);
-    
+
         $view->expects($this->once())
             ->method('assign')
             ->with('recommendations', $recommendedPages);
-    
+
         $this->subject->_set('view', $view);
-        
+
         /** @var RecommendedPageRepository|\PHPUnit_Framework_MockObject_MockObject $recommendedPageRepository */
         $recommendedPageRepository = $this->createMock(RecommendedPageRepository::class);
         $recommendedPageRepository->expects($this->once())
             ->method('__call')
             ->with(
                 $this->identicalTo('findByReferrerPid'),
-                $this->identicalTo(array((int)$GLOBALS['TSFE']->id))
+                $this->identicalTo([(int)$GLOBALS['TSFE']->id])
             )
             ->willReturn($recommendedPages);
-        
+
         $this->subject->injectRecommendedPageRepository($recommendedPageRepository);
-        
+
         $this->subject->showAction();
     }
 }

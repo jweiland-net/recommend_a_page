@@ -47,13 +47,13 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
     {
         $this->subject = $this->getAccessibleMock(
             LoadRecommendedPagesTask::class,
-            array(
+            [
                 'init',
                 'getRecommendPagesForEachKnownPiwikPage',
                 'getObjectManager',
                 'getDatabaseConnection'
-            ),
-            array(),
+            ],
+            [],
             '',
             false
         );
@@ -76,7 +76,7 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
      */
     public function executeWithNullWillThrowInvalidArgumentSuppliedForForeach()
     {
-        $piwikDatabaseResultSet = array(null, null);
+        $piwikDatabaseResultSet = [null, null];
 
         $this->piwikDatabaseService->expects($this->once())
             ->method('getActionIdsAndUrls')
@@ -108,27 +108,27 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
      */
     public function executeWithValidDataWillReturnTrue()
     {
-        $piwikDatabaseResultSet = array(
-            0 => array(
+        $piwikDatabaseResultSet = [
+            0 => [
                 'idaction' => '0',
                 'name' => 'https://jweiland.net/index.php'
-            ),
-            1 => array(
+            ],
+            1 => [
                 'idaction' => '201',
                 'name' => 'http://jweiland.net/kontakt/impressum'
-            )
-        );
+            ]
+        ];
 
-        $expectedValue = array(
-            0 => array(
+        $expectedValue = [
+            0 => [
                 'referrer_pid' => 0,
                 'target_pid' => 20
-            ),
-            1 => array(
+            ],
+            1 => [
                 'referrer_pid' => 201,
                 'target_pid' => 10
-            )
-        );
+            ]
+        ];
 
         $this->piwikDatabaseService->expects($this->once())
             ->method('getActionIdsAndUrls')
@@ -155,7 +155,7 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
             ->method('exec_INSERTmultipleRows')
             ->with(
                 $this->equalTo('tx_recommendapage_domain_model_recommendedpage'),
-                $this->equalTo(array('referrer_pid', 'target_pid')),
+                $this->equalTo(['referrer_pid', 'target_pid']),
                 $this->equalTo($expectedValue[0])
             )
             ->willReturn(true);
@@ -164,7 +164,7 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
             ->method('exec_INSERTmultipleRows')
             ->with(
                 $this->equalTo('tx_recommendapage_domain_model_recommendedpage'),
-                $this->equalTo(array('referrer_pid', 'target_pid')),
+                $this->equalTo(['referrer_pid', 'target_pid']),
                 $this->equalTo($expectedValue[1])
             )
             ->willReturn(true);

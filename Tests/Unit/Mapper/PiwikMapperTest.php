@@ -54,7 +54,7 @@ class PiwikMapperTest extends UnitTestCase
         $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
         $this->subject->injectUriMapper($uriMapper);
         self::assertSame(
-            array(),
+            [],
             $this->subject->mapPiwikPidsToTypo3Pids(null)
         );
     }
@@ -68,7 +68,7 @@ class PiwikMapperTest extends UnitTestCase
         $uriMapper = $this->createMock(UriMapper::class);
         $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
         self::assertSame(
-            array(),
+            [],
             $this->subject->mapPiwikPidsToTypo3Pids(12345)
         );
     }
@@ -82,7 +82,7 @@ class PiwikMapperTest extends UnitTestCase
         $uriMapper = $this->createMock(UriMapper::class);
         $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
         self::assertSame(
-            array(),
+            [],
             $this->subject->mapPiwikPidsToTypo3Pids('test123')
         );
     }
@@ -96,8 +96,8 @@ class PiwikMapperTest extends UnitTestCase
         $uriMapper = $this->createMock(UriMapper::class);
         $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
         self::assertSame(
-            array(),
-            $this->subject->mapPiwikPidsToTypo3Pids(array())
+            [],
+            $this->subject->mapPiwikPidsToTypo3Pids([])
         );
     }
 
@@ -112,14 +112,14 @@ class PiwikMapperTest extends UnitTestCase
         /** @var \PHPUnit_Framework_MockObject_MockObject|PageRepository $pageRepository */
         $pageRepository = $this->createMock(PageRepository::class);
 
-        $piwikPages = array();
+        $piwikPages = [];
 
-        $pagesDoNotRecommend = array(0, 1, 1, 0, 1);
-        $pagesHidden = array(1, 0, 1, 0, 0);
-        $pagesDeleted = array(0, 1, 0, 0, 0);
+        $pagesDoNotRecommend = [0, 1, 1, 0, 1];
+        $pagesHidden = [1, 0, 1, 0, 0];
+        $pagesDeleted = [0, 1, 0, 0, 0];
 
         for ($i = 0; $i < 5; $i++) {
-            $piwikPage = array();
+            $piwikPage = [];
             $piwikPage['idaction'] = $i;
             $piwikPage['name'] = 'test' . $i;
             $piwikPages[] = $piwikPage;
@@ -129,19 +129,19 @@ class PiwikMapperTest extends UnitTestCase
             $pageRepository->expects($this->at($i))
                 ->method('getPage')
                 ->with($i)
-                ->willReturn(array(
+                ->willReturn([
                     'tx_recommend_a_page_do_not_recommend' => $pagesDoNotRecommend[$i],
                     'hidden' => $pagesHidden[$i],
                     'deleted' => $pagesDeleted[$i]
-                ));
+                ]);
         }
 
         $this->subject->injectUriMapper($uriMapper);
         $this->subject->injectPageRepository($pageRepository);
 
-        $expectedResult = array(
+        $expectedResult = [
             3 => 3,
-        );
+        ];
 
         self::assertSame(
             $expectedResult,
