@@ -80,7 +80,7 @@ class RecommendedPageTest extends UnitTestCase
      */
     public function setReferrerPidWithBooleanResultsInInteger()
     {
-        $this->subject->setReferrerPid(TRUE);
+        $this->subject->setReferrerPid(true);
 
         self::assertSame(
             1,
@@ -130,7 +130,7 @@ class RecommendedPageTest extends UnitTestCase
      */
     public function setTargetPidWithBooleanResultsInInteger()
     {
-        $this->subject->setTargetPid(TRUE);
+        $this->subject->setTargetPid(true);
 
         self::assertSame(
             1,
