@@ -1,18 +1,13 @@
 <?php
-namespace JWeiland\RecommendAPage\Mapper;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/recommend_a_page.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\RecommendAPage\Mapper;
 
 use DmitryDulepov\Realurl\Cache\CacheFactory;
 use DmitryDulepov\Realurl\Cache\CacheInterface;
@@ -31,12 +26,12 @@ class UriMapper
      * @var ObjectManager
      */
     protected $objectManager;
-    
+
     /**
      * @var CacheInterface
      */
     protected $realUrlCache;
-    
+
     /**
      * inject objectManager
      *
@@ -47,7 +42,7 @@ class UriMapper
     {
         $this->objectManager = $objectManager;
     }
-    
+
     /**
      * Returns realurl like speaking url
      *
@@ -66,10 +61,10 @@ class UriMapper
         if (isset($pathParts['extension'])) {
             $path = rtrim($path, '/');
         }
-        
+
         return $path;
     }
-    
+
     /**
      * Returns http host
      *
@@ -81,7 +76,7 @@ class UriMapper
     {
         return parse_url($this->sanitizeUri($uri))['host'];
     }
-    
+
     /**
      * Sanitize URI
      *
@@ -96,7 +91,7 @@ class UriMapper
         }
         return $uri;
     }
-    
+
     /**
      * Extracts get params from an uri
      *
@@ -110,7 +105,7 @@ class UriMapper
         parse_str($query, $result);
         return isset($result['id']) ? $result['id'] : null;
     }
-    
+
     /**
      * Returns the PID from the URI by either reverse realurl or from params
      *
@@ -129,10 +124,10 @@ class UriMapper
         } else {
             $pid = (int)$this->getUidFromUri($uri);
         }
-        
+
         return $pid;
     }
-    
+
     /**
      * Get RealUrl Cache
      *
@@ -145,7 +140,7 @@ class UriMapper
         }
         return $this->realUrlCache;
     }
-    
+
     /**
      * Is valid URI
      *
@@ -157,7 +152,7 @@ class UriMapper
     {
         return !empty($uri) && $this->getHttpHost($uri) === GeneralUtility::getIndpEnv('HTTP_HOST');
     }
-    
+
     /**
      * Check, if realurl is loaded and URI does not contain 'index.php'
      *
@@ -169,7 +164,7 @@ class UriMapper
     {
         return ExtensionManagementUtility::isLoaded('realurl') && $this->getUidFromUri($uri) === null;
     }
-    
+
     /**
      * Get PID from realurl API
      *
@@ -184,20 +179,20 @@ class UriMapper
             ConfigurationReader::class,
             ConfigurationReader::MODE_DECODE
         );
-    
+
         $rootPageId = (int)$realUrlConfiguration->get('pagePath/rootpage_id');
-    
+
         /** @var UrlCacheEntry $convertedUrl */
         $convertedUrl = $this->getRealUrlCache()->getUrlFromCacheBySpeakingUrl(
             $rootPageId,
             $this->getSpeakingUrl($uri),
             (int)GeneralUtility::_GET('L')
         );
-    
+
         if ($convertedUrl === null) {
             return null;
         }
-    
+
         return $convertedUrl->getPageId();
     }
 }

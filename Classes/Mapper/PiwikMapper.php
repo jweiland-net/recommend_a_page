@@ -1,18 +1,13 @@
 <?php
-namespace JWeiland\RecommendAPage\Mapper;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/recommend_a_page.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\RecommendAPage\Mapper;
 
 use TYPO3\CMS\Frontend\Page\PageRepository;
 
@@ -25,12 +20,12 @@ class PiwikMapper
      * @var PageRepository
      */
     protected $pageRepository;
-    
+
     /**
      * @var UriMapper
      */
     protected $uriMapper;
-    
+
     /**
      * inject pageRepository
      *
@@ -40,7 +35,7 @@ class PiwikMapper
     {
         $this->pageRepository = $pageRepository;
     }
-    
+
     /**
      * inject uriMapper
      *
@@ -51,7 +46,7 @@ class PiwikMapper
     {
         $this->uriMapper = $uriMapper;
     }
-    
+
     /**
      * Maps piwik pids to typo3 pids
      *
@@ -62,15 +57,15 @@ class PiwikMapper
     public function mapPiwikPidsToTypo3Pids($pages)
     {
         $mappedPages = array();
-        
+
         if (!is_array($pages)) {
             return array();
         }
-        
+
         foreach ($pages as $key => $page) {
             $typo3pid = $this->uriMapper->getTypo3PidFromUri($page['name']);
             $typo3Page = $this->pageRepository->getPage($typo3pid);
-            
+
             if (
                 $typo3Page['tx_recommend_a_page_do_not_recommend'] == 0 &&
                 $typo3Page['hidden'] == 0 &&
@@ -79,7 +74,7 @@ class PiwikMapper
                 $mappedPages[$page['idaction']] = $typo3pid;
             }
         }
-        
+
         return $mappedPages;
     }
 }
