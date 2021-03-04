@@ -263,7 +263,7 @@ class UriMapperTest extends UnitTestCase
                 )->willReturn($urlCacheEntry);
 
             /** @var UriMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
-            $subject = $this->getAccessibleMock(UriMapper::class, array('dummy'));
+            $subject = $this->getAccessibleMock(UriMapper::class, ['dummy']);
             $subject->injectObjectManager($objectManager);
             $subject->_set('realUrlCache', $realUrlCache);
             self::assertSame(

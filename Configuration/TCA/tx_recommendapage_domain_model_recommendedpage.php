@@ -13,29 +13,29 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-return array(
-    'ctrl' => array(
+return [
+    'ctrl' => [
         'label' => '',
         'hideTable' => 1,
-    ),
-    'columns' => array(
-        'referrer_pid' => array(
+    ],
+    'columns' => [
+        'referrer_pid' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:recommend_a_page/Resources/Private/Language/locallang.xlf:db.ref_id',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim,required'
-            ),
-        ),
-        'target_pid' => array(
+            ],
+        ],
+        'target_pid' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:recommend_a_page/Resources/Private/Language/locallang.xlf:db.target_id',
-            'config' => array(
+            'config' => [
                 'type' => 'input',
                 'size' => 30,
                 'eval' => 'trim,required'
-            ),
-        ),
-    ),
-);
+            ],
+        ],
+    ],
+];

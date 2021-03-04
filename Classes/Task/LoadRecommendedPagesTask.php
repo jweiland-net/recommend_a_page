@@ -74,11 +74,11 @@ class LoadRecommendedPagesTask extends AbstractTask
         /** @var PiwikMapper $piwikMapper */
         $piwikMapper = $this->objectManager->get(PiwikMapper::class);
 
-        /** @var array $mappedPages array(piwikPid => TYPO3pid) */
+        /** @var array $mappedPages [piwikPid => TYPO3pid] */
         $mappedPages = $piwikMapper->mapPiwikPidsToTypo3Pids($pages);
 
         /** @var array $updateList This list makes sure that uris that point to the same page aren't looped twice */
-        $updateList = array();
+        $updateList = [];
 
         // Go trough every page that piwik knows of
         foreach ($pages as $key => $page) {
@@ -91,7 +91,7 @@ class LoadRecommendedPagesTask extends AbstractTask
                 $piwikRecommendedPages = $this->piwikDatabaseService->getTargetIdActions($idAction);
 
                 $recommendedPages = $this->resolveRecommendedPages($piwikRecommendedPages, $mappedPages, $typo3Pid);
-                $updateList[$typo3Pid] = array();
+                $updateList[$typo3Pid] = [];
 
                 foreach ($recommendedPages as $targetPid => $clicks) {
                     $updateList[$typo3Pid][] = $this->prepareRecommendedPageForDatabase(
@@ -115,7 +115,7 @@ class LoadRecommendedPagesTask extends AbstractTask
      */
     protected function resolveRecommendedPages($piwikRecommendedPages, $mapping, $referrerTypo3Pid)
     {
-        $recommendedPages = array();
+        $recommendedPages = [];
         $maxRecommendedPages = $this->getRecommendedPagesCount();
 
         for ($i = 0; $i < count($piwikRecommendedPages) && count($recommendedPages) < $maxRecommendedPages; $i++) {
@@ -143,10 +143,10 @@ class LoadRecommendedPagesTask extends AbstractTask
      */
     protected function prepareRecommendedPageForDatabase($typo3Pid, $targetPid)
     {
-        return array(
+        return [
             'referrer_pid' =>  $typo3Pid,
             'target_pid' => $targetPid
-        );
+        ];
     }
 
     /**
@@ -161,9 +161,9 @@ class LoadRecommendedPagesTask extends AbstractTask
         foreach ($pages as $recommendedPages) {
             $this->getDatabaseConnection()->exec_INSERTmultipleRows(
                 'tx_recommendapage_domain_model_recommendedpage',
-                array(
+                [
                     'referrer_pid', 'target_pid'
-                ),
+                ],
                 $recommendedPages
             );
         }

@@ -68,7 +68,7 @@ class PageIdToTitleViewHelperTest extends UnitTestCase
         $pageRepository->expects($this->once())
             ->method('getPage')
             ->with($pageId)
-            ->willReturn(array('title' => 'PageTitle'));
+            ->willReturn(['title' => 'PageTitle']);
 
         /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $objectManager */
         $objectManager = $this->createMock(ObjectManager::class);

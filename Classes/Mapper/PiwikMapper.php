@@ -56,10 +56,10 @@ class PiwikMapper
      */
     public function mapPiwikPidsToTypo3Pids($pages)
     {
-        $mappedPages = array();
+        $mappedPages = [];
 
         if (!is_array($pages)) {
-            return array();
+            return [];
         }
 
         foreach ($pages as $key => $page) {

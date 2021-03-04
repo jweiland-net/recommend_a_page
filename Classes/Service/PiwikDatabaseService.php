@@ -35,7 +35,7 @@ class PiwikDatabaseService
      *
      * @var array
      */
-    private $databaseConfiguration = array();
+    private $databaseConfiguration = [];
 
     /**
      * inject objectManager
@@ -69,7 +69,7 @@ class PiwikDatabaseService
     {
         $host = $this->getHost();
 
-        $constraints = array();
+        $constraints = [];
 
         $constraints[] = 'name LIKE ' .
             $this->databaseConnection->fullQuoteStr(
@@ -102,7 +102,7 @@ class PiwikDatabaseService
         );
 
         if ($result === null) {
-            $result = array();
+            $result = [];
         }
 
         return $result;
@@ -118,7 +118,7 @@ class PiwikDatabaseService
     public function getTargetIdActions($idAction)
     {
         if (!is_numeric($idAction)) {
-            return array();
+            return [];
         }
 
         $idAction = $this->databaseConnection->fullQuoteStr($idAction, 'piwik_log_link_visit_action');
@@ -132,7 +132,7 @@ class PiwikDatabaseService
         );
 
         if ($result === null) {
-            $result = array();
+            $result = [];
         }
 
         return $result;

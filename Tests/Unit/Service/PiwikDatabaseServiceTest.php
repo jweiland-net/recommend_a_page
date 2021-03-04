@@ -34,7 +34,7 @@ class PiwikDatabaseServiceTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->subject = $this->getAccessibleMock(PiwikDatabaseService::class, array('dummy'));
+        $this->subject = $this->getAccessibleMock(PiwikDatabaseService::class, ['dummy']);
     }
 
     /**
@@ -63,7 +63,7 @@ class PiwikDatabaseServiceTest extends UnitTestCase
 
         $this->subject->_set('databaseConnection', $databaseConnection);
 
-        self::assertSame(array(), $this->subject->getActionIdsAndUrls());
+        self::assertSame([], $this->subject->getActionIdsAndUrls());
     }
 
     /**
@@ -77,7 +77,7 @@ class PiwikDatabaseServiceTest extends UnitTestCase
 
         $this->subject->_set('databaseConnection', $databaseConnection);
 
-        self::assertSame(array(), $this->subject->getTargetIdActions(null));
+        self::assertSame([], $this->subject->getTargetIdActions(null));
     }
 
     /**
@@ -106,6 +106,6 @@ class PiwikDatabaseServiceTest extends UnitTestCase
 
         $this->subject->_set('databaseConnection', $databaseConnection);
 
-        self::assertSame(array(), $this->subject->getTargetIdActions($idAction));
+        self::assertSame([], $this->subject->getTargetIdActions($idAction));
     }
 }
