@@ -28,7 +28,7 @@ class PageIdToTitleViewHelperTest extends UnitTestCase
      * @var PageIdToTitleViewHelper
      */
     protected $subject;
-    
+
     /**
      * SetUp
      */
@@ -36,7 +36,7 @@ class PageIdToTitleViewHelperTest extends UnitTestCase
     {
         $this->subject = new PageIdToTitleViewHelper();
     }
-    
+
     /**
      * TearDown
      */
@@ -44,7 +44,7 @@ class PageIdToTitleViewHelperTest extends UnitTestCase
     {
         unset($this->subject);
     }
-    
+
     /**
      * @test
      */
@@ -52,33 +52,33 @@ class PageIdToTitleViewHelperTest extends UnitTestCase
     {
         $objectManager = $this->createMock(ObjectManager::class);
         $objectManager->expects($this->never())->method('get');
-        
-        $this->assertSame('', $this->subject->render(null));
+
+        self::assertSame('', $this->subject->render(null));
     }
-    
+
     /**
      * @test
      */
     public function renderWithNumberWillReturnPageTitle()
     {
         $pageId = 0;
-        
+
         /** @var PageRepository|\PHPUnit_Framework_MockObject_MockObject $pageRepository */
         $pageRepository = $this->createMock(PageRepository::class);
         $pageRepository->expects($this->once())
             ->method('getPage')
             ->with($pageId)
             ->willReturn(array('title' => 'PageTitle'));
-        
+
         /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $objectManager */
         $objectManager = $this->createMock(ObjectManager::class);
         $objectManager->expects($this->once())
             ->method('get')
             ->with(PageRepository::class)
             ->willReturn($pageRepository);
-    
+
         $this->subject->injectObjectManager($objectManager);
-        
+
         $this->subject->render($pageId);
     }
 }

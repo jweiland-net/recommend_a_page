@@ -28,7 +28,7 @@ class PiwikDatabaseServiceTest extends UnitTestCase
      * @var PiwikDatabaseService|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
      */
     protected $subject;
-    
+
     /**
      * SetUp
      */
@@ -36,7 +36,7 @@ class PiwikDatabaseServiceTest extends UnitTestCase
     {
         $this->subject = $this->getAccessibleMock(PiwikDatabaseService::class, array('dummy'));
     }
-    
+
     /**
      * TearDown
      */
@@ -44,7 +44,7 @@ class PiwikDatabaseServiceTest extends UnitTestCase
     {
         unset($this->subject);
     }
-    
+
     /**
      * @test
      */
@@ -52,7 +52,7 @@ class PiwikDatabaseServiceTest extends UnitTestCase
     {
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $databaseConnection */
         $databaseConnection = $this->createMock(DatabaseConnection::class);
-        
+
         $databaseConnection->expects($this->exactly(3))->method('fullQuoteStr');
         $databaseConnection->expects($this->exactly(3))->method('escapeStrForLike');
         $databaseConnection->expects($this->once())->method('exec_SELECTgetRows')->with(
@@ -60,12 +60,12 @@ class PiwikDatabaseServiceTest extends UnitTestCase
             'piwik_log_action',
             $this->stringContains('OR')
         )->willReturn(null);
-        
+
         $this->subject->_set('databaseConnection', $databaseConnection);
-        
-        $this->assertSame(array(), $this->subject->getActionIdsAndUrls());
+
+        self::assertSame(array(), $this->subject->getActionIdsAndUrls());
     }
-    
+
     /**
      * @test
      */
@@ -74,26 +74,26 @@ class PiwikDatabaseServiceTest extends UnitTestCase
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $databaseConnection */
         $databaseConnection = $this->createMock(DatabaseConnection::class);
         $databaseConnection->expects($this->never())->method('fullQuoteStr');
-        
+
         $this->subject->_set('databaseConnection', $databaseConnection);
-        
-        $this->assertSame(array(), $this->subject->getTargetIdActions(null));
+
+        self::assertSame(array(), $this->subject->getTargetIdActions(null));
     }
-    
+
     /**
      * @test
      */
     public function getTargetIdActionsWillReturnEmptyArrayWithDatabaseResultNull()
     {
         $idAction = '20';
-        
+
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $databaseConnection */
         $databaseConnection = $this->createMock(DatabaseConnection::class);
-        
+
         $databaseConnection->expects($this->once())->method('fullQuoteStr')
             ->with($idAction)
             ->willReturn('\'' . $idAction . '\'');
-        
+
         $databaseConnection->expects($this->once())->method('exec_SELECTgetRows')
             ->with(
                 'idaction_url as targetPid, COUNT(*) AS clicks',
@@ -103,9 +103,9 @@ class PiwikDatabaseServiceTest extends UnitTestCase
                 'clicks DESC'
             )
             ->willReturn(null);
-        
+
         $this->subject->_set('databaseConnection', $databaseConnection);
-        
-        $this->assertSame(array(), $this->subject->getTargetIdActions($idAction));
+
+        self::assertSame(array(), $this->subject->getTargetIdActions($idAction));
     }
 }

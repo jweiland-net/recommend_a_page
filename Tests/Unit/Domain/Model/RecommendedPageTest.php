@@ -25,7 +25,7 @@ class RecommendedPageTest extends UnitTestCase
      * @var RecommendedPage
      */
     protected $subject;
-    
+
     /**
      * SetUp
      */
@@ -33,7 +33,7 @@ class RecommendedPageTest extends UnitTestCase
     {
         $this->subject = new RecommendedPage();
     }
-    
+
     /**
      * TearDown
      */
@@ -41,102 +41,102 @@ class RecommendedPageTest extends UnitTestCase
     {
         unset($this->subject);
     }
-    
+
     /**
      * @test
      */
     public function getReferrerPidInitiallyReturnsZero()
     {
-        $this->assertSame(
+        self::assertSame(
             0,
             $this->subject->getReferrerPid()
         );
     }
-    
+
     /**
      * @test
      */
     public function setReferrerPidSetsReferrerPid()
     {
         $this->subject->setReferrerPid(123456);
-    
-        $this->assertSame(
+
+        self::assertSame(
             123456,
             $this->subject->getReferrerPid()
         );
     }
-    
+
     /**
      * @test
      */
     public function setReferrerPidWithStringResultsInInteger()
     {
         $this->subject->setReferrerPid('123Test');
-    
-        $this->assertSame(
+
+        self::assertSame(
             123,
             $this->subject->getReferrerPid()
         );
     }
-    
+
     /**
      * @test
      */
     public function setReferrerPidWithBooleanResultsInInteger()
     {
         $this->subject->setReferrerPid(TRUE);
-    
-        $this->assertSame(
+
+        self::assertSame(
             1,
             $this->subject->getReferrerPid()
         );
     }
-    
+
     /**
      * @test
      */
     public function getTargetPidInitiallyReturnsZero()
     {
-        $this->assertSame(
+        self::assertSame(
             0,
             $this->subject->getTargetPid()
         );
     }
-    
+
     /**
      * @test
      */
     public function setTargetPidSetsTargetPid()
     {
         $this->subject->setTargetPid(123456);
-    
-        $this->assertSame(
+
+        self::assertSame(
             123456,
             $this->subject->getTargetPid()
         );
     }
-    
+
     /**
      * @test
      */
     public function setTargetPidWithStringResultsInInteger()
     {
         $this->subject->setTargetPid('123Test');
-    
-        $this->assertSame(
+
+        self::assertSame(
             123,
             $this->subject->getTargetPid()
         );
     }
-    
+
     /**
      * @test
      */
     public function setTargetPidWithBooleanResultsInInteger()
     {
         $this->subject->setTargetPid(TRUE);
-    
-        $this->assertSame(
+
+        self::assertSame(
             1,
             $this->subject->getTargetPid()
         );
