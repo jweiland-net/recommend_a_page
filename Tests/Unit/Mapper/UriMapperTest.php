@@ -31,12 +31,12 @@ class UriMapperTest extends UnitTestCase
      * @var string
      */
     protected $httpHostBackup = '';
-    
+
     /**
      * @var UriMapper
      */
     protected $subject;
-    
+
     /**
      * SetUp
      */
@@ -46,7 +46,7 @@ class UriMapperTest extends UnitTestCase
         $this->httpHostBackup = $_SERVER['HTTP_HOST'];
         $_SERVER['HTTP_HOST'] = 'jweiland.net';
     }
-    
+
     /**
      * TearDown
      */
@@ -55,170 +55,170 @@ class UriMapperTest extends UnitTestCase
         unset($this->subject);
         $_SERVER['HTTP_HOST'] = $this->httpHostBackup;
     }
-    
+
     /**
      * @test
      */
     public function getSpeakingUrlWithInvalidStringReturnsGivenString()
     {
-        $this->assertSame(
+        self::assertSame(
             '/',
             $this->subject->getSpeakingUrl('test123')
         );
     }
-    
+
     /**
      * @test
      */
     public function getSpeakingUrlWithIntegerReturnsSlash()
     {
-        $this->assertSame(
+        self::assertSame(
             '/',
             $this->subject->getSpeakingUrl(12345)
         );
     }
-    
+
     /**
      * @test
      */
     public function getSpeakingUrlWithValidHostReturnsSlash()
     {
-        $this->assertSame(
+        self::assertSame(
             '/',
             $this->subject->getSpeakingUrl('jweiland.net')
         );
     }
-    
+
     /**
      * @test
      */
     public function getSpeakingUrlWithValidHostAndSchemaReturnsSlash()
     {
-        $this->assertSame(
+        self::assertSame(
             '/',
             $this->subject->getSpeakingUrl('http://www.jweiland.net')
         );
     }
-    
+
     /**
      * @test
      */
     public function getSpeakingUrlWithValidUrlReturnsSlash()
     {
-        $this->assertSame(
+        self::assertSame(
             '/',
             $this->subject->getSpeakingUrl('http://www.jweiland.net/?id=123&tx_news[id]=231&L=2')
         );
     }
-    
+
     /**
      * @test
      */
     public function getSpeakingUrlWithSpeakingUrlAndWithoutTrailingHtmlReturnsPath()
     {
-        $this->assertSame(
+        self::assertSame(
             'home/archive/2016/09/23/welcome/',
             $this->subject->getSpeakingUrl('http://www.jweiland.net/home/archive/2016/09/23/welcome/')
         );
     }
-    
+
     /**
      * @test
      */
     public function getSpeakingUrlWithDottedSpeakingUrlReturnsPath()
     {
-        $this->assertSame(
+        self::assertSame(
             'home/jochen.weiland/agb.html',
             $this->subject->getSpeakingUrl('http://www.jweiland.net/home/jochen.weiland/agb.html')
         );
     }
-    
+
     /**
      * @test
      */
     public function getSpeakingUrlWithSpeakingUrlAndWithTrailingHtmlReturnsPath()
     {
-        $this->assertSame(
+        self::assertSame(
             'home/archive/2016/09/23/welcome.html',
             $this->subject->getSpeakingUrl('http://www.jweiland.net/home/archive/2016/09/23/welcome.html')
         );
     }
-    
+
     /**
      * @test
      */
     public function getHttpHostWithHostReturnsHost()
     {
-        $this->assertSame(
+        self::assertSame(
             'test123',
             $this->subject->getHttpHost('test123')
         );
     }
-    
+
     /**
      * @test
      */
     public function getHttpHostWithIntegerReturnsIntegerAsHost()
     {
-        $this->assertSame(
+        self::assertSame(
             '12345',
             $this->subject->getHttpHost(12345)
         );
     }
-    
+
     /**
      * @test
      */
     public function getHttpHostWithDomainReturnsHost() {
-        $this->assertSame(
+        self::assertSame(
             'jweiland.net',
             $this->subject->getHttpHost('jweiland.net')
         );
     }
-    
+
     /**
      * @test
      */
     public function getHttpHostWithUriReturnsHost()
     {
-        $this->assertSame(
+        self::assertSame(
             'www.jweiland.net',
             $this->subject->getHttpHost('http://www.jweiland.net/?id=2&L=2')
         );
     }
-    
+
     /**
      * @test
      */
     public function getTypo3PidFromUriWithEmptyUriReturnsNull()
     {
-        $this->assertNull(
+        self::assertNull(
             $this->subject->getTypo3PidFromUri('')
         );
     }
-    
+
     /**
      * @test
      */
     public function getTypo3PidFromUriWithInvalidHostReturnsNull()
     {
-        $this->assertNull(
+        self::assertNull(
             $this->subject->getTypo3PidFromUri('http://test123.net')
         );
     }
-    
+
     /**
      * @test
      */
     public function getTypo3PidFromUriWithNonRealUrlCallsGetUidFromUriReturnsPid()
     {
         $this->subject = new UriMapper();
-        $this->assertSame(
+        self::assertSame(
             123,
             $this->subject->getTypo3PidFromUri('http://jweiland.net/?id=123')
         );
     }
-    
+
     /**
      * @test
      */
@@ -230,21 +230,21 @@ class UriMapperTest extends UnitTestCase
             $configurationReader->expects($this->once())->method('get')->with(
                 $this->equalTo('pagePath/rootpage_id')
             )->willReturn(23);
-            
+
             /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $objectManager */
             $objectManager = $this->createMock(ObjectManager::class);
             $objectManager->expects($this->once())->method('get')->with(
                 $this->equalTo(ConfigurationReader::class),
                 $this->equalTo(ConfigurationReader::MODE_DECODE)
             )->willReturn($configurationReader);
-    
+
             /** @var UrlCacheEntry|\PHPUnit_Framework_MockObject_MockObject $urlCacheEntry */
             $urlCacheEntry = $this->createMock(UrlCacheEntry::class);
             $urlCacheEntry
                 ->expects($this->once())
                 ->method('getPageId')
                 ->willReturn(123);
-            
+
             /** @var CacheInterface|\PHPUnit_Framework_MockObject_MockObject $realUrlCache */
             $realUrlCache = $this->createMock(DatabaseCache::class);
             $realUrlCache
@@ -261,12 +261,12 @@ class UriMapperTest extends UnitTestCase
                         $this->isType('int')
                     )
                 )->willReturn($urlCacheEntry);
-            
+
             /** @var UriMapper|\PHPUnit_Framework_MockObject_MockObject|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface $subject */
             $subject = $this->getAccessibleMock(UriMapper::class, array('dummy'));
             $subject->injectObjectManager($objectManager);
             $subject->_set('realUrlCache', $realUrlCache);
-            $this->assertSame(
+            self::assertSame(
                 123,
                 $subject->getTypo3PidFromUri('http://jweiland.net/home/agb.html')
             );

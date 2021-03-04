@@ -29,17 +29,17 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
      * @var LoadRecommendedPagesTask|\PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface
      */
     protected $subject;
-    
+
     /**
      * @var PiwikDatabaseService|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $piwikDatabaseService;
-    
+
     /**
      * @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $databaseConnection;
-    
+
     /**
      * SetUp
      */
@@ -57,11 +57,11 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
             '',
             false
         );
-    
+
         $this->piwikDatabaseService = $this->createMock(PiwikDatabaseService::class);
         $this->databaseConnection = $this->createMock(DatabaseConnection::class);
     }
-    
+
     /**
      * TearDown
      */
@@ -69,7 +69,7 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
     {
         unset($this->subject);
     }
-    
+
     /**
      * @test
      * @expectedException \PHPUnit_Framework_Error_Warning
@@ -77,32 +77,32 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
     public function executeWithNullWillThrowInvalidArgumentSuppliedForForeach()
     {
         $piwikDatabaseResultSet = array(null, null);
-    
+
         $this->piwikDatabaseService->expects($this->once())
             ->method('getActionIdsAndUrls')
             ->willReturn(
                 $piwikDatabaseResultSet
             );
-    
+
         $this->subject->_set(
             'piwikDatabaseService',
             $this->piwikDatabaseService
         );
-    
+
         $this->databaseConnection->expects($this->once())
             ->method('exec_TRUNCATEquery');
-    
+
         $this->subject->expects($this->exactly(1))
             ->method('getDatabaseConnection')
             ->willReturn($this->databaseConnection);
-    
+
         $this->subject->expects($this->once())
             ->method('getRecommendPagesForEachKnownPiwikPage')
             ->with($this->equalTo($piwikDatabaseResultSet));
-        
+
         $this->subject->execute();
     }
-    
+
     /**
      * @test
      */
@@ -118,7 +118,7 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
                 'name' => 'http://jweiland.net/kontakt/impressum'
             )
         );
-        
+
         $expectedValue = array(
             0 => array(
                 'referrer_pid' => 0,
@@ -129,28 +129,28 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
                 'target_pid' => 10
             )
         );
-        
+
         $this->piwikDatabaseService->expects($this->once())
             ->method('getActionIdsAndUrls')
             ->willReturn(
                 $piwikDatabaseResultSet
             );
-        
+
         $this->subject->_set(
             'piwikDatabaseService',
             $this->piwikDatabaseService
         );
-        
+
         $this->subject->expects($this->once())
             ->method('getRecommendPagesForEachKnownPiwikPage')
             ->with($this->equalTo($piwikDatabaseResultSet))
             ->willReturn($expectedValue);
-        
+
         $this->subject->expects($this->once())->method('init');
-    
+
         $this->databaseConnection->expects($this->once())
             ->method('exec_TRUNCATEquery');
-        
+
         $this->databaseConnection->expects($this->at(1))
             ->method('exec_INSERTmultipleRows')
             ->with(
@@ -159,7 +159,7 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
                 $this->equalTo($expectedValue[0])
             )
             ->willReturn(true);
-    
+
         $this->databaseConnection->expects($this->at(2))
             ->method('exec_INSERTmultipleRows')
             ->with(
@@ -168,11 +168,11 @@ class LoadRecommendedPagesTaskTest extends UnitTestCase
                 $this->equalTo($expectedValue[1])
             )
             ->willReturn(true);
-    
+
         $this->subject->expects($this->exactly(3))
             ->method('getDatabaseConnection')
             ->willReturn($this->databaseConnection);
-        
-        $this->assertSame(true, $this->subject->execute());
+
+        self::assertSame(true, $this->subject->execute());
     }
 }
