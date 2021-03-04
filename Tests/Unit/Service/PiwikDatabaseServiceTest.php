@@ -1,18 +1,13 @@
 <?php
-namespace JWeiland\RecommendAPage\Tests\Unit\Service;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/recommend_a_page.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\RecommendAPage\Tests\Unit\Service;
 
 use JWeiland\RecommendAPage\Service\PiwikDatabaseService;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
@@ -53,9 +48,9 @@ class PiwikDatabaseServiceTest extends UnitTestCase
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $databaseConnection */
         $databaseConnection = $this->createMock(DatabaseConnection::class);
 
-        $databaseConnection->expects($this->exactly(3))->method('fullQuoteStr');
-        $databaseConnection->expects($this->exactly(3))->method('escapeStrForLike');
-        $databaseConnection->expects($this->once())->method('exec_SELECTgetRows')->with(
+        $databaseConnection->expects(self::exactly(3))->method('fullQuoteStr');
+        $databaseConnection->expects(self::exactly(3))->method('escapeStrForLike');
+        $databaseConnection->expects(self::once())->method('exec_SELECTgetRows')->with(
             'idaction, name',
             'piwik_log_action',
             $this->stringContains('OR')
@@ -73,7 +68,7 @@ class PiwikDatabaseServiceTest extends UnitTestCase
     {
         /** @var DatabaseConnection|\PHPUnit_Framework_MockObject_MockObject $databaseConnection */
         $databaseConnection = $this->createMock(DatabaseConnection::class);
-        $databaseConnection->expects($this->never())->method('fullQuoteStr');
+        $databaseConnection->expects(self::never())->method('fullQuoteStr');
 
         $this->subject->_set('databaseConnection', $databaseConnection);
 

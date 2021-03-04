@@ -1,18 +1,14 @@
 <?php
-namespace JWeiland\RecommendAPage\Tests\Unit\Mapper;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/recommend_a_page.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\RecommendAPage\Tests\Unit\Mapper;
+
 use JWeiland\RecommendAPage\Mapper\PiwikMapper;
 use JWeiland\RecommendAPage\Mapper\UriMapper;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
@@ -51,7 +47,7 @@ class PiwikMapperTest extends UnitTestCase
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|UriMapper $uriMapper */
         $uriMapper = $this->createMock(UriMapper::class);
-        $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
+        $uriMapper->expects(self::never())->method('getTypo3PidFromUri');
         $this->subject->injectUriMapper($uriMapper);
         self::assertSame(
             [],
@@ -66,7 +62,7 @@ class PiwikMapperTest extends UnitTestCase
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|UriMapper $uriMapper */
         $uriMapper = $this->createMock(UriMapper::class);
-        $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
+        $uriMapper->expects(self::never())->method('getTypo3PidFromUri');
         self::assertSame(
             [],
             $this->subject->mapPiwikPidsToTypo3Pids(12345)
@@ -80,7 +76,7 @@ class PiwikMapperTest extends UnitTestCase
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|UriMapper $uriMapper */
         $uriMapper = $this->createMock(UriMapper::class);
-        $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
+        $uriMapper->expects(self::never())->method('getTypo3PidFromUri');
         self::assertSame(
             [],
             $this->subject->mapPiwikPidsToTypo3Pids('test123')
@@ -94,7 +90,7 @@ class PiwikMapperTest extends UnitTestCase
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|UriMapper $uriMapper */
         $uriMapper = $this->createMock(UriMapper::class);
-        $uriMapper->expects($this->never())->method('getTypo3PidFromUri');
+        $uriMapper->expects(self::never())->method('getTypo3PidFromUri');
         self::assertSame(
             [],
             $this->subject->mapPiwikPidsToTypo3Pids([])

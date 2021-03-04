@@ -1,18 +1,13 @@
 <?php
-namespace JWeiland\RecommendAPage\Tests\Unit\ViewHelper;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package jweiland/recommend_a_page.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace JWeiland\RecommendAPage\Tests\Unit\ViewHelper;
 
 use JWeiland\RecommendAPage\ViewHelpers\PageIdToTitleViewHelper;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
@@ -51,7 +46,7 @@ class PageIdToTitleViewHelperTest extends UnitTestCase
     public function renderWithNullWillReturnEmptyString()
     {
         $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects($this->never())->method('get');
+        $objectManager->expects(self::never())->method('get');
 
         self::assertSame('', $this->subject->render(null));
     }
@@ -65,14 +60,14 @@ class PageIdToTitleViewHelperTest extends UnitTestCase
 
         /** @var PageRepository|\PHPUnit_Framework_MockObject_MockObject $pageRepository */
         $pageRepository = $this->createMock(PageRepository::class);
-        $pageRepository->expects($this->once())
+        $pageRepository->expects(self::once())
             ->method('getPage')
             ->with($pageId)
             ->willReturn(['title' => 'PageTitle']);
 
         /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $objectManager */
         $objectManager = $this->createMock(ObjectManager::class);
-        $objectManager->expects($this->once())
+        $objectManager->expects(self::once())
             ->method('get')
             ->with(PageRepository::class)
             ->willReturn($pageRepository);

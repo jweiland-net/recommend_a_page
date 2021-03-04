@@ -28,7 +28,7 @@ class PiwikDatabaseService
      *
      * @var DatabaseConnection
      */
-    protected $databaseConnection = null;
+    protected $databaseConnection;
 
     /**
      * databaseConfiguration
@@ -41,8 +41,6 @@ class PiwikDatabaseService
      * inject objectManager
      *
      * @param ObjectManager $objectManager
-     *
-     * @return void
      */
     public function injectObjectManager(ObjectManager $objectManager)
     {
@@ -51,8 +49,6 @@ class PiwikDatabaseService
 
     /**
      * Initialization
-     *
-     * @return void
      */
     public function initializeObject()
     {
@@ -74,24 +70,30 @@ class PiwikDatabaseService
         $constraints[] = 'name LIKE ' .
             $this->databaseConnection->fullQuoteStr(
                 $this->databaseConnection->escapeStrForLike(
-                    $host, 'piwik_log_action'
-                ) . '%', 'piwik_log_action'
+                    $host,
+                    'piwik_log_action'
+                ) . '%',
+                'piwik_log_action'
             );
 
         $constraints[] = 'name LIKE ' .
             $this->databaseConnection->fullQuoteStr(
                 'http://' .
                 $this->databaseConnection->escapeStrForLike(
-                    $host, 'piwik_log_action'
-                ) . '%', 'piwik_log_action'
+                    $host,
+                    'piwik_log_action'
+                ) . '%',
+                'piwik_log_action'
             );
 
         $constraints[] = 'name LIKE ' .
             $this->databaseConnection->fullQuoteStr(
                 'https://' .
                 $this->databaseConnection->escapeStrForLike(
-                    $host, 'piwik_log_action'
-                ) . '%', 'piwik_log_action'
+                    $host,
+                    'piwik_log_action'
+                ) . '%',
+                'piwik_log_action'
             );
 
         $result = $this->databaseConnection->exec_SELECTgetRows(
