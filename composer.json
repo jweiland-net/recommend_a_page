@@ -4,7 +4,7 @@
 	"description": "Recommend pages using PIWIK Statistics",
 	"license": "GPL-2.0-or-later",
 	"keywords": ["typo3", "TYPO3 CMS", "recommend-a-page", "Recommend a page"],
-	"homepage": "http://www.jweiland.net",
+	"homepage": "https://jweiland.net",
 	"authors": [
 		{
 			"name": "Markus Kugler",
@@ -28,6 +28,9 @@
 		"psr-4": {
 			"JWeiland\\RecommendAPage\\": "Classes"
 		}
+	},
+	"replace": {
+		"typo3-ter/recommend_a_page": "self.version"
 	},
 	"config": {
 		"vendor-dir": ".build/vendor"
