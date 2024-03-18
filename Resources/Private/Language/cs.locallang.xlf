@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z" product-name="recommend_a_page" target-language="cs">
+    <header/>
+    <body>
+      <trans-unit id="plugin.recommendapage.title">
+        <source>Recommended Pages</source>
+        <target state="needs-translation">Recommended Pages</target>
+      </trans-unit>
+      <trans-unit id="task.loadRecommendedPages.title">
+        <source>Load recommended pages</source>
+        <target state="needs-translation">Load recommended pages</target>
+      </trans-unit>
+      <trans-unit id="task.loadRecommendedPages.description">
+        <source>Loads recommended pages from piwik database and saves them to a own table</source>
+        <target state="needs-translation">Loads recommended pages from piwik database and saves them to a own table</target>
+      </trans-unit>
+      <trans-unit id="task.preparePiwikDatabaseTask.title">
+        <source>Prepare piwik database</source>
+        <target state="needs-translation">Prepare piwik database</target>
+      </trans-unit>
+      <trans-unit id="task.preparePiwikDatabaseTask.description">
+        <source>Sets all custom vars that are needed for the extension to work</source>
+        <target state="needs-translation">Sets all custom vars that are needed for the extension to work</target>
+      </trans-unit>
+      <trans-unit id="db.ref_id">
+        <source>Referrer id</source>
+        <target state="needs-translation">Referrer id</target>
+      </trans-unit>
+      <trans-unit id="db.target_id">
+        <source>Target id</source>
+        <target state="needs-translation">Target id</target>
+      </trans-unit>
+      <trans-unit id="pages.recommend_a_page">
+        <source>Recommend a page</source>
+        <target state="needs-translation">Recommend a page</target>
+      </trans-unit>
+      <trans-unit id="pages.recommend_a_page.doNotRecommend">
+        <source>Do not recommend</source>
+        <target state="needs-translation">Do not recommend</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

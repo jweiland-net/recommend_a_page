@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2016-05-04T14:55:13Z" product-name="recommend_a_page" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="plugin.recommendapage.title" approved="yes">
+        <source>Recommended Pages</source>
+        <target state="final">Empfohlene Seiten</target>
+      </trans-unit>
+      <trans-unit id="task.loadRecommendedPages.title" approved="yes">
+        <source>Load recommended pages</source>
+        <target state="final">Empfohlene Seiten laden</target>
+      </trans-unit>
+      <trans-unit id="task.loadRecommendedPages.description" approved="yes">
+        <source>Loads recommended pages from piwik database and saves them to a own table</source>
+        <target state="final">Lädt empfohlene Seiten aus der piwik-Datenbank und speichert sie in einer eigenen Tabelle</target>
+      </trans-unit>
+      <trans-unit id="task.preparePiwikDatabaseTask.title" approved="yes">
+        <source>Prepare piwik database</source>
+        <target state="final">Piwik-Datenbank vorbereiten</target>
+      </trans-unit>
+      <trans-unit id="task.preparePiwikDatabaseTask.description" approved="yes">
+        <source>Sets all custom vars that are needed for the extension to work</source>
+        <target state="final">Legt alle benutzerdefinierten Varianten fest, die für die Erweiterung benötigt werden</target>
+      </trans-unit>
+      <trans-unit id="db.ref_id" approved="yes">
+        <source>Referrer id</source>
+        <target state="final">Referrer ID</target>
+      </trans-unit>
+      <trans-unit id="db.target_id" approved="yes">
+        <source>Target id</source>
+        <target state="final">Ziel ID</target>
+      </trans-unit>
+      <trans-unit id="pages.recommend_a_page" approved="yes">
+        <source>Recommend a page</source>
+        <target state="final">Diese Seite empfehlen</target>
+      </trans-unit>
+      <trans-unit id="pages.recommend_a_page.doNotRecommend" approved="yes">
+        <source>Do not recommend</source>
+        <target state="final">Nicht empfehlen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
